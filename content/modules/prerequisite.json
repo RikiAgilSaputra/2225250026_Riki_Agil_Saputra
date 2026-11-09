@@ -1,0 +1,203 @@
+[
+  {
+    "id": "PRE-1",
+    "kind": "prerequisite",
+    "order": 1,
+    "title": "Bilangan Bulat",
+    "subtitle": "Positif, negatif, dan tandanya",
+    "icon": "calc",
+    "objective": "Kamu bisa menghitung bilangan negatif tanpa salah tanda.",
+    "screens": [
+      {
+        "concept": "garis-bilangan",
+        "instruction": "Bilangan negatif ada di kiri nol. Makin ke kiri, makin kecil.",
+        "blocks": [
+          { "type": "numberline", "from": -5, "to": 5, "marks": [-3, 2] },
+          { "type": "callout", "text": "−3 lebih kecil dari 2." }
+        ]
+      },
+      {
+        "concept": "tambah-kurang-negatif",
+        "instruction": "Mengurangi sama dengan menambah lawannya.",
+        "blocks": [
+          { "type": "math", "text": "5 − 8 = 5 + (−8) = −3" },
+          { "type": "math", "text": "−4 − (−6) = −4 + 6 = 2" }
+        ]
+      },
+      {
+        "concept": "kali-tanda",
+        "instruction": "Tanda sama hasilnya positif. Tanda beda hasilnya negatif.",
+        "blocks": [
+          { "type": "table", "rows": [["×", "+", "−"], ["+", "+", "−"], ["−", "−", "+"]] },
+          { "type": "math", "text": "(−4) × (−3) = 12" }
+        ]
+      },
+      {
+        "concept": "kuadrat-negatif",
+        "instruction": "Kuadrat artinya dikali dirinya sendiri. Perhatikan tanda kurungnya.",
+        "blocks": [
+          { "type": "math", "text": "(−3)² = (−3) × (−3) = 9" },
+          { "type": "callout", "text": "−3² = −(3 × 3) = −9. Kurung membuat beda!" }
+        ]
+      }
+    ],
+    "problems": [
+      {
+        "id": "PRE-1-p1",
+        "title": "Latihan tanda",
+        "mode": "independent",
+        "steps": [
+          { "instruction": "Hitung −7 + 3.", "check": "value", "expected": "-4", "display": "−4",
+            "hints": ["Mulai dari −7, bergerak 3 ke kanan.", "Selisih 7 dan 3 adalah 4. Tandanya ikut yang lebih besar.", "−7 + 3 = −4"] },
+          { "instruction": "Hitung (−4) × (−3).", "check": "value", "expected": "12", "display": "12",
+            "hints": ["Lihat tabel tanda perkalian.", "Negatif kali negatif hasilnya positif.", "(−4) × (−3) = 12"] },
+          { "instruction": "Hitung 2 − 9.", "check": "value", "expected": "-7", "display": "−7",
+            "hints": ["Mengurangi 9 sama dengan menambah −9.", "2 + (−9). Selisihnya 7, tandanya negatif.", "2 − 9 = −7"] }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "PRE-2",
+    "kind": "prerequisite",
+    "order": 2,
+    "title": "Persamaan Linear Satu Variabel",
+    "subtitle": "Menyelesaikan ax + b = c",
+    "icon": "balance",
+    "objective": "Kamu bisa mencari nilai x dan memindahkan suku dengan benar.",
+    "recall": [{ "label": "Bilangan bulat", "module_id": "PRE-1" }],
+    "screens": [
+      {
+        "concept": "timbangan",
+        "instruction": "Persamaan seperti timbangan seimbang. Ruas kiri sama berat dengan ruas kanan.",
+        "blocks": [
+          { "type": "math", "text": "3x + 5 = 20" },
+          { "type": "callout", "text": "Apa pun yang kamu lakukan di kiri, lakukan juga di kanan." }
+        ]
+      },
+      {
+        "concept": "pindah-suku",
+        "instruction": "Memindahkan suku ke ruas lain mengubah tandanya.",
+        "blocks": [
+          { "type": "math", "text": "3x + 5 = 20" },
+          { "type": "arrow", "label": "+5 pindah jadi −5" },
+          { "type": "math", "text": "3x = 20 − 5 = 15" }
+        ]
+      },
+      {
+        "concept": "bagi-koefisien",
+        "instruction": "Bagi kedua ruas dengan angka di depan x.",
+        "blocks": [
+          { "type": "math", "text": "3x = 15" },
+          { "type": "arrow", "label": "bagi 3" },
+          { "type": "math", "text": "x = 5" }
+        ]
+      },
+      {
+        "concept": "y-sendirian",
+        "instruction": "Cara yang sama dipakai untuk membuat y sendirian.",
+        "blocks": [
+          { "type": "math", "text": "2x + y = 9" },
+          { "type": "arrow", "label": "2x pindah jadi −2x" },
+          { "type": "math", "text": "y = 9 − 2x" }
+        ]
+      }
+    ],
+    "problems": [
+      {
+        "id": "PRE-2-p1",
+        "title": "Menyelesaikan 3x + 5 = 20",
+        "mode": "independent",
+        "steps": [
+          { "instruction": "Pindahkan 5 ke ruas kanan.", "check": "equation_equivalent", "expected": "3*x = 15", "display": "3x = 15",
+            "hints": ["Tujuannya: hanya suku x di ruas kiri.", "+5 pindah ke kanan menjadi −5.", "3x = 20 − 5 = 15"] },
+          { "instruction": "Tentukan nilai x.", "check": "value", "expected": "5", "variable": "x", "display": "x = 5",
+            "hints": ["Bagi kedua ruas dengan 3.", "x = 15 : 3", "x = 5"] },
+          { "instruction": "Ubah 2x + y = 9 menjadi y = ...", "check": "equation_equivalent", "expected": "y = 9 - 2*x", "display": "y = 9 − 2x",
+            "hints": ["Tujuannya: y sendirian di ruas kiri.", "Pindahkan 2x ke kanan. Tandanya berubah.", "y = 9 − 2x"] }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "PRE-3",
+    "kind": "prerequisite",
+    "order": 3,
+    "title": "Koordinat Kartesius",
+    "subtitle": "Membaca dan menempatkan titik",
+    "icon": "grid",
+    "objective": "Kamu bisa membaca titik (x, y) di bidang Kartesius.",
+    "screens": [
+      {
+        "concept": "sumbu",
+        "instruction": "Sumbu x mendatar dan sumbu y tegak. Keduanya bertemu di titik (0, 0).",
+        "blocks": [{ "type": "graph", "lines": [], "points": [{ "x": 0, "y": 0, "label": "O" }] }]
+      },
+      {
+        "concept": "titik",
+        "instruction": "Titik (3, 2): geser 3 ke kanan, lalu 2 ke atas.",
+        "blocks": [{ "type": "graph", "lines": [], "points": [{ "x": 3, "y": 2, "label": "A(3, 2)" }] }]
+      },
+      {
+        "concept": "titik-negatif",
+        "instruction": "Nilai negatif berarti ke kiri atau ke bawah.",
+        "blocks": [{ "type": "graph", "lines": [], "points": [{ "x": -2, "y": 3, "label": "B(−2, 3)" }, { "x": 1, "y": -3, "label": "C(1, −3)" }] }]
+      }
+    ],
+    "problems": [
+      {
+        "id": "PRE-3-p1",
+        "title": "Membaca titik",
+        "mode": "independent",
+        "graph": { "lines": [], "points": [{ "x": 4, "y": -1, "label": "P" }] },
+        "steps": [
+          { "instruction": "Tulis koordinat titik P.", "check": "point", "expected": ["4", "-1"], "display": "(4, −1)", "show_graph": true,
+            "hints": ["Baca dulu x (mendatar), lalu y (tegak).", "P ada 4 langkah ke kanan dan 1 ke bawah.", "(4, −1)"] }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "PRE-4",
+    "kind": "prerequisite",
+    "order": 4,
+    "title": "Fungsi y = f(x)",
+    "subtitle": "Dari x ke y, dari tabel ke garis",
+    "icon": "func",
+    "objective": "Kamu bisa mencari nilai y jika x diketahui, lalu menggambarnya.",
+    "recall": [{ "label": "Koordinat Kartesius", "module_id": "PRE-3" }],
+    "screens": [
+      {
+        "concept": "mesin-fungsi",
+        "instruction": "Fungsi seperti mesin. Masukkan x, keluar y.",
+        "blocks": [
+          { "type": "math", "text": "y = 2x − 1" },
+          { "type": "math", "text": "x = 3  →  y = 2(3) − 1 = 5" }
+        ]
+      },
+      {
+        "concept": "tabel-xy",
+        "instruction": "Coba beberapa nilai x, catat y-nya di tabel.",
+        "blocks": [{ "type": "table", "rows": [["x", "0", "1", "2", "3"], ["y", "−1", "1", "3", "5"]] }]
+      },
+      {
+        "concept": "tabel-ke-garis",
+        "instruction": "Setiap pasangan (x, y) adalah titik. Hubungkan titiknya, jadilah garis.",
+        "blocks": [{ "type": "graph", "lines": ["2*x - y = 1"], "points": [{ "x": 0, "y": -1 }, { "x": 1, "y": 1 }, { "x": 2, "y": 3 }, { "x": 3, "y": 5 }] }]
+      }
+    ],
+    "problems": [
+      {
+        "id": "PRE-4-p1",
+        "title": "Mencari y",
+        "mode": "independent",
+        "steps": [
+          { "instruction": "Jika y = 2x − 1 dan x = 4, berapa y?", "check": "value", "expected": "7", "variable": "y", "display": "y = 7",
+            "hints": ["Ganti x dengan 4.", "y = 2(4) − 1", "y = 8 − 1 = 7"] },
+          { "instruction": "Jika y = 5 − x dan x = −2, berapa y?", "check": "value", "expected": "7", "variable": "y", "display": "y = 7",
+            "hints": ["Ganti x dengan −2. Pakai kurung.", "y = 5 − (−2)", "y = 5 + 2 = 7"] }
+        ]
+      }
+    ]
+  }
+]

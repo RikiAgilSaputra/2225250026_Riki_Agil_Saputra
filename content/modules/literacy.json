@@ -1,0 +1,181 @@
+[
+  {
+    "id": "SPL-7",
+    "kind": "literacy",
+    "order": 21,
+    "level": "L1",
+    "title": "Soal Cerita L1",
+    "subtitle": "Langsung: semua informasi di teks",
+    "icon": "story",
+    "objective": "Kamu bisa mengubah cerita menjadi SPLDV lalu menafsirkan jawabannya.",
+    "recall": [{ "label": "Makna variabel", "module_id": "SPL-1" }],
+    "screens": [
+      {
+        "concept": "siklus-pemodelan",
+        "instruction": "Soal cerita diselesaikan dalam 6 tahap. Ikuti satu per satu.",
+        "blocks": [{ "type": "cycle" }]
+      },
+      {
+        "concept": "kalimat-ke-matematika",
+        "instruction": "Pahami arti kalimatnya, jangan hanya mencari kata kunci.",
+        "blocks": [
+          { "type": "quote", "text": "Umur ayah 3 kali umur anak." },
+          { "type": "math", "text": "a = 3n   (bukan 3a = n)" },
+          { "type": "callout", "text": "Tanyakan: siapa yang lebih besar?" }
+        ]
+      }
+    ],
+    "problems": [
+      {
+        "id": "LIT-1-buku",
+        "title": "Koperasi sekolah",
+        "mode": "independent",
+        "method": "elimination",
+        "system": ["2*x + 3*y = 19000", "x + 2*y = 11000"],
+        "literacy": { "level": "L1", "context_category": "sosial_budaya", "representation": "text", "akm_cognitive": "pemahaman", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Di koperasi sekolah,", "tag": "" },
+            { "id": "b", "text": "Nadia membeli 2 buku dan 3 pensil seharga Rp19.000.", "tag": "known" },
+            { "id": "c", "text": "Raka membeli 1 buku dan 2 pensil seharga Rp11.000.", "tag": "known" },
+            { "id": "d", "text": "Berapa harga 1 buku?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "harga 1 buku", "unit": "rupiah" }, "y": { "meaning": "harga 1 pensil", "unit": "rupiah" } },
+          "equation_sources": ["2 buku dan 3 pensil seharga Rp19.000", "1 buku dan 2 pensil seharga Rp11.000"],
+          "target": "x"
+        }
+      },
+      {
+        "id": "LIT-1-kaki",
+        "title": "Kandang ayam dan kambing",
+        "mode": "independent",
+        "method": "mixed",
+        "system": ["x + y = 30", "2*x + 4*y = 80"],
+        "literacy": { "level": "L1", "context_category": "saintifik", "representation": "text", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Pak Darto memelihara ayam dan kambing.", "tag": "" },
+            { "id": "b", "text": "Jumlah hewannya 30 ekor.", "tag": "known" },
+            { "id": "c", "text": "Jumlah kaki semuanya 80.", "tag": "known" },
+            { "id": "d", "text": "Berapa banyak kambing?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "banyak ayam", "unit": "ekor" }, "y": { "meaning": "banyak kambing", "unit": "ekor" } },
+          "variable_distractor": "x = kaki ayam, y = kaki kambing",
+          "equation_sources": ["Jumlah hewannya 30 ekor", "Jumlah kaki semuanya 80 (ayam 2 kaki, kambing 4 kaki)"],
+          "target": "y"
+        }
+      }
+    ]
+  },
+  {
+    "id": "LIT-2",
+    "kind": "literacy",
+    "order": 22,
+    "level": "L2",
+    "title": "Soal Cerita L2",
+    "subtitle": "Tabel, struk, dan informasi berlebih",
+    "icon": "receipt",
+    "objective": "Kamu bisa memilih informasi yang diperlukan dari tabel atau struk.",
+    "screens": [
+      {
+        "concept": "info-berlebih",
+        "instruction": "Tidak semua angka di cerita dipakai. Coret yang tidak perlu.",
+        "blocks": [{ "type": "callout", "text": "Contoh: jam belanja atau nomor struk tidak dipakai untuk menghitung harga." }]
+      }
+    ],
+    "problems": [
+      {
+        "id": "LIT-2-parkir",
+        "title": "Parkir pasar",
+        "mode": "independent",
+        "method": "elimination",
+        "system": ["x + y = 45", "2000*x + 5000*y = 135000"],
+        "literacy": { "level": "L2", "context_category": "sosial_budaya", "representation": "table", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Laporan parkir pasar hari Minggu (petugas: Bu Sri, pukul 06.00–12.00):", "tag": "irrelevant" },
+            { "id": "b", "text": "Ada 45 kendaraan, terdiri atas motor dan mobil.", "tag": "known" },
+            { "id": "c", "text": "Tarif motor Rp2.000 dan mobil Rp5.000; uang terkumpul Rp135.000.", "tag": "known" },
+            { "id": "d", "text": "Berapa banyak motor yang parkir?", "tag": "asked" }
+          ],
+          "table": [["Kendaraan", "Tarif"], ["Motor", "Rp2.000"], ["Mobil", "Rp5.000"]],
+          "variables": { "x": { "meaning": "banyak motor", "unit": "kendaraan" }, "y": { "meaning": "banyak mobil", "unit": "kendaraan" } },
+          "variable_distractor": "x = tarif motor, y = tarif mobil",
+          "equation_sources": ["Ada 45 kendaraan", "Tarif motor Rp2.000, mobil Rp5.000, terkumpul Rp135.000"],
+          "target": "x"
+        }
+      },
+      {
+        "id": "LIT-2-struk",
+        "title": "Struk kantin",
+        "mode": "independent",
+        "method": "substitution",
+        "system": ["x + 2*y = 13000", "3*x + 2*y = 23000"],
+        "literacy": { "level": "L2", "context_category": "personal", "representation": "receipt", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Struk Senin: 1 mi ayam + 2 es teh = Rp13.000.", "tag": "known" },
+            { "id": "b", "text": "Struk Selasa: 3 mi ayam + 2 es teh = Rp23.000.", "tag": "known" },
+            { "id": "c", "text": "Kantin buka sampai pukul 14.00.", "tag": "irrelevant" },
+            { "id": "d", "text": "Berapa yang harus dibayar untuk 2 mi ayam dan 1 es teh?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "harga 1 mi ayam", "unit": "rupiah" }, "y": { "meaning": "harga 1 es teh", "unit": "rupiah" } },
+          "equation_sources": ["1 mi ayam + 2 es teh = Rp13.000", "3 mi ayam + 2 es teh = Rp23.000"],
+          "target": "2*x + y",
+          "target_label": "harga 2 mi ayam dan 1 es teh"
+        }
+      }
+    ]
+  },
+  {
+    "id": "LIT-3",
+    "kind": "literacy",
+    "order": 23,
+    "level": "L3",
+    "title": "Soal Cerita L3",
+    "subtitle": "Menalar dan mengambil keputusan",
+    "icon": "reason",
+    "objective": "Kamu bisa memakai SPLDV untuk menilai pilihan atau klaim.",
+    "screens": [
+      {
+        "concept": "keputusan",
+        "instruction": "Di soal penalaran, jawabannya bukan hanya angka, tetapi keputusan.",
+        "blocks": [{ "type": "callout", "text": "Hitung dulu, lalu bandingkan dan beri alasan." }]
+      }
+    ],
+    "problems": [
+      {
+        "id": "LIT-3-kuota",
+        "title": "Paket kuota",
+        "mode": "independent",
+        "method": "substitution",
+        "system": ["y - 2000*x = 50000", "y - 4000*x = 30000"],
+        "literacy": { "level": "L3", "context_category": "personal", "representation": "text", "akm_cognitive": "penalaran", "item_format": "pilihan_ganda" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Paket A: Rp50.000 ditambah Rp2.000 per GB.", "tag": "known" },
+            { "id": "b", "text": "Paket B: Rp30.000 ditambah Rp4.000 per GB.", "tag": "known" },
+            { "id": "c", "text": "Dani bilang paket B selalu lebih murah.", "tag": "" },
+            { "id": "d", "text": "Pada berapa GB biaya kedua paket sama?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "banyak kuota", "unit": "GB" }, "y": { "meaning": "biaya total", "unit": "rupiah" } },
+          "variable_distractor": "x = harga paket A, y = harga paket B",
+          "equation_sources": ["Paket A: Rp50.000 + Rp2.000 per GB", "Paket B: Rp30.000 + Rp4.000 per GB"],
+          "target": "x"
+        },
+        "extra_steps": [
+          {
+            "instruction": "Jadi, benarkah klaim Dani?",
+            "check": "choice", "expected": "b", "display": "Tidak. Di atas 10 GB, paket A lebih murah.", "modeling_stage": 7,
+            "choices": [
+              { "id": "a", "label": "Benar, paket B selalu lebih murah" },
+              { "id": "b", "label": "Tidak. Di atas 10 GB, paket A lebih murah" },
+              { "id": "c", "label": "Tidak. Paket A selalu lebih murah" }
+            ],
+            "hints": ["Coba hitung untuk 15 GB.", "A: 50.000 + 30.000 = 80.000. B: 30.000 + 60.000 = 90.000.", "Di atas 10 GB, paket A lebih murah."]
+          }
+        ]
+      }
+    ]
+  }
+]

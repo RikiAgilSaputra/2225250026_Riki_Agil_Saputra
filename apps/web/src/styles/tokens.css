@@ -1,0 +1,111 @@
+/* Design tokens (docs/06-UI-UX-GUIDELINES.md §2), palette from the reference mockup. */
+:root {
+  --bg: #eef4fb;
+  --surface: #ffffff;
+  --surface-2: #f4f8fd;
+  --surface-3: #e3edf9;
+  --border: #dde7f3;
+  --text: #16243a;
+  --text-muted: #5b6b82;
+  --primary: #1f4e89;
+  --primary-strong: #173d6d;
+  --primary-soft: #dbe8f8;
+  --on-primary: #ffffff;
+  --hero-1: #1c3a6b;
+  --hero-2: #2c5c9e;
+  --var-x: #1d63d8;
+  --var-y: #c2570c;
+  --var-x-soft: #e3eefe;
+  --var-y-soft: #fdeede;
+  --success: #1e7f4f;
+  --success-soft: #e2f5ea;
+  --error: #b42318;
+  --error-soft: #fdecea;
+  --hint: #6a4be0;
+  --hint-soft: #efebfd;
+  --flame: #f08a24;
+  --gem: #2f7fe0;
+  --gold: #f2b544;
+  --method-graph: #1e7f4f;
+  --method-subst: #6941c6;
+  --method-elim: #c11574;
+  --method-mixed: #0e7490;
+  --tag-known: #d8f3e3;
+  --tag-asked: #ebe4fd;
+  --tag-irrelevant: #e8ebf0;
+  --shadow: 0 1px 2px rgba(22, 36, 58, 0.04), 0 6px 20px rgba(31, 78, 137, 0.07);
+  --radius-lg: 22px;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --text-scale: 1;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #0f1724;
+    --surface: #172234;
+    --surface-2: #1c2a40;
+    --surface-3: #22344f;
+    --border: #2a3b56;
+    --text: #e8eef7;
+    --text-muted: #a3b2c7;
+    --primary: #6c9bff;
+    --primary-strong: #8db2ff;
+    --primary-soft: #22365a;
+    --on-primary: #0f1724;
+    --hero-1: #15294c;
+    --hero-2: #23477e;
+    --var-x: #7fb0ff;
+    --var-y: #ffa564;
+    --var-x-soft: #1c3256;
+    --var-y-soft: #3d2a1a;
+    --success: #4cc38a;
+    --success-soft: #173a2a;
+    --error: #ff8a80;
+    --error-soft: #3d1f1f;
+    --hint: #b4a2ff;
+    --hint-soft: #2a2550;
+    --tag-known: #1e4030;
+    --tag-asked: #2e2652;
+    --tag-irrelevant: #2a3240;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.25);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg: #0f1724;
+  --surface: #172234;
+  --surface-2: #1c2a40;
+  --surface-3: #22344f;
+  --border: #2a3b56;
+  --text: #e8eef7;
+  --text-muted: #a3b2c7;
+  --primary: #6c9bff;
+  --primary-strong: #8db2ff;
+  --primary-soft: #22365a;
+  --on-primary: #0f1724;
+  --hero-1: #15294c;
+  --hero-2: #23477e;
+  --var-x: #7fb0ff;
+  --var-y: #ffa564;
+  --var-x-soft: #1c3256;
+  --var-y-soft: #3d2a1a;
+  --success: #4cc38a;
+  --success-soft: #173a2a;
+  --error: #ff8a80;
+  --error-soft: #3d1f1f;
+  --hint: #b4a2ff;
+  --hint-soft: #2a2550;
+  --tag-known: #1e4030;
+  --tag-asked: #2e2652;
+  --tag-irrelevant: #2a3240;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.25);
+  color-scheme: dark;
+}
+
+:root[data-text='large'] {
+  --text-scale: 1.2;
+}

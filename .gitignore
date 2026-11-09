@@ -1,0 +1,9 @@
+.env
+*.db
+__pycache__/
+.pytest_cache/
+apps/api/.venv/
+apps/web/node_modules/
+apps/web/dist/
+apps/web/*.tsbuildinfo
+.DS_Store
