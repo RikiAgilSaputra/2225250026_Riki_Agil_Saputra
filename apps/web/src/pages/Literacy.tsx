@@ -4,6 +4,11 @@ import type { ModuleSummary } from '../lib/types'
 import { ModuleCard } from './Learn'
 
 const LEVELS = [
+  {
+    level: 'MATERI',
+    title: 'Materi Lengkap SPLDV',
+    text: 'Mulai di sini: definisi, variabel, koefisien, konstanta, metode penyelesaian, sampai mengubah soal cerita menjadi model.',
+  },
   { level: 'L1', title: 'L1 · Langsung', text: 'Semua informasi ada di teks. Fokus mengubah kalimat menjadi persamaan.' },
   { level: 'L2', title: 'L2 · Representasi', text: 'Informasi dalam tabel atau struk, dan ada angka yang tidak diperlukan.' },
   { level: 'L3', title: 'L3 · Penalaran', text: 'Hitung, bandingkan, lalu ambil keputusan atau nilai sebuah klaim.' },

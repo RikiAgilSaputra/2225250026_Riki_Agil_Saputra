@@ -41,6 +41,14 @@ export interface Block {
   marks?: number[]
   x?: string
   y?: string
+  /** definition */
+  term?: string
+  /** anatomy: equation split into labelled parts */
+  parts?: { text: string; label?: 'variabel' | 'koefisien' | 'konstanta' }[]
+  focus?: 'variabel' | 'koefisien' | 'konstanta'
+  /** steps: ordered list */
+  items?: string[]
+  // `lines` (above) is reused by `eq` blocks: worked lines shown one under another
 }
 
 export interface Screen {
@@ -68,6 +76,7 @@ export interface ProblemListItem {
 
 export interface ModuleDetail extends Omit<ModuleSummary, 'screens'> {
   objective: string
+  source?: string
   recall: { label: string; module_id: string }[]
   screens: Screen[]
   method_card: MethodCard | null

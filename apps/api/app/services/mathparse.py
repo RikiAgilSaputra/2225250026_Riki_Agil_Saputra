@@ -125,10 +125,12 @@ def proportional(u, v) -> bool:
 
 def fmt_number(v) -> str:
     v = nsimplify(v)
+    sign = "−" if v < 0 else ""  # typographic minus for display only
+    v = abs(v)
     if v.is_Integer:
         n = int(v)
-        return f"{n:,}".replace(",", ".") if abs(n) >= 1000 else str(n)
-    return f"{v.p}/{v.q}"
+        return sign + (f"{n:,}".replace(",", ".") if n >= 1000 else str(n))
+    return f"{sign}{v.p}/{v.q}"
 
 
 def fmt_linear(a, b, c=0, rhs=None) -> str:

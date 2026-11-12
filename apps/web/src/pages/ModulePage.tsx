@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { BlockView } from '../components/Blocks'
 import { Icon } from '../components/Icon'
+import { MathText } from '../components/MathText'
 import { Bar } from '../components/ProgressRing'
 import { api, ApiError } from '../lib/api'
 import { useApi } from '../lib/hooks'
@@ -87,10 +88,13 @@ export function ModulePage() {
       {inScreens ? (
         <section className="card screen" style={{ marginTop: 16 }} aria-live="polite">
           {i === 0 && <p className="muted">🎯 {m.objective}</p>}
-          <p className="instruction">{screen.instruction}</p>
+          <p className="instruction">
+            <MathText text={screen.instruction} className="" />
+          </p>
           {screen.blocks.map((b, k) => (
             <BlockView key={k} block={b} />
           ))}
+          {i === 0 && m.source && <p className="source-note">📚 {m.source}</p>}
           {i === 0 && m.recall.length > 0 && (
             <div className="recall">
               💡 Ingat kembali:{' '}

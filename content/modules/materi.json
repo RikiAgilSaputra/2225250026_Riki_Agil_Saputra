@@ -1,0 +1,578 @@
+[
+  {
+    "id": "MAT-1",
+    "kind": "literacy",
+    "level": "MATERI",
+    "order": 17,
+    "title": "Mengenal PLDV",
+    "subtitle": "Variabel, koefisien, dan konstanta",
+    "icon": "var",
+    "objective": "Kamu bisa menyebutkan variabel, koefisien, dan konstanta pada persamaan linear dua variabel.",
+    "source": "Diadaptasi dari Buku Ajar Matematika Kelas VIII Semester 1 (bab SPLDV) dan BSE Matematika SMP Kelas VIII Bab 4.",
+    "recall": [{ "label": "Persamaan linear satu variabel", "module_id": "PRE-2" }],
+    "screens": [
+      {
+        "concept": "definisi-pldv",
+        "instruction": "Persamaan Linear Dua Variabel (PLDV) punya dua variabel, dan pangkat setiap variabelnya satu.",
+        "blocks": [
+          { "type": "definition", "term": "PLDV", "text": "Persamaan yang memuat dua variabel berpangkat satu, dihubungkan dengan tanda sama dengan." },
+          { "type": "eq", "text": "x + 4y = 8" },
+          { "type": "callout", "text": "Contoh lain: 3x + 6y = 12,  m = 2n − 8,  ½x + ¾y = 6." }
+        ]
+      },
+      {
+        "concept": "bentuk-umum",
+        "instruction": "Bentuk umum PLDV ditulis ax + by = c. Bentuk lainnya ax + by + c = 0.",
+        "blocks": [
+          {
+            "type": "anatomy",
+            "parts": [
+              { "text": "a", "label": "koefisien" }, { "text": "x", "label": "variabel" }, { "text": "+" },
+              { "text": "b", "label": "koefisien" }, { "text": "y", "label": "variabel" }, { "text": "=" },
+              { "text": "c", "label": "konstanta" }
+            ]
+          },
+          { "type": "callout", "text": "a, b, dan c adalah bilangan. a dan b tidak boleh nol bersamaan." }
+        ]
+      },
+      {
+        "concept": "variabel",
+        "instruction": "Variabel adalah huruf pengganti bilangan yang belum diketahui nilainya.",
+        "blocks": [
+          { "type": "definition", "term": "Variabel (peubah)", "text": "Lambang, biasanya huruf, yang mewakili nilai yang dicari." },
+          { "type": "vars", "x": "banyaknya jeruk", "y": "banyaknya apel" },
+          { "type": "eq", "text": "x + y = 10" },
+          { "type": "callout", "text": "Variabel tidak harus x dan y. Boleh p dan q, m dan n, atau T dan K." }
+        ]
+      },
+      {
+        "concept": "koefisien",
+        "instruction": "Koefisien adalah bilangan yang dikalikan dengan variabel. Tandanya ikut.",
+        "blocks": [
+          {
+            "type": "anatomy",
+            "focus": "koefisien",
+            "parts": [
+              { "text": "5", "label": "koefisien" }, { "text": "p", "label": "variabel" }, { "text": "−" },
+              { "text": "3", "label": "koefisien" }, { "text": "q", "label": "variabel" }, { "text": "+" },
+              { "text": "30", "label": "konstanta" }, { "text": "=" }, { "text": "0" }
+            ]
+          },
+          { "type": "table", "rows": [["Persamaan", "Koefisien pertama", "Koefisien kedua"], ["3x + 6y = 12", "3", "6"], ["5p − 3q + 30 = 0", "5", "−3"], ["x − y = 2", "1", "−1"]] },
+          { "type": "callout", "text": "Jika angkanya tidak tertulis, koefisiennya 1. Jadi x berarti 1x." }
+        ]
+      },
+      {
+        "concept": "konstanta",
+        "instruction": "Konstanta adalah bilangan yang berdiri sendiri, tanpa variabel.",
+        "blocks": [
+          {
+            "type": "anatomy",
+            "focus": "konstanta",
+            "parts": [
+              { "text": "2", "label": "koefisien" }, { "text": "x", "label": "variabel" }, { "text": "+" },
+              { "text": "3", "label": "koefisien" }, { "text": "y", "label": "variabel" }, { "text": "=" },
+              { "text": "6", "label": "konstanta" }
+            ]
+          },
+          { "type": "callout", "text": "Nilai konstanta tetap, tidak berubah walaupun x dan y berubah." }
+        ]
+      },
+      {
+        "concept": "bukan-pldv",
+        "instruction": "Jika variabelnya berpangkat dua atau ada di penyebut, persamaan itu bukan PLDV.",
+        "blocks": [
+          { "type": "table", "rows": [["Persamaan", "PLDV?", "Alasan"], ["3p − 2q = 5", "Ya", "dua variabel, pangkat satu"], ["x² + y = 7", "Bukan", "x berpangkat dua"], ["2/x + 2/y = 12", "Bukan", "variabel di penyebut"], ["3k + 2 = 5k", "Bukan", "hanya satu variabel"]] }
+        ]
+      },
+      {
+        "concept": "penyelesaian-pldv",
+        "instruction": "Penyelesaian PLDV adalah pasangan (x, y) yang membuat persamaan benar. Jumlahnya bisa tak terhingga.",
+        "blocks": [
+          { "type": "eq", "text": "2x + 3y = 6" },
+          { "type": "table", "rows": [["x", "0", "3", "6"], ["y", "2", "0", "−2"]] },
+          { "type": "graph", "lines": ["2*x + 3*y = 6"], "points": [{ "x": 0, "y": 2, "label": "(0, 2)" }, { "x": 3, "y": 0, "label": "(3, 0)" }] },
+          { "type": "callout", "text": "Semua titik penyelesaiannya terletak pada satu garis lurus." }
+        ]
+      }
+    ],
+    "problems": [
+      {
+        "id": "MAT-1-p1",
+        "title": "Kenali bagian-bagian PLDV",
+        "mode": "independent",
+        "steps": [
+          { "instruction": "Pada “3x + 6y = 12”, berapa koefisien y?", "check": "value", "expected": "6", "display": "6",
+            "hints": ["Koefisien adalah angka yang menempel pada variabel.", "Lihat angka di depan y.", "Koefisien y adalah 6."] },
+          { "instruction": "Pada “5p − 3q + 30 = 0”, berapa koefisien q?", "check": "value", "expected": "-3", "display": "−3",
+            "hints": ["Tanda di depan angka ikut menjadi bagian koefisien.", "Di depan 3q ada tanda minus.", "Koefisien q adalah −3."] },
+          { "instruction": "Pada “2x + 3y = 6”, berapa konstantanya?", "check": "value", "expected": "6", "display": "6",
+            "hints": ["Konstanta adalah bilangan tanpa variabel.", "Cari bilangan yang tidak menempel pada x atau y.", "Konstantanya 6."] },
+          { "instruction": "Pada “½x + ¾y = 6”, berapa koefisien x? Tulis sebagai pecahan, misalnya 1/2.", "check": "value", "expected": "1/2", "display": "½",
+            "hints": ["Koefisien boleh berupa pecahan.", "Lihat bilangan di depan x.", "Koefisien x adalah 1/2."] },
+          {
+            "instruction": "Apa saja variabel pada “m = 2n − 8”?", "check": "choice", "expected": "a", "display": "m dan n",
+            "choices": [{ "id": "a", "label": "m dan n" }, { "id": "b", "label": "2 dan 8" }, { "id": "c", "label": "hanya n" }],
+            "hints": ["Variabel adalah huruf.", "Ada dua huruf pada persamaan itu.", "Variabelnya m dan n."]
+          },
+          {
+            "instruction": "Manakah yang merupakan PLDV?", "check": "choice", "expected": "b", "display": "3p − 2q = 5",
+            "choices": [{ "id": "a", "label": "x² + y = 7" }, { "id": "b", "label": "3p − 2q = 5" }, { "id": "c", "label": "3x = 20 + 5x" }],
+            "hints": ["PLDV punya dua variabel berpangkat satu.", "Pilihan a punya pangkat dua. Pilihan c hanya punya satu variabel.", "Jawabannya 3p − 2q = 5."]
+          },
+          { "instruction": "Pada “2x + 3y = 6”, jika x = 3 maka y = ...", "check": "value", "expected": "0", "variable": "y", "display": "y = 0",
+            "hints": ["Ganti x dengan 3.", "2(3) + 3y = 6, jadi 3y = 0.", "y = 0"] }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "MAT-2",
+    "kind": "literacy",
+    "level": "MATERI",
+    "order": 18,
+    "title": "Mengenal SPLDV",
+    "subtitle": "Dua persamaan, satu penyelesaian",
+    "icon": "system",
+    "objective": "Kamu bisa menjelaskan arti SPLDV dan memeriksa apakah sebuah pasangan (x, y) adalah penyelesaiannya.",
+    "source": "Diadaptasi dari Buku Ajar Matematika Kelas VIII Semester 1 (bab SPLDV) dan BSE Matematika SMP Kelas VIII Bab 4.",
+    "recall": [{ "label": "Mengenal PLDV", "module_id": "MAT-1" }],
+    "screens": [
+      {
+        "concept": "definisi-spldv",
+        "instruction": "Sistem Persamaan Linear Dua Variabel (SPLDV) terdiri atas dua PLDV yang saling terkait dan berlaku bersamaan.",
+        "blocks": [
+          { "type": "definition", "term": "SPLDV", "text": "Dua persamaan linear dua variabel dengan variabel yang sama, diselesaikan bersama-sama." },
+          { "type": "eq", "text": "x + y = 3\n2x - 3y = 1" },
+          { "type": "callout", "text": "Contoh: Pak Budi dan Pak Ahmad membeli cat yang sama, jadi harga catnya sama di kedua persamaan." }
+        ]
+      },
+      {
+        "concept": "penyelesaian-spldv",
+        "instruction": "Penyelesaian SPLDV adalah pasangan (x, y) yang memenuhi kedua persamaan sekaligus.",
+        "blocks": [
+          { "type": "table", "rows": [["Coba", "x + y = 3", "2x − 3y = 1", "Penyelesaian?"], ["(1, 2)", "3 ✓", "−4 ✗", "Bukan"], ["(2, 1)", "3 ✓", "1 ✓", "Ya"]] },
+          { "type": "callout", "text": "Harus benar di kedua persamaan. Benar di satu saja belum cukup." }
+        ]
+      },
+      {
+        "concept": "himpunan-penyelesaian",
+        "instruction": "Penyelesaian ditulis sebagai himpunan pasangan berurutan, disingkat HP.",
+        "blocks": [
+          { "type": "math", "text": "HP = {(2, 1)}" },
+          { "type": "callout", "text": "Angka pertama selalu nilai x, angka kedua nilai y." }
+        ]
+      },
+      {
+        "concept": "tiga-kemungkinan",
+        "instruction": "Dua garis bisa berpotongan, sejajar, atau berimpit. Itu menentukan banyaknya penyelesaian.",
+        "blocks": [
+          { "type": "table", "rows": [["Kedua garis", "Banyak penyelesaian", "HP"], ["Berpotongan", "Tepat satu", "{(x, y)}"], ["Sejajar", "Tidak ada", "{ } atau ∅"], ["Berimpit", "Tak terhingga", "semua titik pada garis"]] },
+          { "type": "graph", "lines": ["x + y = 2", "x + y = 6"] },
+          { "type": "callout", "text": "Gambar: x + y = 2 dan y = 6 − x sejajar, jadi tidak ada penyelesaian." }
+        ]
+      },
+      {
+        "concept": "empat-metode",
+        "instruction": "Ada empat cara menyelesaikan SPLDV. Kamu boleh memilih yang paling kamu pahami.",
+        "blocks": [
+          { "type": "steps", "items": ["Grafik: gambar kedua garis, cari titik potongnya.", "Substitusi: masukkan satu persamaan ke persamaan lain.", "Eliminasi: hilangkan satu variabel.", "Campuran: eliminasi dulu, lalu substitusi."] }
+        ]
+      }
+    ],
+    "problems": [
+      {
+        "id": "MAT-2-p1",
+        "title": "Kenali SPLDV dan penyelesaiannya",
+        "mode": "independent",
+        "steps": [
+          {
+            "instruction": "Manakah yang merupakan SPLDV?", "check": "choice", "expected": "a", "display": "3x + 2y = 6 dan 5x − 3y = 15",
+            "choices": [{ "id": "a", "label": "3x + 2y = 6 dan 5x − 3y = 15" }, { "id": "b", "label": "x² + y = 7 dan x + y = 5" }, { "id": "c", "label": "2/x + 2/y = 12 dan 2/x − 2/y = −1" }],
+            "hints": ["Kedua persamaan harus PLDV.", "Pilihan b ada pangkat dua. Pilihan c variabelnya di penyebut.", "Jawabannya pilihan pertama."]
+          },
+          {
+            "instruction": "Apakah (2, 5) penyelesaian dari 2x + y = 9 dan 4x − y = 3?", "check": "choice", "expected": "a", "display": "Ya, benar di kedua persamaan.",
+            "choices": [{ "id": "a", "label": "Ya, benar di kedua persamaan" }, { "id": "b", "label": "Hanya benar di persamaan pertama" }, { "id": "c", "label": "Tidak benar di keduanya" }],
+            "hints": ["Ganti x = 2 dan y = 5.", "2(2) + 5 = 9 dan 4(2) − 5 = 3.", "Keduanya benar, jadi (2, 5) penyelesaian."]
+          },
+          {
+            "instruction": "Apakah (1, 0) penyelesaian dari 3x − 4y = 3 dan 2x + y = 5?", "check": "choice", "expected": "b", "display": "Tidak, hanya benar di persamaan pertama.",
+            "choices": [{ "id": "a", "label": "Ya, benar di kedua persamaan" }, { "id": "b", "label": "Tidak, hanya benar di persamaan pertama" }, { "id": "c", "label": "Tidak, hanya benar di persamaan kedua" }],
+            "hints": ["Ganti x = 1 dan y = 0 di setiap persamaan.", "3(1) − 4(0) = 3 benar, tetapi 2(1) + 0 = 2, bukan 5.", "Hanya benar di persamaan pertama."]
+          },
+          {
+            "instruction": "Berapa banyak penyelesaian x + y = 2 dan x + y = 6?", "check": "choice", "expected": "c", "display": "Tidak ada, garisnya sejajar.",
+            "choices": [{ "id": "a", "label": "Tepat satu" }, { "id": "b", "label": "Tak terhingga" }, { "id": "c", "label": "Tidak ada, garisnya sejajar" }],
+            "hints": ["Bisakah x + y bernilai 2 dan 6 sekaligus?", "Kedua garis punya kemiringan sama tetapi tidak berimpit.", "Tidak ada penyelesaian: HP = { }."]
+          },
+          {
+            "instruction": "Berapa banyak penyelesaian x − 2y = 4 dan 2x − 4y = 8?", "check": "choice", "expected": "b", "display": "Tak terhingga, garisnya berimpit.",
+            "choices": [{ "id": "a", "label": "Tepat satu" }, { "id": "b", "label": "Tak terhingga, garisnya berimpit" }, { "id": "c", "label": "Tidak ada" }],
+            "hints": ["Bandingkan kedua persamaan.", "Persamaan kedua adalah persamaan pertama dikali 2.", "Garisnya sama persis, jadi penyelesaiannya tak terhingga."]
+          },
+          { "instruction": "Jumlah dua bilangan 6 dan selisihnya 4. Jika x bilangan yang lebih besar, berapa x?", "check": "value", "expected": "5", "variable": "x", "display": "x = 5",
+            "hints": ["Modelnya: x + y = 6 dan x − y = 4.", "Jumlahkan kedua persamaan: 2x = 10.", "x = 5"] }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "MAT-3",
+    "kind": "literacy",
+    "level": "MATERI",
+    "order": 19,
+    "title": "Langkah Metode Penyelesaian",
+    "subtitle": "Grafik, substitusi, eliminasi, campuran",
+    "icon": "mixed",
+    "method": "mixed",
+    "objective": "Kamu bisa menyelesaikan SPLDV dengan langkah yang benar untuk setiap metode.",
+    "source": "Diadaptasi dari Buku Ajar Matematika Kelas VIII Semester 1 (bab SPLDV) dan BSE Matematika SMP Kelas VIII Bab 4.",
+    "recall": [{ "label": "Mengenal SPLDV", "module_id": "MAT-2" }],
+    "screens": [
+      {
+        "concept": "langkah-grafik",
+        "instruction": "Metode grafik: gambar kedua garis, lalu baca titik potongnya.",
+        "blocks": [
+          { "type": "steps", "items": ["Cari titik potong tiap garis dengan sumbu x (y = 0) dan sumbu y (x = 0).", "Gambar kedua garis pada bidang Kartesius yang sama.", "Titik potong kedua garis adalah penyelesaian."] },
+          { "type": "eq", "text": "2x + 3y = 12\n4x - 3y = 6" },
+          { "type": "graph", "lines": ["2*x + 3*y = 12", "4*x - 3*y = 6"], "points": [{ "x": 3, "y": 2, "label": "(3, 2)" }] },
+          { "type": "callout", "text": "HP = {(3, 2)}" }
+        ]
+      },
+      {
+        "concept": "langkah-substitusi",
+        "instruction": "Metode substitusi berarti mengganti. Nyatakan satu variabel dalam variabel lain, lalu masukkan.",
+        "blocks": [
+          { "type": "steps", "items": ["Ubah satu persamaan menjadi x = ... atau y = ...", "Masukkan bentuk itu ke persamaan yang lain.", "Selesaikan untuk mendapat nilai satu variabel.", "Masukkan nilai itu untuk mencari variabel kedua."] },
+          { "type": "eq", "lines": ["x + 2y = 4  →  x = 4 - 2y", "3(4 - 2y) + 2y = 12", "12 - 4y = 12  →  y = 0", "x = 4 - 2(0) = 4"] },
+          { "type": "callout", "text": "HP = {(4, 0)}" }
+        ]
+      },
+      {
+        "concept": "langkah-eliminasi",
+        "instruction": "Metode eliminasi berarti menghilangkan. Samakan dulu koefisien variabel yang mau dihilangkan.",
+        "blocks": [
+          { "type": "steps", "items": ["Tulis kedua persamaan dalam bentuk ax + by = c.", "Kalikan agar koefisien satu variabel sama besar.", "Tanda sama: kurangkan. Tanda berbeda: jumlahkan.", "Ulangi untuk variabel yang lain."] },
+          { "type": "callout", "text": "2x = 3y + 17 ditulis ulang menjadi 2x − 3y = 17." }
+        ]
+      },
+      {
+        "concept": "contoh-eliminasi",
+        "instruction": "Contoh: hilangkan x dari 2x − 3y = 17 dan 3x + y = 9.",
+        "blocks": [
+          { "type": "eq", "lines": ["2x - 3y = 17  (×3)  →  6x - 9y = 51", "3x + y = 9  (×2)  →  6x + 2y = 18", "dikurangkan:  -11y = 33  →  y = -3"] },
+          { "type": "callout", "text": "Koefisien x sama-sama positif, jadi kedua persamaan dikurangkan." }
+        ]
+      },
+      {
+        "concept": "langkah-campuran",
+        "instruction": "Metode campuran: eliminasi untuk satu variabel, lalu substitusi untuk variabel kedua.",
+        "blocks": [
+          { "type": "eq", "lines": ["y = -3  dari eliminasi", "3x + (-3) = 9", "3x = 12  →  x = 4"] },
+          { "type": "callout", "text": "HP = {(4, −3)}. Cara ini paling sering dipakai karena cepat." }
+        ]
+      },
+      {
+        "concept": "persamaan-pecahan",
+        "instruction": "Jika ada pecahan, kalikan kedua ruas dengan KPK penyebutnya dulu.",
+        "blocks": [
+          { "type": "eq", "text": "1/2 x + 1/6 y = 1" },
+          { "type": "arrow", "label": "kedua ruas dikali 6 (KPK dari 2 dan 6)" },
+          { "type": "eq", "text": "3x + y = 6" },
+          { "type": "callout", "text": "Setelah tidak ada pecahan, selesaikan dengan metode yang kamu pilih." }
+        ]
+      },
+      {
+        "concept": "periksa-jawaban",
+        "instruction": "Selalu periksa: masukkan nilai x dan y ke kedua persamaan awal.",
+        "blocks": [
+          { "type": "eq", "lines": ["2(4) - 3(-3) = 8 + 9 = 17  ✓", "3(4) + (-3) = 12 - 3 = 9  ✓"] },
+          { "type": "callout", "text": "Jika keduanya benar, jawabanmu tepat." }
+        ]
+      }
+    ],
+    "method_card": {
+      "steps": ["Eliminasi satu variabel", "Selesaikan variabel itu", "Masukkan nilainya ke salah satu persamaan", "Selesaikan variabel kedua"],
+      "when": "Cara paling sering dipakai. Cocok untuk hampir semua soal."
+    },
+    "problems": [
+      { "id": "MAT-3-graf", "title": "Contoh metode grafik", "mode": "worked", "method": "graph", "system": ["2*x + 3*y = 12", "4*x - 3*y = 6"] },
+      { "id": "MAT-3-subst", "title": "Contoh metode substitusi", "mode": "worked", "method": "substitution", "system": ["x + 2*y = 4", "3*x + 2*y = 12"] },
+      { "id": "MAT-3-elim", "title": "Contoh metode eliminasi", "mode": "worked", "method": "elimination", "system": ["2*x - 3*y = 17", "3*x + y = 9"] },
+      { "id": "MAT-3-camp", "title": "Lengkapi: metode campuran", "mode": "completion", "method": "mixed", "system": ["x + y = 4", "2*x + y = 5"], "completion_blanks": 2 },
+      {
+        "id": "MAT-3-pecahan",
+        "title": "SPLDV berpecahan",
+        "mode": "independent",
+        "method": "elimination",
+        "system_display": ["½x + ⅕y = 1", "⅓x − ⅕y = 4"],
+        "steps": [
+          { "instruction": "Kalikan persamaan (1) dengan 10 agar tidak ada pecahan.", "check": "equation_scaled", "expected": "5*x + 2*y = 10", "display": "5x + 2y = 10",
+            "hints": ["10 adalah KPK dari penyebut 2 dan 5.", "Kalikan setiap suku dan ruas kanan dengan 10.", "½x × 10 = 5x, ⅕y × 10 = 2y, 1 × 10 = 10"] },
+          { "instruction": "Kalikan persamaan (2) dengan 15.", "check": "equation_scaled", "expected": "5*x - 3*y = 60", "display": "5x − 3y = 60",
+            "hints": ["15 adalah KPK dari penyebut 3 dan 5.", "Kalikan setiap suku, termasuk ruas kanan.", "⅓x × 15 = 5x, ⅕y × 15 = 3y, 4 × 15 = 60"] },
+          { "instruction": "Kurangkan kedua persamaan baru untuk menghilangkan x.", "check": "equation_equivalent", "expected": "5*y = -50", "display": "5y = −50",
+            "hints": ["Koefisien x sudah sama, yaitu 5.", "(5x + 2y) − (5x − 3y) = 10 − 60", "5y = −50"] },
+          { "instruction": "Tentukan nilai y.", "check": "value", "expected": "-10", "variable": "y", "other_value": "6", "display": "y = −10",
+            "hints": ["Bagi kedua ruas dengan 5.", "y = −50 : 5", "y = −10"] },
+          { "instruction": "Masukkan y = −10 ke 5x + 2y = 10. Tentukan x.", "check": "value", "expected": "6", "variable": "x", "other_value": "-10", "display": "x = 6",
+            "hints": ["Ganti y dengan −10.", "5x + 2(−10) = 10, jadi 5x = 30.", "x = 6"] }
+        ]
+      },
+      { "id": "MAT-3-i1", "title": "Mandiri 1", "mode": "independent", "method": "substitution", "system": ["x - 3*y = 5", "3*x + 2*y = -7"] },
+      { "id": "MAT-3-i2", "title": "Mandiri 2", "mode": "independent", "method": "elimination", "system": ["5*x - 2*y = 1", "3*x - 4*y = -5"] }
+    ],
+    "template": "mixed"
+  },
+  {
+    "id": "MAT-4",
+    "kind": "literacy",
+    "level": "MATERI",
+    "order": 20,
+    "title": "Dari Soal Cerita ke Model Matematika",
+    "subtitle": "Misalkan, modelkan, selesaikan, simpulkan",
+    "icon": "story",
+    "objective": "Kamu bisa mengubah soal cerita menjadi SPLDV, menyelesaikannya, dan menafsirkan jawabannya.",
+    "source": "Diadaptasi dari Buku Ajar Matematika Kelas VIII Semester 1 (bab SPLDV) dan BSE Matematika SMP Kelas VIII Bab 4.",
+    "recall": [{ "label": "Langkah metode penyelesaian", "module_id": "MAT-3" }],
+    "screens": [
+      {
+        "concept": "empat-tahap",
+        "instruction": "Soal cerita SPLDV dikerjakan dalam empat tahap.",
+        "blocks": [
+          { "type": "steps", "items": ["Misalkan: tentukan dua hal yang dicari sebagai x dan y.", "Modelkan: ubah kalimat menjadi dua persamaan.", "Selesaikan: pakai grafik, substitusi, eliminasi, atau campuran.", "Simpulkan: jawab pertanyaan dalam kalimat dan satuannya."] }
+        ]
+      },
+      {
+        "concept": "pemisalan",
+        "instruction": "Tahap 1: misalkan dua hal yang belum diketahui, lengkap dengan satuannya.",
+        "blocks": [
+          { "type": "quote", "text": "Yanita membeli dua pensil dan dua buku seharga Rp14.000. Reza membeli satu pensil dan tiga buku seharga Rp17.000." },
+          { "type": "vars", "x": "harga 1 pensil (rupiah)", "y": "harga 1 buku (rupiah)" },
+          { "type": "callout", "text": "Yang dimisalkan adalah harga satuan, bukan banyaknya barang." }
+        ]
+      },
+      {
+        "concept": "kalimat-ke-persamaan",
+        "instruction": "Tahap 2: ubah setiap kalimat menjadi persamaan. Pahami artinya, jangan hanya kata kuncinya.",
+        "blocks": [
+          { "type": "table", "rows": [["Kalimat", "Model"], ["dua pensil dan dua buku Rp14.000", "2x + 2y = 14.000"], ["uang A Rp150.000 lebihnya dari uang B", "x = y + 150.000"], ["jumlah dua bilangan 450", "x + y = 450"], ["selisih putra dan putri 6", "x − y = 6"], ["uang B dua pertiga uang A", "y = (2/3)x"], ["sudut satu tiga kali sudut lain", "x = 3y"]] }
+        ]
+      },
+      {
+        "concept": "contoh-model",
+        "instruction": "Dari cerita Yanita dan Reza, didapat model matematika berikut.",
+        "blocks": [
+          { "type": "eq", "text": "2x + 2y = 14000\nx + 3y = 17000" },
+          { "type": "callout", "text": "Dua kalimat informasi menjadi dua persamaan. Itulah SPLDV-nya." }
+        ]
+      },
+      {
+        "concept": "selesaikan-simpulkan",
+        "instruction": "Tahap 3 dan 4: selesaikan modelnya, lalu kembalikan jawabannya ke cerita.",
+        "blocks": [
+          { "type": "eq", "lines": ["2x + 2y = 14000  (×1)  →  2x + 2y = 14000", "x + 3y = 17000  (×2)  →  2x + 6y = 34000", "dikurangkan:  -4y = -20000  →  y = 5000", "x + 3(5000) = 17000  →  x = 2000"] },
+          { "type": "callout", "text": "Jadi, harga sebuah pensil Rp2.000 dan harga sebuah buku Rp5.000." }
+        ]
+      },
+      {
+        "concept": "contoh-jarak-waktu",
+        "instruction": "Model juga bisa memakai rumus, misalnya jarak = kecepatan × waktu.",
+        "blocks": [
+          { "type": "quote", "text": "Made bermotor dengan kecepatan 60 km/jam. Agar tiba satu jam lebih cepat, kecepatannya harus 80 km/jam." },
+          { "type": "vars", "x": "jarak (km)", "y": "waktu dengan 60 km/jam (jam)" },
+          { "type": "eq", "lines": ["x = 60y", "x = 80(y - 1)", "60y = 80y - 80  →  y = 4  →  x = 240"] },
+          { "type": "callout", "text": "Jadi, jarak kedua tempat 240 km." }
+        ]
+      },
+      {
+        "concept": "periksa-kewajaran",
+        "instruction": "Periksa kewajaran: masukkan jawaban ke cerita dan pastikan masuk akal.",
+        "blocks": [
+          { "type": "eq", "lines": ["2(2000) + 2(5000) = 14000  ✓", "2000 + 3(5000) = 17000  ✓"] },
+          { "type": "callout", "text": "Harga tidak mungkin negatif. Banyak benda atau hewan harus bilangan bulat." }
+        ]
+      }
+    ],
+    "problems": [
+      {
+        "id": "MAT-4-terjemah",
+        "title": "Latih menerjemahkan kalimat",
+        "mode": "independent",
+        "steps": [
+          { "instruction": "x = uang Aprita, y = uang Budi. Tulis persamaan dari: “Uang Aprita Rp150.000 lebihnya dari uang Budi.”", "check": "equation_equivalent", "expected": "x = y + 150000", "display": "x = y + 150.000",
+            "hints": ["Siapa yang uangnya lebih banyak?", "Uang Aprita = uang Budi ditambah 150.000.", "x = y + 150.000"] },
+          { "instruction": "x dan y dua bilangan. Tulis persamaan dari: “Jumlah dua bilangan adalah 450.”", "check": "equation_equivalent", "expected": "x + y = 450", "display": "x + y = 450",
+            "hints": ["Jumlah berarti ditambahkan.", "x ditambah y hasilnya 450.", "x + y = 450"] },
+          { "instruction": "x = banyak siswa putra, y = banyak siswa putri. Putra lebih banyak. Tulis: “Selisih siswa putra dan putri 6 anak.”", "check": "equation_equivalent", "expected": "x - y = 6", "display": "x − y = 6",
+            "hints": ["Selisih: yang lebih besar dikurangi yang lebih kecil.", "Putra lebih banyak, jadi putra dikurangi putri.", "x − y = 6"] },
+          { "instruction": "x = uang Anton, y = uang Mandra. Tulis persamaan dari: “Uang Mandra dua pertiga dari uang Anton.”", "check": "equation_equivalent", "expected": "3*y = 2*x", "display": "y = (2/3)x  atau  3y = 2x",
+            "hints": ["Dua pertiga dari sesuatu berarti 2/3 dikali sesuatu itu.", "Uang Mandra = 2/3 × uang Anton.", "y = (2/3)x"] },
+          { "instruction": "x dan y besar dua sudut. Tulis persamaan dari: “Sudut yang satu tiga kali sudut yang lain.”", "check": "equation_equivalent", "expected": "x = 3*y", "display": "x = 3y",
+            "hints": ["Sudut mana yang lebih besar?", "Sudut pertama sama dengan tiga kali sudut kedua.", "x = 3y"] },
+          { "instruction": "Kedua sudut itu saling berpelurus. Tulis persamaan keduanya.", "check": "equation_equivalent", "expected": "x + y = 180", "display": "x + y = 180",
+            "hints": ["Berpelurus artinya jumlahnya 180°.", "Jumlahkan kedua sudut.", "x + y = 180"] }
+        ]
+      },
+      {
+        "id": "MAT-4-pensil",
+        "title": "Contoh: pensil dan buku",
+        "mode": "worked",
+        "method": "elimination",
+        "system": ["2*x + 2*y = 14000", "x + 3*y = 17000"],
+        "literacy": { "level": "L1", "context_category": "personal", "representation": "text", "akm_cognitive": "pemahaman", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Pada hari Minggu, Yanita dan Reza pergi ke toko.", "tag": "" },
+            { "id": "b", "text": "Yanita membeli dua pensil dan dua buku seharga Rp14.000.", "tag": "known" },
+            { "id": "c", "text": "Reza membeli satu pensil dan tiga buku yang sama seharga Rp17.000.", "tag": "known" },
+            { "id": "d", "text": "Berapa harga sebuah pensil?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "harga 1 pensil", "unit": "rupiah" }, "y": { "meaning": "harga 1 buku", "unit": "rupiah" } },
+          "equation_sources": ["dua pensil dan dua buku seharga Rp14.000", "satu pensil dan tiga buku seharga Rp17.000"],
+          "target": "x"
+        }
+      },
+      {
+        "id": "MAT-4-uang",
+        "title": "Lengkapi: uang Aprita dan Budi",
+        "mode": "completion",
+        "completion_blanks": 4,
+        "method": "substitution",
+        "system": ["x - y = 150000", "3*x + 2*y = 950000"],
+        "literacy": { "level": "L1", "context_category": "personal", "representation": "text", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Uang Aprita Rp150.000 lebihnya dari uang Budi.", "tag": "known" },
+            { "id": "b", "text": "Tiga kali uang Aprita ditambah dua kali uang Budi jumlahnya Rp950.000.", "tag": "known" },
+            { "id": "c", "text": "Berapa besar uang Aprita?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "uang Aprita", "unit": "rupiah" }, "y": { "meaning": "uang Budi", "unit": "rupiah" } },
+          "variable_distractor": "x = uang Budi ditambah 150.000, y = 950.000",
+          "equation_sources": ["Uang Aprita Rp150.000 lebihnya dari uang Budi", "Tiga kali uang Aprita ditambah dua kali uang Budi jumlahnya Rp950.000"],
+          "target": "x"
+        }
+      },
+      {
+        "id": "MAT-4-beras",
+        "title": "Beras dan jagung",
+        "mode": "independent",
+        "method": "elimination",
+        "system": ["2*x + y = 172", "3*x + y = 232"],
+        "literacy": { "level": "L1", "context_category": "pekerjaan", "representation": "text", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Sebuah toko menyimpan beras dan jagung dalam karung yang beratnya sama.", "tag": "" },
+            { "id": "b", "text": "Berat dua karung beras dan satu karung jagung 172 kg.", "tag": "known" },
+            { "id": "c", "text": "Berat tiga karung beras dan satu karung jagung 232 kg.", "tag": "known" },
+            { "id": "d", "text": "Berapa berat satu karung beras?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "berat 1 karung beras", "unit": "kg" }, "y": { "meaning": "berat 1 karung jagung", "unit": "kg" } },
+          "variable_distractor": "x = banyak karung beras, y = banyak karung jagung",
+          "equation_sources": ["dua karung beras dan satu karung jagung 172 kg", "tiga karung beras dan satu karung jagung 232 kg"],
+          "target": "x"
+        }
+      },
+      {
+        "id": "MAT-4-jarak",
+        "title": "Jarak dan waktu",
+        "mode": "independent",
+        "method": "substitution",
+        "system": ["x - 60*y = 0", "x - 80*y = -80"],
+        "literacy": { "level": "L2", "context_category": "saintifik", "representation": "text", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Made bermotor dari Denpasar ke Gilimanuk dengan kecepatan rata-rata 60 km/jam.", "tag": "known" },
+            { "id": "b", "text": "Agar tiba satu jam lebih cepat, kecepatan rata-ratanya harus 80 km/jam.", "tag": "known" },
+            { "id": "c", "text": "Berapa jarak kedua tempat?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "jarak kedua tempat", "unit": "km" }, "y": { "meaning": "waktu tempuh dengan 60 km/jam", "unit": "jam" } },
+          "variable_distractor": "x = kecepatan pertama, y = kecepatan kedua",
+          "equation_sources": ["kecepatan rata-rata 60 km/jam (jarak = kecepatan × waktu)", "satu jam lebih cepat dengan 80 km/jam"],
+          "target": "x"
+        }
+      },
+      {
+        "id": "MAT-4-cat",
+        "title": "Toko cat",
+        "mode": "independent",
+        "method": "substitution",
+        "system": ["2*x + y = 70000", "2*x + 2*y = 80000"],
+        "literacy": { "level": "L2", "context_category": "sosial_budaya", "representation": "table", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Pak Budi membeli 2 kg cat tembok dan 1 kg cat kayu seharga Rp70.000.", "tag": "known" },
+            { "id": "b", "text": "Pak Ahmad membeli 2 kg cat tembok dan 2 kg cat kayu seharga Rp80.000.", "tag": "known" },
+            { "id": "c", "text": "Pak Ali ingin membeli 5 kg cat tembok dan 3 kg cat kayu.", "tag": "known" },
+            { "id": "d", "text": "Berapa yang harus dibayar Pak Ali?", "tag": "asked" }
+          ],
+          "table": [["Pembeli", "Cat tembok", "Cat kayu", "Bayar"], ["Pak Budi", "2 kg", "1 kg", "Rp70.000"], ["Pak Ahmad", "2 kg", "2 kg", "Rp80.000"]],
+          "variables": { "x": { "meaning": "harga 1 kg cat tembok", "unit": "rupiah" }, "y": { "meaning": "harga 1 kg cat kayu", "unit": "rupiah" } },
+          "equation_sources": ["2 kg cat tembok dan 1 kg cat kayu seharga Rp70.000", "2 kg cat tembok dan 2 kg cat kayu seharga Rp80.000"],
+          "target": "5*x + 3*y",
+          "target_label": "harga 5 kg cat tembok dan 3 kg cat kayu"
+        }
+      },
+      {
+        "id": "MAT-4-parkir",
+        "title": "Parkir gedung bioskop",
+        "mode": "independent",
+        "method": "substitution",
+        "system": ["4*x + 2*y = 112", "2000*x + 500*y = 43000"],
+        "literacy": { "level": "L2", "context_category": "sosial_budaya", "representation": "text", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Tarif parkir mobil (4 roda) Rp2.000 dan sepeda motor (2 roda) Rp500.", "tag": "known" },
+            { "id": "b", "text": "Pak Karto menghitung ada 112 roda kendaraan di halaman parkir.", "tag": "known" },
+            { "id": "c", "text": "Uang parkir yang terkumpul Rp43.000.", "tag": "known" },
+            { "id": "d", "text": "Berapa banyak mobil yang parkir?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "banyak mobil", "unit": "kendaraan" }, "y": { "meaning": "banyak sepeda motor", "unit": "kendaraan" } },
+          "variable_distractor": "x = roda mobil, y = roda motor",
+          "equation_sources": ["ada 112 roda (mobil 4 roda, motor 2 roda)", "tarif Rp2.000 dan Rp500, terkumpul Rp43.000"],
+          "target": "x"
+        }
+      },
+      {
+        "id": "MAT-4-sablon",
+        "title": "Menyablon sarung",
+        "mode": "independent",
+        "method": "substitution",
+        "system": ["x + y = 50", "300*x + 200*y = 12400"],
+        "literacy": { "level": "L2", "context_category": "pekerjaan", "representation": "text", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Toni menyablon 300 sarung per jam, sedangkan Ilham 200 sarung per jam.", "tag": "known" },
+            { "id": "b", "text": "Jumlah jam kerja mereka 50 jam.", "tag": "known" },
+            { "id": "c", "text": "Sarung yang tersablon 12.400 buah.", "tag": "known" },
+            { "id": "d", "text": "Berapa lama Toni bekerja?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "lama kerja Toni", "unit": "jam" }, "y": { "meaning": "lama kerja Ilham", "unit": "jam" } },
+          "variable_distractor": "x = sarung buatan Toni, y = sarung buatan Ilham",
+          "equation_sources": ["Jumlah jam kerja mereka 50 jam", "300 dan 200 sarung per jam, total 12.400 buah"],
+          "target": "x"
+        }
+      },
+      {
+        "id": "MAT-4-anton",
+        "title": "Uang Anton dan Mandra",
+        "mode": "independent",
+        "method": "substitution",
+        "system": ["x + y = 400000", "2*x - 3*y = 0"],
+        "literacy": { "level": "L2", "context_category": "personal", "representation": "text", "akm_cognitive": "penalaran", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Jumlah uang Anton dan Mandra Rp400.000.", "tag": "known" },
+            { "id": "b", "text": "Uang Mandra dua pertiga dari uang Anton.", "tag": "known" },
+            { "id": "c", "text": "Berapa uang Mandra?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "uang Anton", "unit": "rupiah" }, "y": { "meaning": "uang Mandra", "unit": "rupiah" } },
+          "equation_sources": ["Jumlah uang Anton dan Mandra Rp400.000", "Uang Mandra dua pertiga dari uang Anton"],
+          "target": "y"
+        }
+      }
+    ],
+    "template": "story"
+  }
+]

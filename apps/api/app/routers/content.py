@@ -69,6 +69,7 @@ def module_detail(module_id: str, user: User = Depends(get_current_user), db: Se
     return {
         **module_summary(m, st),
         "objective": m.get("objective"),
+        "source": m.get("source"),
         "recall": m.get("recall", []),
         "screens": m["screens"],
         "method_card": ({**m["method_card"], "name": METHOD_LABELS.get(m.get("method"), "")}

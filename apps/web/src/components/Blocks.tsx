@@ -1,5 +1,6 @@
 import type { Block } from '../lib/types'
 import { Graph } from './Graph'
+import { MathRender } from './MathRender'
 import { MathText } from './MathText'
 
 const CYCLE = ['1. Pahami', '2. Tentukan variabel', '3. Terjemahkan', '4. Selesaikan', '5. Tafsirkan', '6. Periksa']
@@ -80,6 +81,53 @@ export function BlockView({ block }: { block: Block }) {
           {block.equations?.map((e, i) => (
             <MathText key={i} as="div" text={`(${i + 1})   ${e}`} />
           ))}
+        </div>
+      )
+    case 'definition':
+      return (
+        <div className="definition">
+          <b>{block.term}</b>
+          <p>{block.text}</p>
+        </div>
+      )
+    case 'anatomy':
+      return (
+        <div className={`anatomy${block.focus ? ` focus-${block.focus}` : ''}`} role="img" aria-label={block.parts?.map((p) => (p.label ? `${p.text} (${p.label})` : p.text)).join(' ')}>
+          {block.parts?.map((p, i) => (
+            <span key={i} className={`part${p.label ? ` ${p.label}` : ' op'}`}>
+              <span className="part-text">
+                <MathText text={p.text} className="" />
+              </span>
+              {p.label && <small>{p.label}</small>}
+            </span>
+          ))}
+        </div>
+      )
+    case 'steps':
+      return (
+        <ol className="steps-list">
+          {block.items?.map((it, i) => (
+            <li key={i}>
+              <span className="step-no">{i + 1}</span>
+              <span>
+                <MathText text={it} className="" />
+              </span>
+            </li>
+          ))}
+        </ol>
+      )
+    case 'eq':
+      return block.lines ? (
+        <div className="eq-lines">
+          {block.lines.map((l, i) => (
+            <div key={i}>
+              <MathRender src={l} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="eq-block">
+          <MathRender src={block.text ?? ''} block={(block.text ?? '').includes('\n')} />
         </div>
       )
     case 'cycle':

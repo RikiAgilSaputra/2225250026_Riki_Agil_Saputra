@@ -735,11 +735,12 @@ p {
   letter-spacing: 0.01em;
   font-variant-numeric: tabular-nums;
 }
-.math .vx {
+/* CLT rule 4: x is always blue and y always orange, wherever MathText is used */
+.vx {
   color: var(--var-x);
   font-weight: 800;
 }
-.math .vy {
+.vy {
   color: var(--var-y);
   font-weight: 800;
 }
@@ -1184,6 +1185,121 @@ table.data th {
   border-radius: 999px;
   font-weight: 600;
   z-index: 60;
+}
+
+/* ---------- lesson blocks: definition, anatomy, steps, worked lines ---------- */
+.definition {
+  border-left: 5px solid var(--primary);
+  background: var(--primary-soft);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 12px 16px;
+  display: grid;
+  gap: 4px;
+}
+.definition b {
+  color: var(--primary-strong);
+  font-size: 1.05rem;
+}
+.anatomy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 6px 10px;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+.anatomy .part {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+}
+.anatomy .part-text {
+  min-width: 1.6em;
+  text-align: center;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.anatomy .part small {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.anatomy .variabel .part-text {
+  background: var(--var-x-soft);
+}
+.anatomy .variabel small {
+  color: var(--var-x);
+}
+.anatomy .koefisien .part-text {
+  background: var(--hint-soft);
+  color: var(--hint);
+}
+.anatomy .koefisien small {
+  color: var(--hint);
+}
+.anatomy .konstanta .part-text {
+  background: var(--success-soft);
+  color: var(--success);
+}
+.anatomy .konstanta small {
+  color: var(--success);
+}
+.anatomy .op .part-text {
+  color: var(--text-muted);
+}
+/* Signaling: when a screen focuses one role, dim the others */
+.anatomy[class*='focus-'] .part {
+  opacity: 0.38;
+}
+.anatomy.focus-koefisien .koefisien,
+.anatomy.focus-konstanta .konstanta,
+.anatomy.focus-variabel .variabel {
+  opacity: 1;
+}
+.steps-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.steps-list li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+.step-no {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+.eq-block,
+.eq-lines {
+  font-size: 1.3rem;
+}
+.eq-lines {
+  display: grid;
+  gap: 6px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  border-left: 4px solid var(--primary);
+  overflow-x: auto;
+}
+.source-note {
+  font-size: 0.78rem;
+  color: var(--text-muted);
 }
 
 /* ---------- note equations ---------- */

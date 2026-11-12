@@ -33,6 +33,19 @@ Konten disimpan sebagai file **JSON** di folder `content/` (sumber kebenaran), d
 | SPL-6 | Metode Campuran | Eliminasi lalu substitusi | A: bentuk standar |
 | SPL-7 | Soal cerita & siklus pemodelan | Memodelkan masalah sehari-hari menjadi SPLDV dan menafsirkan hasil | Harga barang; umur; keliling persegi panjang; jumlah kaki hewan |
 
+### 1.2b Materi Lengkap SPLDV (`MAT`, level `MATERI`, tampil paling atas di halaman Literasi)
+
+Diadaptasi dari *Buku Ajar Matematika Kelas VIII Semester 1* (bab SPLDV) dan *BSE Matematika SMP Kelas VIII Bab 4*. File: `content/modules/materi.json`.
+
+| ID | Modul | Isi layar | Latihan |
+|---|---|---|---|
+| MAT-1 | Mengenal PLDV | Definisi PLDV, bentuk umum ax + by = c, variabel, koefisien, konstanta (blok `anatomy`), bukan PLDV, penyelesaian PLDV & grafiknya | 7 langkah identifikasi |
+| MAT-2 | Mengenal SPLDV | Definisi SPLDV, penyelesaian memenuhi kedua persamaan, HP, berpotongan/sejajar/berimpit, empat metode | 6 langkah (pilih SPLDV, cek pasangan, banyak penyelesaian) |
+| MAT-3 | Langkah Metode Penyelesaian | Langkah grafik, substitusi, eliminasi + contoh, campuran, persamaan berpecahan (kali KPK), memeriksa jawaban | Contoh tiap metode, lengkapi, SPLDV berpecahan, 2 soal mandiri, soal acak |
+| MAT-4 | Dari Soal Cerita ke Model | 4 tahap (misalkan, modelkan, selesaikan, simpulkan), tabel kalimat → model, contoh pensil–buku, jarak–waktu, periksa kewajaran | Latih menerjemahkan + 8 soal cerita (L1–L2), soal cerita acak |
+
+Blok konten baru: `definition` (istilah + arti), `anatomy` (persamaan berlabel variabel/koefisien/konstanta, `focus` meredupkan bagian lain), `steps` (daftar langkah bernomor), `eq` (persamaan dengan pecahan/sistem; `lines` untuk baris pengerjaan). Modul boleh memiliki `source` (sumber adaptasi) yang tampil di layar pertama.
+
 ### 1.2a Jalur Literasi (`LIT`)
 
 | ID | Level | Isi | Jumlah soal minimal |

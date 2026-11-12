@@ -61,6 +61,10 @@ Strategi "kata kunci" (misalnya "lebih" selalu berarti +) sering menyesatkan sis
 | "uang Ani Rp5.000 lebih banyak dari uang Budi" | a = b + 5000 | "Lebih banyak dari" ≠ selalu menjumlah di ruas kiri |
 | "jumlah kaki ayam dan kambing 100" | 2x + 4y = 100 | Kaki ayam = 2 × banyak ayam |
 
+### 3.2 Materi Lengkap sebagai Fondasi
+
+Sebelum soal L1–L3, halaman Literasi menyediakan **Materi Lengkap SPLDV** (modul MAT-1 s.d. MAT-4): definisi PLDV/SPLDV, variabel, koefisien, konstanta, langkah setiap metode, dan pengubahan soal cerita menjadi model matematika beserta contoh dari buku ajar. Rincian: [05-CONTENT-SPEC.md §1.2b](05-CONTENT-SPEC.md#12b-materi-lengkap-spldv-mat-level-materi-tampil-paling-atas-di-halaman-literasi).
+
 ## 4. Tingkat Literasi Soal (L1–L3)
 
 Soal literasi dibagi menjadi tiga tingkat agar beban intrinsik naik secara bertahap.
