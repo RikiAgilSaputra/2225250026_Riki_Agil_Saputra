@@ -54,6 +54,8 @@ apps/
     alembic/
     tests/
 content/               # Materi & soal dalam JSON (sumber kebenaran konten), divalidasi skema
+  path.json            # Jalur "Belajar & Literasi": 6 tahap; setiap modul wajib muncul tepat sekali
+  modules/             # prerequisite, spldv, materi, literacy, bank_soal
   schema/              # JSON Schema untuk lesson & problem
 docs/                  # Dokumen perencanaan
 ```

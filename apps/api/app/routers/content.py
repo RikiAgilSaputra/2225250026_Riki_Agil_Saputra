@@ -51,6 +51,29 @@ def list_modules(user: User = Depends(get_current_user), db: Session = Depends(g
     return {"items": [module_summary(m, status[m["id"]]) for m in load_content()["modules"].values()]}
 
 
+@router.get("/learning-path")
+def learning_path(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Belajar & Literasi: every module in one staged path, with per-stage progress and the next module."""
+    content = load_content()
+    status = module_status(db, user)
+    stages, next_id = [], None
+    for stage in content["path"]["stages"]:
+        mods = []
+        for item in stage["modules"]:
+            m = content["modules"][item["id"]]
+            mods.append({**module_summary(m, status[m["id"]]), "role": item.get("role", "inti")})
+            if next_id is None and status[m["id"]]["status"] != "completed":
+                next_id = m["id"]
+        done = sum(1 for x in mods if x["status"] == "completed")
+        stages.append({
+            "id": stage["id"], "title": stage["title"], "description": stage.get("description", ""),
+            "show_cycle": stage.get("show_cycle", False), "modules": mods,
+            "completed": done, "progress": round(sum(x["progress"] for x in mods) / len(mods)) if mods else 0,
+        })
+    return {"title": content["path"]["title"], "description": content["path"].get("description", ""),
+            "stages": stages, "next_module_id": next_id}
+
+
 @router.get("/modules/{module_id}")
 def module_detail(module_id: str, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     m = get_module(module_id)

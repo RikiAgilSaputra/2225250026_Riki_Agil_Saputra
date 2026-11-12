@@ -28,6 +28,25 @@ export interface ModuleSummary {
 
 export type Method = 'graph' | 'substitution' | 'elimination' | 'mixed'
 
+export type ModuleRole = 'inti' | 'pendalaman' | 'ringkasan' | 'latihan'
+
+export interface LearningStage {
+  id: string
+  title: string
+  description: string
+  show_cycle: boolean
+  modules: (ModuleSummary & { role: ModuleRole })[]
+  completed: number
+  progress: number
+}
+
+export interface LearningPath {
+  title: string
+  description: string
+  stages: LearningStage[]
+  next_module_id: string | null
+}
+
 export interface Block {
   type: string
   text?: string

@@ -57,6 +57,11 @@ for p in content["problems"].values():
         if not p.get("literacy"):
             errors.append(f"{p['id']}: story problem missing literacy metadata")
 
+path_ids = [i["id"] for s in content["path"]["stages"] if s["id"] != "lainnya" for i in s["modules"]]
+for mid in content["modules"]:
+    if path_ids.count(mid) != 1:
+        errors.append(f"{mid}: must appear exactly once in content/path.json (found {path_ids.count(mid)})")
+
 print(f"{len(content['modules'])} modules, {len(content['problems'])} problems checked")
 if errors:
     print("\n".join(f"  ✗ {e}" for e in errors))

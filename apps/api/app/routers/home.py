@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.content import load_content
+from app.content import load_content, path_order
 from app.core.db import get_db
 from app.core.deps import get_current_user, student_class
 from app.core.errors import ApiError
@@ -29,16 +29,17 @@ def dashboard(user: User = Depends(get_current_user), db: Session = Depends(get_
     last = db.scalars(
         select(ModuleProgress).where(ModuleProgress.student_id == user.id).order_by(ModuleProgress.updated_at.desc())
     ).first()
-    cont_id = last.module_id if last else next(iter(content))
-    if last and status[cont_id]["status"] == "completed":
-        ids = list(content)
+    ids = path_order()
+    cont_id = last.module_id if last and last.module_id in content else ids[0]
+    if status[cont_id]["status"] == "completed":
         later = [i for i in ids[ids.index(cont_id) + 1:] if status[i]["status"] != "completed"]
         cont_id = later[0] if later else cont_id
     cm = content[cont_id]
     cls = student_class(db, user.id)
     settings = class_settings(cls)
     points = prog.total_points(db, user.id)
-    skills = [module_summary(m, status[m["id"]]) for m in content.values() if m.get("method")]
+    # The four method modules only (summary/bank modules also carry a method but live in the learning path)
+    skills = [module_summary(m, status[m["id"]]) for m in content.values() if m.get("method") and m["kind"] == "spldv"]
     prereq = [module_summary(m, status[m["id"]]) for m in content.values() if m["kind"] == "prerequisite"]
     literacy = [module_summary(m, status[m["id"]]) for m in content.values() if m["kind"] == "literacy"]
     return {

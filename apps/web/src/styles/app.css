@@ -1187,6 +1187,356 @@ table.data th {
   z-index: 60;
 }
 
+/* ---------- Beranda (home) layout ---------- */
+.home-main {
+  container-type: inline-size;
+  container-name: homemain;
+}
+.hero .hero-chip {
+  position: static;
+  align-self: flex-start;
+  margin-bottom: 14px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+}
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+.hero-btn {
+  max-width: 100%;
+  height: auto;
+  padding-block: 10px;
+  text-align: left;
+}
+.btn-label {
+  overflow-wrap: anywhere;
+}
+.continue-body {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  justify-items: start;
+}
+.continue-body .progress {
+  width: 100%;
+}
+.chalk span {
+  white-space: nowrap;
+}
+@media (max-width: 900px) {
+  .chalk {
+    font-size: 0.64rem;
+    padding: 8px 10px;
+    aspect-ratio: auto;
+  }
+}
+
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+@container homemain (min-width: 860px) {
+  .skill-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@container homemain (max-width: 440px) {
+  .skill-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* Method identity colors (docs/04 §6); two classes so they win over the .skill default */
+.skill.tone-graph {
+  --tone: var(--method-graph);
+}
+.skill.tone-subst {
+  --tone: var(--method-subst);
+}
+.skill.tone-elim {
+  --tone: var(--method-elim);
+}
+.skill.tone-mixed {
+  --tone: var(--method-mixed);
+}
+.skill {
+  --tone: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--tone);
+  box-shadow: var(--shadow);
+  color: var(--text);
+  text-align: left;
+  min-width: 0;
+  transition: border-color 0.15s ease, transform 0.08s ease;
+}
+.skill:hover {
+  border-color: var(--tone);
+}
+.skill:active {
+  transform: translateY(1px);
+}
+.skill-icon {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--tone);
+  color: #fff;
+}
+.skill-text {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+.skill-text b {
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.skill-text small {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+.skill-arrow {
+  flex: none;
+  color: var(--tone);
+}
+
+.path-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+  gap: 12px;
+}
+.path-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  color: var(--text);
+  min-width: 0;
+}
+.path-card:hover {
+  border-color: var(--primary);
+}
+.path-icon {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+.path-card.done .path-icon {
+  background: var(--success);
+  color: #fff;
+}
+.path-text {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+.path-text b {
+  font-size: 0.95rem;
+  line-height: 1.25;
+}
+.path-text small {
+  font-size: 0.75rem;
+}
+.path-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+.side-title {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+}
+.side-board .section-head .side-title {
+  margin-bottom: 0;
+}
+.board-name {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.board .pts {
+  margin-left: 0;
+  white-space: nowrap;
+}
+.gift-row p {
+  margin: 0;
+}
+@media (max-width: 1200px) {
+  .home-side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas: 'goal board' 'gift board';
+    align-items: start;
+  }
+  .home-side:not(:has(.side-board)) {
+    grid-template-areas: 'goal gift';
+  }
+  .side-goal {
+    grid-area: goal;
+  }
+  .side-board {
+    grid-area: board;
+  }
+  .side-gift {
+    grid-area: gift;
+  }
+}
+@media (max-width: 640px) {
+  .home-side {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'goal' 'board' 'gift';
+  }
+  .home-side:not(:has(.side-board)) {
+    grid-template-areas: 'goal' 'gift';
+  }
+}
+
+/* ---------- Belajar & Literasi: staged learning path ---------- */
+.stage-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.stage-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.stage-chip:hover {
+  border-color: var(--primary);
+}
+.stage-chip b {
+  display: block;
+  font-size: 0.88rem;
+  line-height: 1.25;
+}
+.stage-chip small {
+  font-size: 0.75rem;
+}
+.stage-no {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 800;
+}
+.stage-chip.done .stage-no,
+.stage.done .stage-no {
+  background: var(--success);
+  color: #fff;
+}
+.stages {
+  display: grid;
+  gap: 12px;
+}
+.stage {
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  scroll-margin-top: 16px;
+}
+.stage-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  border-radius: var(--radius-lg);
+}
+.stage-head:hover {
+  background: var(--surface-2);
+}
+.stage-title {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+.stage-title b {
+  font-size: 1.05rem;
+}
+.stage-progress {
+  width: 150px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.stage-caret {
+  flex: none;
+  color: var(--text-muted);
+  transition: transform 0.15s ease;
+}
+.stage.open .stage-caret {
+  transform: rotate(90deg);
+}
+.stage-body {
+  padding: 0 18px 18px;
+}
+.mc-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.role-badge.pendalaman {
+  background: var(--hint-soft);
+  color: var(--hint);
+}
+.role-badge.ringkasan {
+  background: var(--surface-3);
+  color: var(--primary-strong);
+}
+.role-badge.latihan {
+  background: var(--success-soft);
+  color: var(--success);
+}
+@media (max-width: 640px) {
+  .stage-progress {
+    display: none;
+  }
+  .stage-overview {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 /* ---------- lesson blocks: definition, anatomy, steps, worked lines ---------- */
 .definition {
   border-left: 5px solid var(--primary);

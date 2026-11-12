@@ -7,9 +7,8 @@ import { Avatar, Flame, Gem, Icon } from './Icon'
 
 const STUDENT_NAV = [
   { to: '/', icon: 'home', label: 'Beranda' },
-  { to: '/belajar', icon: 'book', label: 'Belajar' },
+  { to: '/belajar', icon: 'book', label: 'Belajar & Literasi', short: 'Belajar' },
   { to: '/latihan', icon: 'pencil', label: 'Latihan' },
-  { to: '/literasi', icon: 'target', label: 'Literasi' },
   { to: '/pemodel', icon: 'wand', label: 'Pemodel AI' },
   { to: '/kemajuan', icon: 'chart', label: 'Kemajuan' },
   { to: '/catatan', icon: 'note', label: 'Catatanku' },
@@ -140,7 +139,7 @@ export function Layout({ children }: { children?: ReactNode }) {
           {STUDENT_NAV.filter((n) => MOBILE_NAV.includes(n.to)).map((n) => (
             <NavLink key={n.to} to={n.to} end={n.to === '/'}>
               <Icon name={n.icon} />
-              {n.label.replace(' AI', '')}
+              {'short' in n && n.short ? n.short : n.label.replace(' AI', '')}
             </NavLink>
           ))}
         </nav>

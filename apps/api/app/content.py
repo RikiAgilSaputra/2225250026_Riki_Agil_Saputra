@@ -71,7 +71,34 @@ def load_content() -> dict:
                 module["problem_ids"].append(p["id"])
             modules[module["id"]] = module
     ordered = dict(sorted(modules.items(), key=lambda kv: kv[1]["order"]))
-    return {"modules": ordered, "problems": problems}
+    return {"modules": ordered, "problems": problems, "path": _load_path(ordered)}
+
+
+def _load_path(modules: dict[str, dict]) -> dict:
+    """content/path.json: one learning path (Belajar & Literasi) that orders every module into stages."""
+    path_file = get_settings().content_dir / "path.json"
+    if not path_file.exists():
+        return {"title": "Belajar", "description": "", "stages": [
+            {"id": "semua", "title": "Semua modul", "description": "", "modules": [{"id": m, "role": "inti"} for m in modules]}
+        ]}
+    path = json.loads(path_file.read_text(encoding="utf-8"))
+    listed = set()
+    for stage in path["stages"]:
+        for item in stage["modules"]:
+            if item["id"] not in modules:
+                raise ValueError(f"path.json refers to unknown module {item['id']}")
+            listed.add(item["id"])
+    # Safety net: a module missing from path.json still appears (validate_content.py flags it).
+    missing = [m for m in modules if m not in listed]
+    if missing:
+        path["stages"].append({"id": "lainnya", "title": "Modul lainnya", "description": "",
+                               "modules": [{"id": m, "role": "inti"} for m in missing]})
+    return path
+
+
+def path_order() -> list[str]:
+    """Module ids in learning-path order (used for 'continue' and 'next' recommendations)."""
+    return [item["id"] for stage in load_content()["path"]["stages"] for item in stage["modules"]]
 
 
 def get_module(module_id: str) -> dict | None:

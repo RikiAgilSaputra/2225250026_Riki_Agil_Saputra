@@ -68,7 +68,7 @@ export function Modeler() {
       <div>
         <h1 className="page-title">Pemodel Soal Cerita</h1>
         <p className="info-box">
-          Pemodel AI belum diaktifkan gurumu. Kamu tetap bisa berlatih memodelkan sendiri di <Link to="/literasi">Jalur Literasi</Link>.
+          Pemodel AI belum diaktifkan gurumu. Kamu tetap bisa berlatih memodelkan sendiri di <Link to="/belajar?tahap=pemodelan">Belajar & Literasi → Pemodelan Soal Cerita</Link>.
         </p>
       </div>
     )

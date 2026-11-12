@@ -18,6 +18,16 @@ def test_dashboard(client, student):
     assert {s["method"] for s in d["skills"]} == {"graph", "substitution", "elimination", "mixed"}
 
 
+def test_learning_path_covers_every_module_once(client, student):
+    lp = client.get("/api/v1/learning-path", headers=student).json()
+    ids = [m["id"] for s in lp["stages"] for m in s["modules"]]
+    all_ids = [m["id"] for m in client.get("/api/v1/modules", headers=student).json()["items"]]
+    assert sorted(ids) == sorted(all_ids) and len(ids) == len(set(ids))
+    assert [s["id"] for s in lp["stages"]][0] == "prasyarat"
+    assert lp["next_module_id"] in ids
+    assert any(s["show_cycle"] for s in lp["stages"])
+
+
 def test_module_and_progress(client, student):
     m = client.get("/api/v1/modules/SPL-4", headers=student).json()
     assert m["method_card"]["name"] == "Substitusi" and len(m["screens"]) == 4

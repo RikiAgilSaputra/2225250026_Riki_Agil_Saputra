@@ -1,0 +1,433 @@
+[
+  {
+    "id": "MAT-5",
+    "kind": "literacy",
+    "level": "MATERI",
+    "order": 24,
+    "title": "Kumpulan Soal Hitung SPLDV",
+    "subtitle": "Latihan menentukan himpunan penyelesaian",
+    "icon": "calc",
+    "method": "mixed",
+    "objective": "Kamu terampil menentukan himpunan penyelesaian SPLDV dengan metode yang paling tepat.",
+    "source": "Soal diadaptasi dari Kumpulan Soal SPLDV Kelas VIII (MGMP Matematika SATAP Malang), Soal Latihan SPLDV Kelas 8, Buku Ajar Matematika Kelas VIII Semester 1, dan BSE Matematika SMP Kelas VIII Bab 4.",
+    "recall": [{ "label": "Langkah metode penyelesaian", "module_id": "MAT-3" }],
+    "screens": [
+      {
+        "concept": "memilih-metode",
+        "instruction": "Pilih metode yang paling mudah untuk bentuk soalnya.",
+        "blocks": [
+          { "type": "table", "rows": [["Ciri soal", "Metode yang cocok"], ["Ada variabel berkoefisien 1, misalnya y = 2x", "Substitusi"], ["Semua koefisien besar atau negatif", "Eliminasi"], ["Angkanya kecil dan ingin melihat gambar", "Grafik"], ["Bentuk apa saja", "Campuran"]] },
+          { "type": "callout", "text": "Kamu tetap boleh mengganti metode di setiap soal mandiri." }
+        ]
+      },
+      {
+        "concept": "rapikan-bentuk",
+        "instruction": "Sebelum mulai, ubah kedua persamaan ke bentuk ax + by = c.",
+        "blocks": [
+          { "type": "eq", "lines": ["2y = 10 - x  →  x + 2y = 10", "2y + 3x + 2 = 0  →  3x + 2y = -2", "y = 2x  →  -2x + y = 0"] },
+          { "type": "callout", "text": "Suku yang pindah ruas berubah tandanya." }
+        ]
+      },
+      {
+        "concept": "yang-ditanya-gabungan",
+        "instruction": "Jika yang ditanya bentuk lain, misalnya 4x + 3y, cari x dan y dulu lalu hitung.",
+        "blocks": [
+          { "type": "eq", "lines": ["3x - 2y = -1  dan  5x + y = 7", "x = 1  dan  y = 2", "4x + 3y = 4(1) + 3(2) = 10"] },
+          { "type": "callout", "text": "Pada soal pilihan ganda, kamu bisa memeriksa jawaban dengan memasukkannya ke kedua persamaan." }
+        ]
+      }
+    ],
+    "problems": [
+      { "id": "MAT-5-01", "title": "Soal 1: 2x − y = 2 dan x + 2y = 6", "mode": "independent", "method": "substitution", "system": ["2*x - y = 2", "x + 2*y = 6"] },
+      { "id": "MAT-5-02", "title": "Soal 2: 3x + 6y = 18 dan −2x + 5y = 6", "mode": "independent", "method": "elimination", "system": ["3*x + 6*y = 18", "-2*x + 5*y = 6"] },
+      {
+        "id": "MAT-5-03", "title": "Soal 3: tentukan nilai x − y", "mode": "independent", "method": "elimination", "system": ["-2*x + 4*y = 4", "x + 2*y = 2"],
+        "extra_steps": [
+          { "instruction": "Hitung nilai x − y.", "check": "value", "expected": "-1", "display": "x − y = 0 − 1 = −1",
+            "hints": ["Pakai nilai x dan y yang sudah kamu temukan.", "x = 0 dan y = 1.", "0 − 1 = −1"] }
+        ]
+      },
+      { "id": "MAT-5-04", "title": "Soal 4: y = 2x dan 3x − 2y = −3", "mode": "independent", "method": "substitution", "system": ["y - 2*x = 0", "3*x - 2*y = -3"] },
+      { "id": "MAT-5-05", "title": "Soal 5: x − 2y = 10 dan 3x + 2y = −2", "mode": "independent", "method": "elimination", "system": ["x - 2*y = 10", "3*x + 2*y = -2"] },
+      { "id": "MAT-5-06", "title": "Soal 6: 2x + 4y = 8 dan 5x + 2y = −4", "mode": "independent", "method": "mixed", "system": ["2*x + 4*y = 8", "5*x + 2*y = -4"] },
+      { "id": "MAT-5-07", "title": "Soal 7: 2y = 10 − x dan 2y + 3x + 2 = 0", "mode": "independent", "method": "elimination", "system": ["x + 2*y = 10", "3*x + 2*y = -2"] },
+      {
+        "id": "MAT-5-08", "title": "Soal 8: tentukan nilai 4x + 3y", "mode": "independent", "method": "substitution", "system": ["3*x - 2*y = -1", "5*x + y = 7"],
+        "extra_steps": [
+          { "instruction": "Hitung nilai 4x + 3y.", "check": "value", "expected": "10", "display": "4(1) + 3(2) = 10",
+            "hints": ["Pakai nilai x dan y yang sudah kamu temukan.", "x = 1 dan y = 2.", "4 + 6 = 10"] }
+        ]
+      },
+      {
+        "id": "MAT-5-09", "title": "Soal 9: tentukan nilai 5x + 7y", "mode": "independent", "method": "elimination", "system": ["2*x + 5*y = 19", "11*x + 5*y = 37"],
+        "extra_steps": [
+          { "instruction": "Hitung nilai 5x + 7y.", "check": "value", "expected": "31", "display": "5(2) + 7(3) = 31",
+            "hints": ["Pakai nilai x dan y yang sudah kamu temukan.", "x = 2 dan y = 3.", "10 + 21 = 31"] }
+        ]
+      },
+      { "id": "MAT-5-10", "title": "Soal 10: 3x + y = 18 dan 2x + 3y = 26", "mode": "independent", "method": "substitution", "system": ["3*x + y = 18", "2*x + 3*y = 26"] },
+      { "id": "MAT-5-11", "title": "Soal 11: 6x − 3y = −21 dan −2x + 4y = 31", "mode": "independent", "method": "elimination", "system": ["6*x - 3*y = -21", "-2*x + 4*y = 31"] },
+      { "id": "MAT-5-12", "title": "Soal 12: 2x − 3y = −11 dan 3x + 4y = 9", "mode": "independent", "method": "elimination", "system": ["2*x - 3*y = -11", "3*x + 4*y = 9"] },
+      { "id": "MAT-5-13", "title": "Soal 13: −3x − 5y − 18 = 0 dan 5x = −2y − 11", "mode": "independent", "method": "elimination", "system": ["3*x + 5*y = -18", "5*x + 2*y = -11"] },
+      { "id": "MAT-5-14", "title": "Soal 14: 5x − 2y = 6 dan 2x + y = 15", "mode": "independent", "method": "substitution", "system": ["5*x - 2*y = 6", "2*x + y = 15"] },
+      { "id": "MAT-5-15", "title": "Soal 15: 2x − 5y = 1 dan 4x − 3y = −5", "mode": "independent", "method": "mixed", "system": ["2*x - 5*y = 1", "4*x - 3*y = -5"] }
+    ],
+    "template": "mixed"
+  },
+  {
+    "id": "MAT-6",
+    "kind": "literacy",
+    "level": "MATERI",
+    "order": 25,
+    "title": "Kumpulan Soal Cerita SPLDV",
+    "subtitle": "Belanja, umur, bangun datar, parkir, dan lainnya",
+    "icon": "story",
+    "objective": "Kamu terampil memodelkan dan menyelesaikan berbagai soal cerita SPLDV.",
+    "source": "Soal diadaptasi dari Kumpulan Soal SPLDV Kelas VIII (MGMP Matematika SATAP Malang), Soal Latihan SPLDV Kelas 8, Buku Ajar Matematika Kelas VIII Semester 1, dan BSE Matematika SMP Kelas VIII Bab 4.",
+    "recall": [{ "label": "Dari soal cerita ke model", "module_id": "MAT-4" }],
+    "screens": [
+      {
+        "concept": "tabel-data",
+        "instruction": "Susun data cerita dalam tabel agar angkanya tidak tertukar.",
+        "blocks": [
+          { "type": "quote", "text": "Rafi membeli 4 kg beras dan 5 kg jagung seharga Rp45.500. Anisa membeli 5 kg beras dan 3 kg jagung seharga Rp39.000." },
+          { "type": "table", "rows": [["Pembeli", "Beras (x)", "Jagung (y)", "Bayar"], ["Rafi", "4 kg", "5 kg", "Rp45.500"], ["Anisa", "5 kg", "3 kg", "Rp39.000"]] },
+          { "type": "eq", "text": "4x + 5y = 45500\n5x + 3y = 39000" }
+        ]
+      },
+      {
+        "concept": "soal-bangun-datar",
+        "instruction": "Untuk persegi panjang, ingat rumus keliling = 2 × (panjang + lebar).",
+        "blocks": [
+          { "type": "quote", "text": "Keliling persegi panjang 34 cm, panjangnya 5 cm lebih dari lebarnya." },
+          { "type": "vars", "x": "panjang (cm)", "y": "lebar (cm)" },
+          { "type": "eq", "text": "2x + 2y = 34\nx - y = 5" },
+          { "type": "callout", "text": "Jika yang ditanya luas, hitung panjang × lebar setelah x dan y ditemukan." }
+        ]
+      },
+      {
+        "concept": "ditanya-gabungan",
+        "instruction": "Kadang yang ditanya gabungan, misalnya harga 6 CD dan 5 kaset. Cari harga satuannya dulu.",
+        "blocks": [
+          { "type": "eq", "lines": ["4x + 5y = 200000  dan  2x + 3y = 110000", "x = 25000  dan  y = 20000", "6x + 5y = 150000 + 100000 = 250000"] },
+          { "type": "callout", "text": "Jadi, harga 6 CD dan 5 kaset Rp250.000." }
+        ]
+      }
+    ],
+    "problems": [
+      {
+        "id": "MAT-6-01", "title": "Contoh: beras dan jagung (Rafi & Anisa)", "mode": "worked", "method": "elimination",
+        "system": ["4*x + 5*y = 45500", "5*x + 3*y = 39000"],
+        "literacy": { "level": "L1", "context_category": "sosial_budaya", "representation": "text", "akm_cognitive": "pemahaman", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Rafi dan Anisa berbelanja di sebuah toko.", "tag": "" },
+            { "id": "b", "text": "Rafi membeli 4 kg beras dan 5 kg jagung seharga Rp45.500.", "tag": "known" },
+            { "id": "c", "text": "Anisa membeli 5 kg beras dan 3 kg jagung seharga Rp39.000.", "tag": "known" },
+            { "id": "d", "text": "Berapa harga 1 kg beras?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "harga 1 kg beras", "unit": "rupiah" }, "y": { "meaning": "harga 1 kg jagung", "unit": "rupiah" } },
+          "variable_distractor": "x = banyak beras, y = banyak jagung",
+          "equation_sources": ["4 kg beras dan 5 kg jagung seharga Rp45.500", "5 kg beras dan 3 kg jagung seharga Rp39.000"],
+          "target": "x"
+        }
+      },
+      {
+        "id": "MAT-6-02", "title": "Lengkapi: usia Akbar dan Ema", "mode": "completion", "completion_blanks": 4, "method": "elimination",
+        "system": ["3*x + 2*y = 77", "2*x + 3*y = 73"],
+        "literacy": { "level": "L1", "context_category": "personal", "representation": "text", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Tiga kali usia Akbar ditambah dua kali usia Ema adalah 77 tahun.", "tag": "known" },
+            { "id": "b", "text": "Dua kali usia Akbar ditambah tiga kali usia Ema adalah 73 tahun.", "tag": "known" },
+            { "id": "c", "text": "Berapa usia Akbar?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "usia Akbar", "unit": "tahun" }, "y": { "meaning": "usia Ema", "unit": "tahun" } },
+          "variable_distractor": "x = tiga kali usia Akbar, y = 77 tahun",
+          "equation_sources": ["Tiga kali usia Akbar ditambah dua kali usia Ema adalah 77 tahun", "Dua kali usia Akbar ditambah tiga kali usia Ema adalah 73 tahun"],
+          "target": "x"
+        }
+      },
+      {
+        "id": "MAT-6-03", "title": "Sudut berpelurus", "mode": "independent", "method": "substitution",
+        "system": ["x + y = 180", "x - 3*y = 0"],
+        "literacy": { "level": "L1", "context_category": "geometri", "representation": "text", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Dua buah sudut saling berpelurus.", "tag": "known" },
+            { "id": "b", "text": "Salah satu sudut besarnya 3 kali sudut yang lain.", "tag": "known" },
+            { "id": "c", "text": "Berapa besar sudut yang lebih besar?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "besar sudut yang lebih besar", "unit": "derajat" }, "y": { "meaning": "besar sudut yang lebih kecil", "unit": "derajat" } },
+          "equation_sources": ["Dua sudut berpelurus (jumlahnya 180°)", "Salah satu sudut 3 kali sudut yang lain"],
+          "target": "x"
+        }
+      },
+      {
+        "id": "MAT-6-04", "title": "Keliling persegi panjang 34 cm", "mode": "independent", "method": "mixed",
+        "system": ["2*x + 2*y = 34", "x - y = 5"],
+        "literacy": { "level": "L1", "context_category": "geometri", "representation": "text", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Sebuah persegi panjang mempunyai panjang x dan lebar y.", "tag": "" },
+            { "id": "b", "text": "Kelilingnya 34 cm.", "tag": "known" },
+            { "id": "c", "text": "Panjangnya 5 cm lebih dari lebarnya.", "tag": "known" },
+            { "id": "d", "text": "Berapa panjangnya?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "panjang", "unit": "cm" }, "y": { "meaning": "lebar", "unit": "cm" } },
+          "equation_sources": ["Kelilingnya 34 cm (keliling = 2 × panjang + 2 × lebar)", "Panjangnya 5 cm lebih dari lebarnya"],
+          "target": "x"
+        }
+      },
+      {
+        "id": "MAT-6-05", "title": "Ayam dan itik", "mode": "independent", "method": "elimination",
+        "system": ["7*x + 6*y = 67250", "2*x + 3*y = 25000"],
+        "literacy": { "level": "L1", "context_category": "sosial_budaya", "representation": "text", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Harga 7 ekor ayam dan 6 ekor itik Rp67.250.", "tag": "known" },
+            { "id": "b", "text": "Harga 2 ekor ayam dan 3 ekor itik Rp25.000.", "tag": "known" },
+            { "id": "c", "text": "Berapa harga 1 ekor ayam?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "harga 1 ekor ayam", "unit": "rupiah" }, "y": { "meaning": "harga 1 ekor itik", "unit": "rupiah" } },
+          "variable_distractor": "x = banyak ayam, y = banyak itik",
+          "equation_sources": ["7 ekor ayam dan 6 ekor itik Rp67.250", "2 ekor ayam dan 3 ekor itik Rp25.000"],
+          "target": "x"
+        }
+      },
+      {
+        "id": "MAT-6-06", "title": "Compact disc dan kaset", "mode": "independent", "method": "mixed",
+        "system": ["4*x + 5*y = 200000", "2*x + 3*y = 110000"],
+        "literacy": { "level": "L2", "context_category": "personal", "representation": "text", "akm_cognitive": "penerapan", "item_format": "pilihan_ganda" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Harga 4 compact disc dan 5 kaset Rp200.000.", "tag": "known" },
+            { "id": "b", "text": "Harga 2 compact disc dan 3 kaset yang sama Rp110.000.", "tag": "known" },
+            { "id": "c", "text": "Berapa harga 6 compact disc dan 5 kaset?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "harga 1 compact disc", "unit": "rupiah" }, "y": { "meaning": "harga 1 kaset", "unit": "rupiah" } },
+          "equation_sources": ["4 compact disc dan 5 kaset Rp200.000", "2 compact disc dan 3 kaset Rp110.000"],
+          "target": "6*x + 5*y",
+          "target_label": "harga 6 compact disc dan 5 kaset"
+        }
+      },
+      {
+        "id": "MAT-6-07", "title": "Pendapatan parkir pertokoan", "mode": "independent", "method": "substitution",
+        "system": ["x + y = 75", "4*x + 2*y = 210"],
+        "literacy": { "level": "L2", "context_category": "sosial_budaya", "representation": "text", "akm_cognitive": "penerapan", "item_format": "pilihan_ganda" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Di tempat parkir pertokoan ada 75 kendaraan, terdiri atas mobil dan sepeda motor.", "tag": "known" },
+            { "id": "b", "text": "Banyak roda seluruhnya 210.", "tag": "known" },
+            { "id": "c", "text": "Tarif parkir mobil Rp5.000 dan sepeda motor Rp2.000.", "tag": "known" },
+            { "id": "d", "text": "Berapa pendapatan uang parkir saat itu?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "banyak mobil", "unit": "kendaraan" }, "y": { "meaning": "banyak sepeda motor", "unit": "kendaraan" } },
+          "variable_distractor": "x = tarif mobil, y = tarif motor",
+          "equation_sources": ["ada 75 kendaraan", "Banyak roda seluruhnya 210 (mobil 4 roda, motor 2 roda)"],
+          "target": "5000*x + 2000*y",
+          "target_label": "pendapatan uang parkir",
+          "target_unit": "rupiah"
+        }
+      },
+      {
+        "id": "MAT-6-08", "title": "Kaos dan sweater", "mode": "independent", "method": "substitution",
+        "system": ["2*x + y = 300000", "-x + y = 60000"],
+        "literacy": { "level": "L3", "context_category": "personal", "representation": "text", "akm_cognitive": "penalaran", "item_format": "pilihan_ganda" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Budi membeli 2 kaos dan sebuah sweater seharga Rp300.000.", "tag": "known" },
+            { "id": "b", "text": "Sesampai di rumah, salah satu kaos ternyata sobek.", "tag": "irrelevant" },
+            { "id": "c", "text": "Ia menukar satu kaos dengan sebuah sweater dan harus membayar lagi Rp60.000.", "tag": "known" },
+            { "id": "d", "text": "Berapa harga sebuah kaos?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "harga 1 kaos", "unit": "rupiah" }, "y": { "meaning": "harga 1 sweater", "unit": "rupiah" } },
+          "equation_sources": ["2 kaos dan sebuah sweater seharga Rp300.000", "menukar kaos dengan sweater, membayar lagi Rp60.000 (sweater lebih mahal Rp60.000)"],
+          "target": "x"
+        }
+      },
+      {
+        "id": "MAT-6-09", "title": "Luas persegi panjang (keliling 28 cm)", "mode": "independent", "method": "elimination",
+        "system": ["2*x + 2*y = 28", "x - y = 2"],
+        "literacy": { "level": "L2", "context_category": "geometri", "representation": "text", "akm_cognitive": "penerapan", "item_format": "pilihan_ganda" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Suatu persegi panjang memiliki keliling 28 cm.", "tag": "known" },
+            { "id": "b", "text": "Lebarnya 2 cm kurang dari panjangnya.", "tag": "known" },
+            { "id": "c", "text": "Berapa luas persegi panjang itu?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "panjang", "unit": "cm" }, "y": { "meaning": "lebar", "unit": "cm" } },
+          "equation_sources": ["keliling 28 cm (2 × panjang + 2 × lebar)", "Lebarnya 2 cm kurang dari panjangnya"],
+          "target": "x"
+        },
+        "extra_steps": [
+          { "instruction": "Hitung luasnya: panjang × lebar.", "check": "value", "expected": "48", "display": "Luas = 8 × 6 = 48 cm²", "modeling_stage": 5,
+            "hints": ["Luas persegi panjang = panjang × lebar.", "Panjang 8 cm dan lebar 6 cm.", "8 × 6 = 48"] }
+        ]
+      },
+      {
+        "id": "MAT-6-10", "title": "Penjualan majalah", "mode": "independent", "method": "substitution",
+        "system": ["x + y = 28", "6000*x + 9000*y = 216000"],
+        "literacy": { "level": "L1", "context_category": "pekerjaan", "representation": "text", "akm_cognitive": "penerapan", "item_format": "pilihan_ganda" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Seorang pedagang menjual majalah A dan majalah B sebanyak 28 eksemplar.", "tag": "known" },
+            { "id": "b", "text": "Harga 1 majalah A Rp6.000 dan 1 majalah B Rp9.000.", "tag": "known" },
+            { "id": "c", "text": "Hasil penjualan hari ini Rp216.000.", "tag": "known" },
+            { "id": "d", "text": "Berapa banyak majalah A yang terjual?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "banyak majalah A", "unit": "eksemplar" }, "y": { "meaning": "banyak majalah B", "unit": "eksemplar" } },
+          "variable_distractor": "x = harga majalah A, y = harga majalah B",
+          "equation_sources": ["majalah A dan B sebanyak 28 eksemplar", "Rp6.000 dan Rp9.000 per majalah, hasilnya Rp216.000"],
+          "target": "x"
+        }
+      },
+      {
+        "id": "MAT-6-11", "title": "Beras dan beras ketan", "mode": "independent", "method": "elimination",
+        "system": ["80*x + 12*y = 324000", "30*x + 20*y = 230000"],
+        "literacy": { "level": "L1", "context_category": "pekerjaan", "representation": "text", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Pagi ini pedagang menjual 80 kg beras dan 12 kg beras ketan seharga Rp324.000.", "tag": "known" },
+            { "id": "b", "text": "Besoknya ia menjual 30 kg beras dan 20 kg beras ketan seharga Rp230.000.", "tag": "known" },
+            { "id": "c", "text": "Berapa harga 1 kg beras ketan?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "harga 1 kg beras", "unit": "rupiah" }, "y": { "meaning": "harga 1 kg beras ketan", "unit": "rupiah" } },
+          "equation_sources": ["80 kg beras dan 12 kg beras ketan seharga Rp324.000", "30 kg beras dan 20 kg beras ketan seharga Rp230.000"],
+          "target": "y"
+        }
+      },
+      {
+        "id": "MAT-6-12", "title": "Kambing dan sapi", "mode": "independent", "method": "elimination",
+        "system": ["6*x + 4*y = 19600000", "8*x + 3*y = 16800000"],
+        "literacy": { "level": "L1", "context_category": "pekerjaan", "representation": "text", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Harga 6 ekor kambing dan 4 ekor sapi Rp19.600.000.", "tag": "known" },
+            { "id": "b", "text": "Harga 8 ekor kambing dan 3 ekor sapi Rp16.800.000.", "tag": "known" },
+            { "id": "c", "text": "Berapa harga 1 ekor sapi?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "harga 1 ekor kambing", "unit": "rupiah" }, "y": { "meaning": "harga 1 ekor sapi", "unit": "rupiah" } },
+          "equation_sources": ["6 ekor kambing dan 4 ekor sapi Rp19.600.000", "8 ekor kambing dan 3 ekor sapi Rp16.800.000"],
+          "target": "y"
+        }
+      },
+      {
+        "id": "MAT-6-13", "title": "Buku dan bolpoin", "mode": "independent", "method": "elimination",
+        "system": ["4*x + 5*y = 24000", "6*x + 2*y = 27200"],
+        "literacy": { "level": "L2", "context_category": "personal", "representation": "text", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Ani membeli 4 buku dan 5 bolpoin seharga Rp24.000.", "tag": "known" },
+            { "id": "b", "text": "Ida membeli 6 buku dan 2 bolpoin seharga Rp27.200.", "tag": "known" },
+            { "id": "c", "text": "Berapa harga 2 buku dan 5 bolpoin?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "harga 1 buku", "unit": "rupiah" }, "y": { "meaning": "harga 1 bolpoin", "unit": "rupiah" } },
+          "equation_sources": ["4 buku dan 5 bolpoin seharga Rp24.000", "6 buku dan 2 bolpoin seharga Rp27.200"],
+          "target": "2*x + 5*y",
+          "target_label": "harga 2 buku dan 5 bolpoin"
+        }
+      },
+      {
+        "id": "MAT-6-14", "title": "Gula dan sabun", "mode": "independent", "method": "elimination",
+        "system": ["4*x + 3*y = 27000", "6*x + 2*y = 33000"],
+        "literacy": { "level": "L2", "context_category": "sosial_budaya", "representation": "text", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Ibu Hamidah membeli 4 kg gula dan 3 batang sabun seharga Rp27.000.", "tag": "known" },
+            { "id": "b", "text": "Ibu Ica membeli 6 kg gula dan 2 batang sabun yang sama seharga Rp33.000.", "tag": "known" },
+            { "id": "c", "text": "Berapa yang dibayar Pak Hasan untuk 3 kg gula dan 5 batang sabun?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "harga 1 kg gula", "unit": "rupiah" }, "y": { "meaning": "harga 1 batang sabun", "unit": "rupiah" } },
+          "equation_sources": ["4 kg gula dan 3 batang sabun seharga Rp27.000", "6 kg gula dan 2 batang sabun seharga Rp33.000"],
+          "target": "3*x + 5*y",
+          "target_label": "harga 3 kg gula dan 5 batang sabun"
+        }
+      },
+      {
+        "id": "MAT-6-15", "title": "Kambing dan sapi (5 kambing + 1 sapi)", "mode": "independent", "method": "substitution",
+        "system": ["4*x + 2*y = 8000000", "x + 3*y = 8250000"],
+        "literacy": { "level": "L2", "context_category": "pekerjaan", "representation": "text", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Harga 4 ekor kambing dan 2 ekor sapi Rp8.000.000.", "tag": "known" },
+            { "id": "b", "text": "Harga 1 ekor kambing dan 3 ekor sapi Rp8.250.000.", "tag": "known" },
+            { "id": "c", "text": "Berapa harga 5 ekor kambing dan 1 ekor sapi?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "harga 1 ekor kambing", "unit": "rupiah" }, "y": { "meaning": "harga 1 ekor sapi", "unit": "rupiah" } },
+          "equation_sources": ["4 ekor kambing dan 2 ekor sapi Rp8.000.000", "1 ekor kambing dan 3 ekor sapi Rp8.250.000"],
+          "target": "5*x + y",
+          "target_label": "harga 5 ekor kambing dan 1 ekor sapi"
+        }
+      },
+      {
+        "id": "MAT-6-16", "title": "Siswa putra dan putri", "mode": "independent", "method": "elimination",
+        "system": ["x + y = 44", "x - y = 6"],
+        "literacy": { "level": "L1", "context_category": "sosial_budaya", "representation": "text", "akm_cognitive": "pemahaman", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Dalam satu kelas, siswa putra lebih banyak daripada siswa putri.", "tag": "known" },
+            { "id": "b", "text": "Banyak siswa seluruhnya 44 anak.", "tag": "known" },
+            { "id": "c", "text": "Selisih siswa putra dan putri 6 anak.", "tag": "known" },
+            { "id": "d", "text": "Berapa banyak siswa putra?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "banyak siswa putra", "unit": "anak" }, "y": { "meaning": "banyak siswa putri", "unit": "anak" } },
+          "equation_sources": ["Banyak siswa seluruhnya 44 anak", "Selisih siswa putra dan putri 6 anak"],
+          "target": "x"
+        }
+      },
+      {
+        "id": "MAT-6-17", "title": "Perjalanan Heru", "mode": "independent", "method": "substitution",
+        "system": ["x - 50*y = 0", "x - 75*y = -150"],
+        "literacy": { "level": "L2", "context_category": "saintifik", "representation": "text", "akm_cognitive": "penerapan", "item_format": "isian" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Heru bermobil dari kota A ke kota B dengan kecepatan rata-rata 50 km/jam.", "tag": "known" },
+            { "id": "b", "text": "Agar tiba dua jam lebih cepat, kecepatannya harus 75 km/jam.", "tag": "known" },
+            { "id": "c", "text": "Berapa jarak kedua kota?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "jarak kedua kota", "unit": "km" }, "y": { "meaning": "waktu tempuh dengan 50 km/jam", "unit": "jam" } },
+          "variable_distractor": "x = kecepatan pertama, y = kecepatan kedua",
+          "equation_sources": ["kecepatan rata-rata 50 km/jam (jarak = kecepatan × waktu)", "dua jam lebih cepat dengan 75 km/jam"],
+          "target": "x"
+        }
+      },
+      {
+        "id": "MAT-6-18", "title": "Baju dan celana", "mode": "independent", "method": "substitution",
+        "system": ["4*x + 2*y = 450000", "3*x + y = 275000"],
+        "literacy": { "level": "L2", "context_category": "personal", "representation": "text", "akm_cognitive": "penerapan", "item_format": "pilihan_ganda" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Harga 4 baju dan 2 celana Rp450.000.", "tag": "known" },
+            { "id": "b", "text": "Harga 3 baju dan 1 celana Rp275.000.", "tag": "known" },
+            { "id": "c", "text": "Berapa yang harus dibayar Bu Anis untuk 2 baju dan 2 celana?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "harga 1 baju", "unit": "rupiah" }, "y": { "meaning": "harga 1 celana", "unit": "rupiah" } },
+          "equation_sources": ["4 baju dan 2 celana Rp450.000", "3 baju dan 1 celana Rp275.000"],
+          "target": "2*x + 2*y",
+          "target_label": "harga 2 baju dan 2 celana"
+        }
+      },
+      {
+        "id": "MAT-6-19", "title": "Luas persegi panjang (keliling 44 cm)", "mode": "independent", "method": "elimination",
+        "system": ["x - y = 8", "2*x + 2*y = 44"],
+        "literacy": { "level": "L2", "context_category": "geometri", "representation": "text", "akm_cognitive": "penerapan", "item_format": "pilihan_ganda" },
+        "story": {
+          "segments": [
+            { "id": "a", "text": "Selisih panjang dan lebar suatu persegi panjang 8 cm.", "tag": "known" },
+            { "id": "b", "text": "Keliling persegi panjang itu 44 cm.", "tag": "known" },
+            { "id": "c", "text": "Berapa luasnya?", "tag": "asked" }
+          ],
+          "variables": { "x": { "meaning": "panjang", "unit": "cm" }, "y": { "meaning": "lebar", "unit": "cm" } },
+          "equation_sources": ["Selisih panjang dan lebar 8 cm", "Keliling 44 cm (2 × panjang + 2 × lebar)"],
+          "target": "x"
+        },
+        "extra_steps": [
+          { "instruction": "Hitung luasnya: panjang × lebar.", "check": "value", "expected": "105", "display": "Luas = 15 × 7 = 105 cm²", "modeling_stage": 5,
+            "hints": ["Luas persegi panjang = panjang × lebar.", "Panjang 15 cm dan lebar 7 cm.", "15 × 7 = 105"] }
+        ]
+      }
+    ],
+    "template": "story"
+  }
+]

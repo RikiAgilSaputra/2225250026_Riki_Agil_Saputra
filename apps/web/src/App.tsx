@@ -3,7 +3,6 @@ import { Layout } from './components/Layout'
 import { useAuth } from './lib/auth'
 import { Home } from './pages/Home'
 import { Learn } from './pages/Learn'
-import { Literacy } from './pages/Literacy'
 import { Login } from './pages/Login'
 import { Modeler } from './pages/Modeler'
 import { ModulePage } from './pages/ModulePage'
@@ -31,7 +30,8 @@ export function App() {
         <Route path="belajar" element={<Learn />} />
         <Route path="belajar/:moduleId" element={<ModulePage />} />
         <Route path="latihan" element={<Practice />} />
-        <Route path="literasi" element={<Literacy />} />
+        {/* Literasi is now part of "Belajar & Literasi"; keep old links working */}
+        <Route path="literasi" element={<Navigate to="/belajar?tahap=pemodelan" replace />} />
         <Route path="pemodel" element={<Modeler />} />
         <Route path="kemajuan" element={<Progress />} />
         <Route path="catatan" element={<Notes />} />

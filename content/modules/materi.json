@@ -214,6 +214,38 @@
           { "instruction": "Jumlah dua bilangan 6 dan selisihnya 4. Jika x bilangan yang lebih besar, berapa x?", "check": "value", "expected": "5", "variable": "x", "display": "x = 5",
             "hints": ["Modelnya: x + y = 6 dan x − y = 4.", "Jumlahkan kedua persamaan: 2x = 10.", "x = 5"] }
         ]
+      },
+      {
+        "id": "MAT-2-p2",
+        "title": "Selidiki: penyelesaian atau bukan?",
+        "mode": "independent",
+        "steps": [
+          {
+            "instruction": "Apakah (3, −1) penyelesaian dari 5x − 2y = 17 dan x + y = 10?", "check": "choice", "expected": "b", "display": "Bukan. 5(3) − 2(−1) = 17 benar, tetapi 3 + (−1) = 2, bukan 10.",
+            "choices": [{ "id": "a", "label": "Ya, benar di kedua persamaan" }, { "id": "b", "label": "Bukan, hanya benar di persamaan pertama" }, { "id": "c", "label": "Bukan, tidak benar di keduanya" }],
+            "hints": ["Ganti x = 3 dan y = −1 di setiap persamaan.", "5(3) − 2(−1) = 15 + 2 = 17. Lalu 3 + (−1) = ?", "3 + (−1) = 2, bukan 10. Jadi bukan penyelesaian."]
+          },
+          {
+            "instruction": "Apakah (−1, 2) penyelesaian dari x + 2y = 3 dan 2x + 3y = 4?", "check": "choice", "expected": "a", "display": "Ya: −1 + 4 = 3 dan −2 + 6 = 4.",
+            "choices": [{ "id": "a", "label": "Ya, benar di kedua persamaan" }, { "id": "b", "label": "Bukan, hanya benar di persamaan pertama" }, { "id": "c", "label": "Bukan, tidak benar di keduanya" }],
+            "hints": ["Ganti x = −1 dan y = 2.", "−1 + 2(2) = 3 dan 2(−1) + 3(2) = ?", "−2 + 6 = 4. Keduanya benar."]
+          },
+          {
+            "instruction": "Apakah (−2, −3) penyelesaian dari x + y = −5 dan x − 2y = 4?", "check": "choice", "expected": "a", "display": "Ya: −2 + (−3) = −5 dan −2 + 6 = 4.",
+            "choices": [{ "id": "a", "label": "Ya, benar di kedua persamaan" }, { "id": "b", "label": "Bukan, hanya benar di persamaan pertama" }, { "id": "c", "label": "Bukan, hanya benar di persamaan kedua" }],
+            "hints": ["Hati-hati dengan tanda negatif.", "−2 − 2(−3) = −2 + 6.", "Hasilnya −5 dan 4. Keduanya benar."]
+          },
+          {
+            "instruction": "Apakah (2, 2) penyelesaian dari x = 4 − y dan 2x = 3y + 11?", "check": "choice", "expected": "b", "display": "Bukan. 2 = 4 − 2 benar, tetapi 4 ≠ 17.",
+            "choices": [{ "id": "a", "label": "Ya, benar di kedua persamaan" }, { "id": "b", "label": "Bukan, hanya benar di persamaan pertama" }, { "id": "c", "label": "Bukan, hanya benar di persamaan kedua" }],
+            "hints": ["Ganti x = 2 dan y = 2.", "Persamaan kedua: 2(2) = 4, sedangkan 3(2) + 11 = 17.", "4 ≠ 17, jadi bukan penyelesaian."]
+          },
+          {
+            "instruction": "Apakah (2, 1) penyelesaian dari x − 2y = 0 dan 2x + y = 4?", "check": "choice", "expected": "c", "display": "Bukan. 2 − 2 = 0 benar, tetapi 4 + 1 = 5, bukan 4.",
+            "choices": [{ "id": "a", "label": "Ya, benar di kedua persamaan" }, { "id": "b", "label": "Bukan, tidak benar di keduanya" }, { "id": "c", "label": "Bukan, hanya benar di persamaan pertama" }],
+            "hints": ["Ganti x = 2 dan y = 1.", "2 − 2(1) = 0 benar. Lalu 2(2) + 1 = ?", "5 ≠ 4, jadi bukan penyelesaian."]
+          }
+        ]
       }
     ]
   },
@@ -300,6 +332,9 @@
       { "id": "MAT-3-graf", "title": "Contoh metode grafik", "mode": "worked", "method": "graph", "system": ["2*x + 3*y = 12", "4*x - 3*y = 6"] },
       { "id": "MAT-3-subst", "title": "Contoh metode substitusi", "mode": "worked", "method": "substitution", "system": ["x + 2*y = 4", "3*x + 2*y = 12"] },
       { "id": "MAT-3-elim", "title": "Contoh metode eliminasi", "mode": "worked", "method": "elimination", "system": ["2*x - 3*y = 17", "3*x + y = 9"] },
+      { "id": "MAT-3-graf2", "title": "Contoh grafik: titik potong di sumbu y", "mode": "worked", "method": "graph", "system": ["2*x + 3*y = 6", "3*x - y = -2"] },
+      { "id": "MAT-3-subst2", "title": "Contoh substitusi: x = 12 − y", "mode": "worked", "method": "substitution", "system": ["x + y = 12", "2*x + 3*y = 31"] },
+      { "id": "MAT-3-elim2", "title": "Contoh eliminasi: samakan koefisien x", "mode": "worked", "method": "elimination", "system": ["x + y = 3", "4*x - 3*y = 5"] },
       { "id": "MAT-3-camp", "title": "Lengkapi: metode campuran", "mode": "completion", "method": "mixed", "system": ["x + y = 4", "2*x + y = 5"], "completion_blanks": 2 },
       {
         "id": "MAT-3-pecahan",

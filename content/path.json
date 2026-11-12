@@ -1,0 +1,68 @@
+{
+  "title": "Belajar & Literasi",
+  "description": "Satu jalur dari materi dasar sampai soal cerita. Ikuti tahapnya berurutan, atau buka modul mana pun yang kamu perlukan.",
+  "stages": [
+    {
+      "id": "prasyarat",
+      "title": "Prasyarat",
+      "description": "Ingat kembali bilangan bulat, persamaan, koordinat, dan fungsi sebelum belajar SPLDV.",
+      "modules": [
+        { "id": "PRE-1", "role": "inti" },
+        { "id": "PRE-2", "role": "inti" },
+        { "id": "PRE-3", "role": "inti" },
+        { "id": "PRE-4", "role": "inti" }
+      ]
+    },
+    {
+      "id": "konsep",
+      "title": "Konsep Dasar PLDV & SPLDV",
+      "description": "Makna variabel, koefisien, konstanta, dan arti penyelesaian SPLDV.",
+      "modules": [
+        { "id": "SPL-1", "role": "inti" },
+        { "id": "MAT-1", "role": "pendalaman" },
+        { "id": "SPL-2", "role": "inti" },
+        { "id": "MAT-2", "role": "pendalaman" }
+      ]
+    },
+    {
+      "id": "metode",
+      "title": "Metode Penyelesaian",
+      "description": "Grafik, substitusi, eliminasi, dan campuran. Pelajari satu per satu, lalu bandingkan di ringkasan.",
+      "modules": [
+        { "id": "SPL-3", "role": "inti" },
+        { "id": "SPL-4", "role": "inti" },
+        { "id": "SPL-5", "role": "inti" },
+        { "id": "SPL-6", "role": "inti" },
+        { "id": "MAT-3", "role": "ringkasan" }
+      ]
+    },
+    {
+      "id": "pemodelan",
+      "title": "Pemodelan Soal Cerita",
+      "description": "Ubah cerita menjadi model matematika dengan siklus pemodelan, lalu tafsirkan jawabannya.",
+      "show_cycle": true,
+      "modules": [
+        { "id": "SPL-7", "role": "inti" },
+        { "id": "MAT-4", "role": "pendalaman" }
+      ]
+    },
+    {
+      "id": "literasi",
+      "title": "Literasi Lanjut",
+      "description": "Soal dengan tabel, struk, informasi berlebih, dan soal yang menuntut penalaran atau keputusan.",
+      "modules": [
+        { "id": "LIT-2", "role": "inti" },
+        { "id": "LIT-3", "role": "inti" }
+      ]
+    },
+    {
+      "id": "bank-soal",
+      "title": "Bank Soal",
+      "description": "Latihan tambahan dari buku dan kumpulan soal: soal hitung dan soal cerita.",
+      "modules": [
+        { "id": "MAT-5", "role": "latihan" },
+        { "id": "MAT-6", "role": "latihan" }
+      ]
+    }
+  ]
+}

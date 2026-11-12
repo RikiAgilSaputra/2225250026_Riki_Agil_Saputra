@@ -44,6 +44,11 @@ Diadaptasi dari *Buku Ajar Matematika Kelas VIII Semester 1* (bab SPLDV) dan *BS
 | MAT-3 | Langkah Metode Penyelesaian | Langkah grafik, substitusi, eliminasi + contoh, campuran, persamaan berpecahan (kali KPK), memeriksa jawaban | Contoh tiap metode, lengkapi, SPLDV berpecahan, 2 soal mandiri, soal acak |
 | MAT-4 | Dari Soal Cerita ke Model | 4 tahap (misalkan, modelkan, selesaikan, simpulkan), tabel kalimat → model, contoh pensil–buku, jarak–waktu, periksa kewajaran | Latih menerjemahkan + 8 soal cerita (L1–L2), soal cerita acak |
 
+| MAT-5 | Kumpulan Soal Hitung SPLDV | Memilih metode, merapikan ke bentuk ax + by = c, soal yang menanyakan bentuk gabungan (4x + 3y) | 15 soal (Kumpulan Soal SPLDV MGMP SATAP Malang, Soal Latihan SPLDV Kelas 8, Buku Ajar, BSE) |
+| MAT-6 | Kumpulan Soal Cerita SPLDV | Menyusun data dalam tabel, soal bangun datar (keliling/luas), harga gabungan | 1 contoh + 1 lengkapi + 17 mandiri (L1–L3): belanja, umur, sudut, parkir, majalah, ternak, perjalanan |
+
+Tambahan contoh di MAT-3 (grafik, substitusi, eliminasi dari BSE) dan latihan "selidiki penyelesaian" di MAT-2. File: `content/modules/bank_soal.json`. Catatan: Evaluasi BSE Bab 4 no. 4 (2x − 3y = −11, 3x + 4y = 9) memiliki jawaban benar (−1, 3) yang tidak tercantum di pilihan buku.
+
 Blok konten baru: `definition` (istilah + arti), `anatomy` (persamaan berlabel variabel/koefisien/konstanta, `focus` meredupkan bagian lain), `steps` (daftar langkah bernomor), `eq` (persamaan dengan pecahan/sistem; `lines` untuk baris pengerjaan). Modul boleh memiliki `source` (sumber adaptasi) yang tampil di layar pertama.
 
 ### 1.2a Jalur Literasi (`LIT`)

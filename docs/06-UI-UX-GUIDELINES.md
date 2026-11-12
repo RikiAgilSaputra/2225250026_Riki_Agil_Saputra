@@ -89,14 +89,13 @@ Font: **Inter** atau **Plus Jakarta Sans** (fallback `system-ui`). Mode "Teks be
 flowchart TD
     Login --> Beranda
     Beranda --> Diagnostik
-    Beranda --> PetaModul[Peta Modul]
+    Beranda --> Jalur["Belajar & Literasi<br/>(1 jalur, 6 tahap)"]
     Beranda --> Catatanku
     Beranda --> Profil
-    PetaModul --> Materi[Layar Materi]
+    Jalur --> Materi[Layar Materi]
     Materi --> Latihan[Contoh → Melengkapi → Mandiri]
     Latihan --> Hasil
-    Beranda --> Literasi[Jalur Literasi L1–L3]
-    Literasi --> Siklus[Siklus Pemodelan 7 tahap]
+    Jalur --> Siklus[Tahap 4: Siklus Pemodelan]
     Beranda --> Pemodel[Pemodel Soal Cerita]
     Pemodel --> ModelCard[Model Matematika]
     ModelCard --> Siklus
@@ -108,7 +107,7 @@ flowchart TD
     end
 ```
 
-Navigasi bawah siswa (mobile): **Beranda · Belajar · Pemodel · Catatanku** (maks. 4 item; Profil di pojok kanan atas). Tab "Belajar" memuat Peta Modul dan Jalur Literasi. Tab "Pemodel" disembunyikan bila guru menonaktifkan AI; mode Latih Pemodelan tetap dapat diakses dari Jalur Literasi.
+Navigasi bawah siswa (mobile): **Beranda · Belajar · Pemodel · Catatanku** (maks. 4 item; Profil di pojok kanan atas). Tab "Belajar" membuka halaman **Belajar & Literasi**: satu jalur berisi seluruh modul dalam 6 tahap (Prasyarat → Konsep Dasar → Metode → Pemodelan Soal Cerita → Literasi Lanjut → Bank Soal), didefinisikan di `content/path.json`. Setiap modul diberi peran *Inti*, *Pendalaman*, *Ringkasan*, atau *Bank soal*. Hanya tahap yang sedang dikerjakan yang terbuka (mengurangi beban kognitif); tahap lain dapat dibuka dengan sekali ketuk. Alamat lama `/literasi` diarahkan ke tahap Pemodelan. Tab "Pemodel" disembunyikan bila guru menonaktifkan AI; mode Latih Pemodelan tetap dapat diakses dari tahap Pemodelan.
 
 Wireframe layar Model Matematika: [14-WORD-PROBLEM-MODELER.md §3.2](14-WORD-PROBLEM-MODELER.md#32-tampilan-model-layar-model-matematika).
 
