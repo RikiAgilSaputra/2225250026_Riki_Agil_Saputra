@@ -197,6 +197,16 @@ Sebagai **siswa**, saya ingin membuat catatan sendiri per materi, agar saya lebi
 - Ikon catatan di setiap layar materi; catatan tersimpan otomatis.
 - Siswa dapat menyematkan rumus/kartu metode/tangkapan grafik ke catatan.
 
+### US-22a Menulis persamaan di catatan (FR-12) · S · 5 SP
+Sebagai **siswa**, saya ingin menulis simbol dan persamaan matematika dengan mudah di catatan, agar catatan saya cepat ditulis dan rapi dibaca.
+
+- Bilah simbol di atas kolom catatan menyisipkan simbol di posisi kursor (x biru, y oranye).
+- Tombol **∑ Persamaan** (atau Ctrl+M) membuka editor persamaan dengan pratinjau langsung; tombol **{ Sistem** membuka templat dua persamaan.
+- **Given** saya menulis `(x + 1)/2`, `x^2`, `x_1`, atau `sqrt(16)`, **then** pratinjau menampilkan pecahan bersusun, pangkat, indeks bawah, atau akar.
+- **Given** saya mengetik `<=`, `>=`, `!=`, `->`, **then** tampil sebagai ≤, ≥, ≠, →.
+- **Given** persamaan di pratinjau, **when** saya mengetuknya, **then** editor terbuka berisi persamaan itu dan bisa diubah atau dihapus.
+- Teks yang dipilih saat menekan **∑ Persamaan** langsung menjadi isi editor.
+
 ### US-23 Jelaskan dengan kata-katamu (FR-13) · S · 3 SP
 Sebagai **siswa**, saya ingin menuliskan penjelasan singkat setelah menyelesaikan soal, agar pemahaman saya lebih kuat (GL04).
 

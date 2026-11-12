@@ -79,6 +79,9 @@ Font: **Inter** atau **Plus Jakarta Sans** (fallback `system-ui`). Mode "Teks be
 | `ModelingStepper` | Indikator 7 tahap siklus pemodelan (ikon + nama pendek) |
 | `ModelCard` | Hasil pemodel AI: variabel, persamaan + kalimat sumber, label "dibuat otomatis & sudah diperiksa", 👍/👎 |
 | `ModelerInput` | Kolom soal cerita dengan penghitung karakter, peringatan data pribadi, sisa kuota |
+| `SymbolPad` | Tombol simbol & struktur matematika (pecahan, pangkat, indeks, akar, titik) yang menyisipkan teks di posisi kursor |
+| `EquationDialog` | Editor persamaan: templat, bilah simbol, pratinjau langsung, pilihan "di baris sendiri", ubah/hapus |
+| `MathRender` / `NoteBody` | Menampilkan persamaan catatan (`$…$`, `$$…$$`): pecahan bersusun, pangkat, akar, sistem berkurung kurawal |
 
 ## 4. Peta Navigasi
 
