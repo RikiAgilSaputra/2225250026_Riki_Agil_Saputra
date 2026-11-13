@@ -1,4 +1,4 @@
-// Modeler pipeline: guard → cache → Claude → verify (→ repair once) → store (docs/14 §4). Port of service.py.
+// Modeler pipeline: guard → cache → Gemini → verify (→ repair once) → store (docs/14 §4). Port of service.py.
 import { type ClassRow, classSettings, type User } from "../lib/auth.ts";
 import type { Db } from "../lib/db.ts";
 import { settings } from "../lib/env.ts";
@@ -18,7 +18,7 @@ export const MESSAGES: Record<string, string> = {
   rejected: "Teks ini belum bisa diproses. Pastikan isinya soal cerita matematika.",
 };
 
-/** Tests replace the Claude call with a mock (CLAUDE.md: never call the real API in CI). */
+/** Tests replace the Gemini call with a mock (CLAUDE.md: never call the real API in CI). */
 let callModel: CallModel = realCallModel;
 export function setCallModel(fn: CallModel | null): void {
   callModel = fn ?? realCallModel;
@@ -98,7 +98,7 @@ export async function analyze(sql: Db, user: User, cls: ClassRow | null, rawText
     throw new ApiError(413, "INPUT_TOO_LONG", `Soal terlalu panjang (maks. ${guard.MAX_CHARS} karakter).`);
   }
   if (text.length < 20) throw new ApiError(400, "VALIDATION_ERROR", "Tulis soal ceritanya lengkap dulu.");
-  text = guard.maskPii(text); // never send student identity to the Claude API
+  text = guard.maskPii(text); // never send student identity to the AI API
   const h = await guard.textHash(text);
   const sub: Omit<Submission, "id" | "rating"> = {
     user_id: user.id, class_id: cls?.id ?? null, input_text: text, input_hash: h, status: "rejected",

@@ -15,8 +15,6 @@ from app.services.modeler.schema import WordProblemModel
 from app.services.modeler.verifier import verify
 from app.services.step_builder import build_problem
 
-# Opus 5.5 list prices (USD per token) for the monthly budget guard (docs/14 §10)
-PRICE_IN, PRICE_OUT = 4 / 1_000_000, 20 / 1_000_000
 
 MESSAGES = {
     "not_spldv": "Soal ini bukan SPLDV, jadi belum bisa dimodelkan di sini.",
@@ -48,7 +46,8 @@ def month_cost(db: Session) -> float:
                func.coalesce(func.sum(ModelerSubmission.output_tokens), 0))
         .where(ModelerSubmission.created_at >= start)
     ).one()
-    return tin * PRICE_IN + tout * PRICE_OUT
+    s = get_settings()  # Gemini prices per 1M tokens (docs/14 §10)
+    return tin * s.modeler_price_in_per_m / 1_000_000 + tout * s.modeler_price_out_per_m / 1_000_000
 
 
 def public_model(model: dict) -> dict:
@@ -99,7 +98,7 @@ def analyze(db: Session, user: User, cls: ClassRoom | None, raw_text: str) -> Mo
             return call_model(content)
         except ModelerUnavailable as exc:
             raise ApiError(503, "MODELER_UNAVAILABLE",
-                           "Pemodel AI belum aktif di server ini (ANTHROPIC_API_KEY belum diisi).") from exc
+                           "Pemodel AI belum aktif di server ini (kunci API belum diisi atau tidak valid).") from exc
         except ModelerBusy as exc:
             raise ApiError(429, "MODELER_BUSY", "Pemodel sedang sibuk, coba lagi sebentar.") from exc
 

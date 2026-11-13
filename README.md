@@ -39,7 +39,7 @@ Rincian lengkap: [docs/01-RESEARCH-INSIGHTS.md](docs/01-RESEARCH-INSIGHTS.md).
 | Catatan pribadi per materi | Siswa | GL01 |
 | Dashboard guru, analitik kesalahan, ekspor CSV | Guru | K02 |
 | Siklus pemodelan 7 tahap & bank soal literasi L1–L3 | Siswa | K01, IL01, literasi |
-| Pemodel soal cerita otomatis (Claude API + verifikasi SymPy) | Siswa, guru | K01, IL01, EL01 |
+| Pemodel soal cerita otomatis (Gemini API dari Google AI Studio + verifikasi SymPy) | Siswa, guru | K01, IL01, EL01 |
 | Buat soal sendiri & profil literasi | Siswa, guru | GL04, literasi |
 
 ---
@@ -71,7 +71,7 @@ Panduan untuk asisten AI (Claude Code): [CLAUDE.md](CLAUDE.md).
 
 - **Frontend (JavaScript/TypeScript):** React 18 + Vite, CSS dengan design tokens, grafik SVG interaktif buatan sendiri, PWA (vite-plugin-pwa)
 - **Backend (Python):** FastAPI, SQLAlchemy 2, SymPy, JWT; SQLite untuk pengembangan, PostgreSQL untuk produksi
-- **AI:** Claude API (`claude-opus-5-5`) melalui SDK Python `anthropic`, hanya untuk menerjemahkan soal cerita menjadi model
+- **AI:** Gemini API dari Google AI Studio (`gemini-3.5-flash-lite`) melalui SDK resmi `google-genai` / `@google/genai`, hanya untuk menerjemahkan soal cerita menjadi model
 - **Database:** PostgreSQL
 
 Detail: [docs/07-ARCHITECTURE.md](docs/07-ARCHITECTURE.md).
@@ -93,14 +93,14 @@ sh scripts/start.sh
 
 Buka **http://localhost:8000**. Akun demo: siswa `siswa` / `siswa123`, guru `guru` / `guru123` (kode kelas `K7Q2MX`).
 
-Pemodel AI butuh kunci API: isi `ANTHROPIC_API_KEY` di file `.env` (satu-satunya file pengaturan, di folder utama; daftar variabel di [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md#variabel-lingkungan)), lalu jalankan ulang. Tanpa kunci, fitur lain tetap berjalan dan pemodel menampilkan pesan "belum aktif".
+Pemodel AI butuh kunci API Google AI Studio: ganti `TEMPEL_API_KEY_AQ_ANDA_DI_SINI` pada baris `GEMINI_API_KEY=` di file `.env` (satu-satunya file pengaturan, di folder utama; daftar variabel di [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md#variabel-lingkungan)), lalu jalankan ulang. Tanpa kunci, fitur lain tetap berjalan dan pemodel menampilkan pesan "belum aktif".
 
 ### Pengembangan
 
 ```bash
 # Backend (apps/api) — API di :8000, dokumentasi di /docs
 .venv/Scripts/python -m uvicorn app.main:app --reload --port 8000
-.venv/Scripts/python -m pytest -q          # 48 tes, tanpa memanggil Claude API
+.venv/Scripts/python -m pytest -q          # 58 tes, tanpa memanggil Gemini API
 
 # Frontend (apps/web) — hot reload di :5173, /api diteruskan ke :8000
 npm run dev

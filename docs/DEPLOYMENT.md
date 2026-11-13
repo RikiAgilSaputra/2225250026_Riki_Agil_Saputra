@@ -5,7 +5,7 @@ flowchart LR
     U[Siswa / guru<br/>browser atau PWA] --> N["Netlify<br/>apps/web (PWA)"]
     N -- "/api/* (proxy)" --> F["Supabase Edge Function<br/>supabase/functions/api"]
     F --> DB[("Supabase<br/>PostgreSQL")]
-    F -. opsional .-> C["Gemini API<br/>(atau Claude)"]
+    F -. opsional .-> C["Gemini API<br/>(Google AI Studio)"]
 ```
 
 - **Netlify** menyajikan PWA dan meneruskan `/api/*` ke Supabase (`netlify.toml`). Situs tetap satu domain: tanpa masalah CORS, dan cache offline tetap jalan.
@@ -18,7 +18,7 @@ Supabase Edge Functions hanya menjalankan TypeScript, bukan Python. Karena itu b
 |---|---|
 | SymPy di `mathparse.py`, `step_checker.py`, `step_builder.py` | `math/frac.ts` (pecahan eksak BigInt), `math/mathparse.ts`, `services/step_checker.ts`, `services/step_builder.ts` |
 | FastAPI + SQLAlchemy | Hono + postgres.js |
-| `anthropic` (`messages.parse` + Pydantic) | `@anthropic-ai/sdk` (`messages.parse` + Zod), prompt dan model sama |
+| `google-genai` (Interactions API + Pydantic) | `@google/genai` (Interactions API + Zod), prompt dan model sama |
 
 Kesetaraan diuji otomatis terhadap versi Python: 228 soal (konten dan varian tiap metode) identik, 46.677 jawaban contoh menghasilkan penilaian dan kode kesalahan yang sama, dan 37 permintaan API menghasilkan status dan bentuk JSON yang sama.
 
@@ -45,7 +45,7 @@ Kesetaraan diuji otomatis terhadap versi Python: 228 soal (konten dan varian tia
    npx supabase secrets set JWT_SECRET=<string-acak-minimal-32-karakter> SEED_DEMO=true
    # opsional, untuk Pemodel AI (kunci Gemini dari Google AI Studio; ketik di terminal, jangan dibagikan):
    npx supabase secrets set GEMINI_API_KEY=<kunci> MODELER_TIMEOUT_SECONDS=20 MODELER_MONTHLY_BUDGET_USD=10
-   # model default gemini-3.5-flash-lite (cadangan gemini-3.8-flash); ganti dengan MODELER_MODEL=... Untuk Claude: MODELER_PROVIDER=anthropic + ANTHROPIC_API_KEY
+   # kunci format "AQ.…" maupun "AIza…" diterima; model default gemini-3.5-flash-lite (cadangan gemini-3.8-flash)
    ```
 
    String acak bisa dibuat dengan `node -e "console.log(require('crypto').randomBytes(36).toString('base64url'))"`.
@@ -98,16 +98,14 @@ Semua pengaturan lokal ada di **satu file `.env` di folder utama** (tidak ada `.
 | `JWT_ACCESS_TTL_MINUTES` | `720` | Masa berlaku login |
 | `CORS_ORIGINS` | `http://localhost:5173` | Dipisah koma; tidak perlu bila lewat proxy Netlify |
 | `SEED_DEMO` | `true` | Akun demo `siswa`/`guru`; `false` sebelum dipakai siswa sungguhan |
-| `GEMINI_API_KEY` | kosong | Kunci Google AI Studio untuk Pemodel AI (backend Supabase) |
-| `ANTHROPIC_API_KEY` | kosong | Claude: backend Python lokal, atau `MODELER_PROVIDER=anthropic` |
-| `MODELER_PROVIDER` | `gemini` bila `GEMINI_API_KEY` terisi | `gemini` atau `anthropic` |
-| `MODELER_MODEL` | `gemini-3.5-flash-lite` (Claude: `claude-opus-5-5`) | Ubah hanya setelah menjalankan set evaluasi |
+| `GEMINI_API_KEY` | `TEMPEL_API_KEY_AQ_ANDA_DI_SINI` (dianggap belum diisi) | Kunci Google AI Studio (`AQ.…` atau `AIza…`) untuk Pemodel AI, di kedua backend |
+| `MODELER_MODEL` | `gemini-3.5-flash-lite` | Ubah hanya setelah menjalankan set evaluasi |
 | `MODELER_FALLBACK_MODEL` | `gemini-3.8-flash` | Dipakai bila model utama sibuk; kosong = mati |
 | `MODELER_EFFORT` | `medium` | `low`, `medium`, `high` |
 | `MODELER_TIMEOUT_SECONDS` | `30` (Supabase diset `20`) | Harus di bawah batas proxy Netlify 26 detik |
 | `MODELER_DEFAULT_DAILY_QUOTA` | `10` | Per siswa per hari |
 | `MODELER_MONTHLY_BUDGET_USD` | `50` (Supabase diset `10`) | Pemodel dijeda bila terlampaui |
-| `MODELER_PRICE_IN_PER_M`, `MODELER_PRICE_OUT_PER_M` | Gemini `1.5`/`7.5`, Claude `4`/`20` | USD per 1 juta token untuk batas anggaran |
+| `MODELER_PRICE_IN_PER_M`, `MODELER_PRICE_OUT_PER_M` | `1.5` / `7.5` | USD per 1 juta token untuk batas anggaran |
 
 ## 5. Sebelum dipakai siswa sungguhan
 

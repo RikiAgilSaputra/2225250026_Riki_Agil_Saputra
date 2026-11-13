@@ -1,5 +1,5 @@
 // Gemini (Google AI Studio key) for the modeler, via the Interactions API of @google/genai.
-// Same contract as the Claude call: the model only translates the story into WordProblemModel JSON;
+// The model only translates the story into WordProblemModel JSON;
 // everything it returns is validated with Zod and then checked by the deterministic verifier.
 import { GoogleGenAI } from "@google/genai";
 import { z } from "zod";
@@ -68,9 +68,9 @@ export function modelOrder(main: string, fallback: string | undefined): string[]
 
 export const callGemini: CallModel = async (userContent) => {
   const s = settings();
-  if (!s.geminiApiKey) throw new ModelerUnavailable("GEMINI_API_KEY is not set");
-  // No SDK-level retries: the whole call must fit in MODELER_TIMEOUT_SECONDS (Netlify proxy limit is 26 s).
-  client ??= new GoogleGenAI({ apiKey: s.geminiApiKey, httpOptions: { retryOptions: { attempts: 1 } } });
+  if (!s.modelerApiKey) throw new ModelerUnavailable("GEMINI_API_KEY is not set");
+  // Google AI Studio only (vertexai: false; key sent as x-goog-api-key). No SDK retries: the whole call must fit in MODELER_TIMEOUT_SECONDS (Netlify proxy limit is 26 s).
+  client ??= new GoogleGenAI({ apiKey: s.modelerApiKey, vertexai: false, httpOptions: { retryOptions: { attempts: 1 } } });
   const started = performance.now();
   const deadline = started + s.modelerTimeoutSeconds * 1000;
   for (const model of modelOrder(s.modelerModel, s.modelerFallbackModel)) {

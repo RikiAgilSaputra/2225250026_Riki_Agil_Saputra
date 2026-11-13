@@ -16,7 +16,7 @@ Kebutuhan produk: [docs/02-PRD.md](docs/02-PRD.md). Jika ada konflik antara kode
 | Matematika UI | KaTeX (render rumus), Mafs (grafik Kartesius interaktif) |
 | Mobile | vite-plugin-pwa (offline), Capacitor 6 (Android) |
 | Backend | Python 3.12, FastAPI, Pydantic v2, SQLAlchemy 2 (async), Alembic, SymPy |
-| AI | **Produksi (Supabase): Gemini** via `@google/genai` (Interactions API, kunci Google AI Studio `GEMINI_API_KEY`, default `gemini-3.5-flash-lite` dengan cadangan `gemini-3.8-flash` bila sibuk, batas waktu keras 20 detik, keluaran JSON divalidasi Zod). Claude (`claude-opus-5-5`, `messages.parse`) tetap tersedia lewat `MODELER_PROVIDER=anthropic`. Backend Python lokal masih Claude saja. Hanya di backend |
+| AI | **Google AI Studio (Gemini) saja** di kedua backend: `@google/genai` (TS) dan `google-genai` (Python), Interactions API di `generativelanguage.googleapis.com`, kunci `GEMINI_API_KEY` (format `AQ.` atau `AIza`) dikirim lewat header `x-goog-api-key`. Model `gemini-3.5-flash-lite`, cadangan `gemini-3.8-flash`, batas waktu keras 20 detik, keluaran JSON divalidasi Zod/Pydantic. Hanya di backend |
 | Auth | JWT access token (15 menit) + refresh token (httpOnly cookie di web, Secure Storage di Android) |
 | Database | PostgreSQL 16 |
 | Tes | Vitest + React Testing Library, Playwright (E2E), pytest + httpx |
@@ -87,7 +87,7 @@ npm run api:deploy                 # bundel content/ + deploy fungsi `api`
 
 # Backend Python (dari apps/api) — lokal/acuan
 uvicorn app.main:app --reload --port 8000
-pytest -q                          # tanpa memanggil Claude API (di-mock)
+pytest -q                          # tanpa memanggil Gemini API (di-mock)
 pytest -m modeler_eval             # set evaluasi pemodel — MEMANGGIL API & BERBIAYA, jalankan hanya bila diminta
 ruff check . && ruff format --check .
 alembic revision --autogenerate -m "pesan"
@@ -119,11 +119,11 @@ Aturan ini adalah inti produk. Jangan dilanggar tanpa persetujuan eksplisit.
 2. Model AI **tidak boleh** ditampilkan atau dipakai sebelum lolos verifier V1–V7 ([docs/14 §6](docs/14-WORD-PROBLEM-MODELER.md#6-verifikasi-deterministik-sympy)). Maksimal satu putaran perbaikan.
 3. Teks bebas dari AI tidak ditampilkan ke siswa, kecuali `source_text` yang sudah terbukti ada di input.
 4. Input siswa dibungkus `<soal>…</soal>` dan diperlakukan sebagai data. Jangan pernah memberi AI tool atau akses lain.
-5. Tidak mengirim identitas siswa (ID, nama, kelas) ke Claude API. Jalankan `guard.py` (PII, kuota, cache) sebelum setiap pemanggilan.
-6. Selalu periksa penolakan sebelum membaca hasil: Claude `stop_reason == "refusal"`; Gemini status interaksi selain `completed` (diblokir/gagal) → `rejected`. Keluaran Gemini selalu divalidasi `WordProblemModelSchema` sebelum dipakai.
-7. Penyedia, model, effort, dan versi prompt diatur lewat env (`MODELER_PROVIDER`, `MODELER_MODEL`, `MODELER_EFFORT`) dan `PROMPT_VERSION`. Perubahan apa pun pada keempatnya wajib diikuti menjalankan set evaluasi dan mencatat hasilnya. (Peralihan ke Gemini 2026-11-14 belum dievaluasi; set evaluasi Python masih memanggil Claude.)
-8. Tes otomatis memakai respons Claude tiruan (mock); jangan memanggil API sungguhan di CI.
-9. Padanan di backend Supabase: `modeler/schema.ts` (Zod), `modeler/guard.ts`, `modeler/verifier.ts`, `modeler/prompt.ts` (salinan persis prompt Python; ubah keduanya bersamaan), `modeler/llm.ts` (Claude) dan `modeler/gemini.ts` (Gemini, `store: false`).
+5. Tidak mengirim identitas siswa (ID, nama, kelas) ke Gemini API. Jalankan `guard.py`/`guard.ts` (PII, kuota, cache) sebelum setiap pemanggilan.
+6. Selalu periksa penolakan sebelum membaca hasil: status interaksi Gemini selain `completed` (diblokir/gagal) → `rejected`. Keluaran Gemini selalu divalidasi (`WordProblemModel` Pydantic / Zod) sebelum dipakai.
+7. Model, effort, dan versi prompt diatur lewat env (`MODELER_MODEL`, `MODELER_FALLBACK_MODEL`, `MODELER_EFFORT`) dan `PROMPT_VERSION`. Perubahan apa pun pada ketiganya wajib diikuti menjalankan set evaluasi dan mencatat hasilnya. (Peralihan ke Gemini 2026-11-14 belum dievaluasi dengan set evaluasi.)
+8. Tes otomatis memakai respons Gemini tiruan (mock); jangan memanggil API sungguhan di CI. Jangan menambahkan penyedia AI lain (Vertex AI, OpenAI, Anthropic) tanpa persetujuan.
+9. Padanan di backend Supabase: `modeler/schema.ts` (Zod), `modeler/guard.ts`, `modeler/verifier.ts`, `modeler/prompt.ts` (salinan persis prompt Python; ubah keduanya bersamaan), `modeler/gemini.ts` (Gemini, `store: false`); Python: `services/modeler/llm_client.py`.
 
 ## Konvensi Kode
 

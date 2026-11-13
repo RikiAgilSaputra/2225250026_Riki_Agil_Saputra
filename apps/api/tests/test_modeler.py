@@ -105,7 +105,7 @@ def test_analyze_without_key_returns_503(client, student):
     r = client.post("/api/v1/modeler/analyze", json={"text": TEXT + " (tanpa kunci)"}, headers=student)
     assert r.status_code == 503
     assert r.json()["error"]["code"] == "MODELER_UNAVAILABLE"
-    assert llm_client.get_settings().anthropic_api_key == ""
+    assert llm_client.get_settings().gemini_api_key == ""
 
 
 def test_analyze_verified_then_cached_then_attempt(client, student, fake_llm):
@@ -139,3 +139,30 @@ def test_ai_disabled_for_class(client, teacher):
     r = client.post("/api/v1/modeler/analyze", json={"text": TEXT}, headers=login(client))
     assert r.status_code == 403
     client.patch(f"/api/v1/teacher/classes/{cls['id']}/settings", json={"ai_enabled": True}, headers=teacher)
+
+
+# ------------------------------------------------------------------ Gemini adapter (no network)
+def test_gemini_schema_is_flat_and_nullable_as_type_array():
+    s = llm_client.gemini_schema()
+    text = str(s)
+    assert "$ref" not in text and "$defs" not in text and "anyOf" not in text
+    assert s["properties"]["not_spldv_reason"]["type"] == ["string", "null"]
+    assert s["properties"]["variables"]["items"]["properties"]["symbol"]["enum"] == ["x", "y"]
+    assert s["additionalProperties"] is False
+
+
+def test_gemini_result_mapping():
+    import json as _json
+    model = make_model(["2*x + 3*y = 19000", "x + 2*y = 11000"])
+    usage = {"total_input_tokens": 900, "total_output_tokens": 200, "total_thought_tokens": 50}
+    ok = llm_client.from_interaction({"status": "completed", "output_text": _json.dumps(model.model_dump()), "usage": usage}, 12, "m")
+    assert ok.model == model and not ok.refused and ok.input_tokens == 900 and ok.output_tokens == 250
+    assert llm_client.from_interaction({"status": "failed", "usage": usage}, 5, "m").refused
+    assert llm_client.from_interaction({"status": "completed", "output_text": "{bad"}, 5, "m").model is None
+    assert llm_client.model_order("a", "b") == ["a", "b"] and llm_client.model_order("a", "") == ["a"]
+
+
+def test_placeholder_key_counts_as_not_set():
+    from app.core.config import Settings
+    assert Settings(gemini_api_key="TEMPEL_API_KEY_AQ_ANDA_DI_SINI").gemini_api_key == ""
+    assert Settings(gemini_api_key=' "AQ.contoh-kunci" ').gemini_api_key == "AQ.contoh-kunci"

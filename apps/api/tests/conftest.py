@@ -8,7 +8,7 @@ _tmp = Path(tempfile.mkdtemp())
 os.environ["DATABASE_URL"] = f"sqlite:///{(_tmp / 'test.db').as_posix()}"
 os.environ["DATABASE_URL_UNPOOLED"] = ""  # tests never use a database configured in .env
 os.environ["WEB_DIST_DIR"] = str(_tmp / "no-dist")
-os.environ["ANTHROPIC_API_KEY"] = ""
+os.environ["GEMINI_API_KEY"] = ""
 
 from fastapi.testclient import TestClient  # noqa: E402
 

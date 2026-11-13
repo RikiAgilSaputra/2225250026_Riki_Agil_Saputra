@@ -25,12 +25,23 @@ class Settings(BaseSettings):
     content_dir: Path = REPO_ROOT / "content"
     web_dist_dir: Path = REPO_ROOT / "apps" / "web" / "dist"
 
-    anthropic_api_key: str = ""
-    modeler_model: str = "claude-opus-5-5"
+    # Google AI Studio key (read from GEMINI_API_KEY in the environment or .env); "AIza…" and "AQ.…" both work.
+    gemini_api_key: str = ""
+    modeler_model: str = "gemini-3.5-flash-lite"
+    modeler_fallback_model: str = "gemini-3.8-flash"  # used when the main model is overloaded; "" disables
+    modeler_price_in_per_m: float = 1.5  # USD per 1M tokens for the monthly budget guard
+    modeler_price_out_per_m: float = 7.5  # thinking tokens are billed as output
     modeler_effort: str = "medium"
     modeler_timeout_seconds: float = 30.0
     modeler_default_daily_quota: int = 10
     modeler_monthly_budget_usd: float = 50.0
+
+    @field_validator("gemini_api_key")
+    @classmethod
+    def _clean_key(cls, v: str) -> str:
+        # Tolerate spaces/quotes around a pasted key; the .env placeholder counts as "not set".
+        v = v.strip().strip("\"'").strip()
+        return "" if v.upper().startswith("TEMPEL_") else v
 
     @field_validator("database_url")
     @classmethod

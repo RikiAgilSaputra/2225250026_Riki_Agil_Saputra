@@ -1,5 +1,5 @@
 // End-to-end API flows on a real Postgres (PGlite) with the real migrations. Port of tests/test_api.py and
-// the pipeline tests of test_modeler.py. Claude is never called: the modeler uses a mock.
+// the pipeline tests of test_modeler.py. Gemini is never called: the modeler uses a mock.
 import assert from "node:assert/strict";
 import { after, before, test } from "node:test";
 import { KAKI, makeModel, startTestDb, TEXT } from "./fixtures.ts";
@@ -18,7 +18,7 @@ before(async () => {
   stopDb = testDb.stop;
   Object.assign(process.env, {
     DATABASE_URL: testDb.url, DB_POOL_MAX: "1", APP_ENV: "test", JWT_SECRET: "test-secret-0123456789-abcdefghij-klmn",
-    ANTHROPIC_API_KEY: "", SEED_DEMO: "true",
+    GEMINI_API_KEY: "", SEED_DEMO: "true",
   });
   ({ app } = await import("../app.ts"));
   ({ closeDb } = await import("../lib/db.ts"));
@@ -225,7 +225,7 @@ test("preferences", async () => {
   assert.equal(me.class.join_code, null);
 });
 
-// ------------------------------------------------------------------ modeler pipeline (mocked Claude)
+// ------------------------------------------------------------------ modeler pipeline (mocked Gemini)
 test("analyze without an API key returns 503", async () => {
   const r = await call("POST", "/modeler/analyze", { token: await login(), body: { text: TEXT + " (tanpa kunci)" } });
   assert.equal(r.status, 503);

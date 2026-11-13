@@ -71,7 +71,7 @@ for r in (auth, content, attempts, home, modeler, teacher):
 
 @app.get(f"{API_PREFIX}/health")
 def health():
-    return {"ok": True, "ai_configured": bool(settings.anthropic_api_key)}
+    return {"ok": True, "ai_configured": bool(settings.gemini_api_key)}
 
 
 # Serve the built PWA (apps/web/dist) from the same server: one command runs everything.

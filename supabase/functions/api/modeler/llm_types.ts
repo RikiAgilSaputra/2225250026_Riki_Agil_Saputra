@@ -1,4 +1,4 @@
-// Shared contract of the modeler's LLM call (Claude or Gemini).
+// Shared contract of the modeler's LLM call (Gemini).
 import type { WordProblemModel } from "./schema.ts";
 
 export class ModelerUnavailable extends Error {}
@@ -6,7 +6,7 @@ export class ModelerBusy extends Error {}
 
 export interface LlmResult {
   model: WordProblemModel | null;
-  /** The provider declined (Claude stop_reason "refusal", Gemini blocked/not completed). */
+  /** Gemini blocked the request or did not complete it. */
   refused: boolean;
   inputTokens: number;
   outputTokens: number;
