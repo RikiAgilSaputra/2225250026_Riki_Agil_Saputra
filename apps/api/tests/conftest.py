@@ -6,6 +6,7 @@ import pytest
 
 _tmp = Path(tempfile.mkdtemp())
 os.environ["DATABASE_URL"] = f"sqlite:///{(_tmp / 'test.db').as_posix()}"
+os.environ["DATABASE_URL_UNPOOLED"] = ""  # never touch the Neon database from .env.local in tests
 os.environ["WEB_DIST_DIR"] = str(_tmp / "no-dist")
 os.environ["ANTHROPIC_API_KEY"] = ""
 

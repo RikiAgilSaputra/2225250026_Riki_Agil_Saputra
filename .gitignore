@@ -1,4 +1,6 @@
 .env
+.env.local
+.env.*.local
 *.db
 __pycache__/
 .pytest_cache/
@@ -7,3 +9,5 @@ apps/web/node_modules/
 apps/web/dist/
 apps/web/*.tsbuildinfo
 .DS_Store
+.neon
+node_modules/

@@ -121,7 +121,11 @@ LangkahKu adalah **PWA** (Progressive Web App): dibuka lewat browser lalu dipasa
 | iPhone / iPad (Safari) | Tombol **Bagikan** → *Tambah ke Layar Utama* |
 | Mac (Safari 17+) | Menu *File* → *Add to Dock* |
 
-> **Penting:** browser hanya mengizinkan pemasangan dari **HTTPS** (kecuali `localhost`). Agar HP lain bisa memasang, aplikasi harus di-*deploy* ke server ber-HTTPS (mis. Render/Railway), atau untuk uji coba sementara memakai *tunnel* HTTPS seperti Cloudflare Tunnel. Lihat [docs/07-ARCHITECTURE.md](docs/07-ARCHITECTURE.md#7-build--deploy).
+> **Penting:** browser hanya mengizinkan pemasangan dari **HTTPS** (kecuali `localhost`). Agar HP lain bisa memasang, aplikasi harus di-*deploy*.
+
+## Deploy
+
+Frontend di **Netlify**, backend di **Render**, database di **Neon** (semua paket gratis, deploy otomatis setiap `git push`). Konfigurasi: [netlify.toml](netlify.toml), [render.yaml](render.yaml). Langkah lengkap: **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)**.
 
 ---
 

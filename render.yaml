@@ -1,0 +1,44 @@
+# Render Blueprint for the LangkahKu API (FastAPI). Database: Neon Postgres (set DATABASE_URL in the dashboard).
+# Docs: docs/DEPLOYMENT.md
+services:
+  - type: web
+    name: langkahku-api
+    runtime: python
+    plan: free
+    region: singapore
+    rootDir: apps/api
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips='*'
+    healthCheckPath: /api/v1/health
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - apps/api/**
+        - content/**
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: APP_ENV
+        value: production
+      - key: DATABASE_URL # Neon POOLED connection string (host contains -pooler); app traffic
+        sync: false
+      - key: DATABASE_URL_UNPOOLED # Neon DIRECT connection string; used only to create/alter tables
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_ACCESS_TTL_MINUTES
+        value: "720"
+      - key: CORS_ORIGINS # Netlify site URL(s), comma-separated; requests via the Netlify proxy do not need it
+        sync: false
+      - key: SEED_DEMO # demo class + accounts; set to false before real students use the app
+        value: "true"
+      - key: ANTHROPIC_API_KEY # optional: enables the AI word-problem modeler
+        sync: false
+      - key: MODELER_MODEL
+        value: claude-opus-5-5
+      - key: MODELER_EFFORT
+        value: medium
+      - key: MODELER_TIMEOUT_SECONDS # below Netlify's 26 s proxy limit
+        value: "20"
+      - key: MODELER_MONTHLY_BUDGET_USD
+        value: "10"

@@ -28,7 +28,7 @@ Kebutuhan produk: [docs/02-PRD.md](docs/02-PRD.md). Jika ada konflik antara kode
 | Tailwind CSS | CSS biasa + design tokens (`src/styles/tokens.css`) | Lebih sedikit tooling; token sama dengan docs/06 |
 | Mafs + KaTeX | `components/Graph.tsx` (SVG) + `components/MathText.tsx` | Ringan, offline, warna x/y terkontrol |
 | Capacitor APK | **PWA saja** (bisa dipasang di Android, Windows, macOS, iOS tanpa store) | Permintaan pengguna: unduh langsung tanpa store; Capacitor opsional nanti |
-| PostgreSQL + Alembic + SQLAlchemy async | SQLite + `create_all` + SQLAlchemy sinkron | Mudah dijalankan lokal. **Wajib Alembic + PostgreSQL sebelum produksi** |
+| PostgreSQL + Alembic + SQLAlchemy async | SQLite lokal / **Neon PostgreSQL di produksi** (psycopg 3) + `create_all` + SQLAlchemy sinkron | Deploy: Netlify + Render + Neon ([docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)). Produksi menolak SQLite & JWT default. **Wajib Alembic sebelum dipakai siswa sungguhan** |
 | Refresh token httpOnly | Access token 12 jam di `localStorage` (bukan data pribadi) | Ganti ke refresh-token rotasi sebelum produksi (docs/10 §6.1) |
 | Diagnostik (FR-03), CSV (FR-16), offline sync jawaban (FR-17), buat soal sendiri (FR-25) | Belum dibuat | Backlog berikutnya |
 

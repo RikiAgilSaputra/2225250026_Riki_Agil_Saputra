@@ -9,7 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.core.config import get_settings
-from app.core.db import Base, SessionLocal, engine
+from app.core.db import Base, SessionLocal, engine, schema_engine
 from app.routers import attempts, auth, content, home, modeler, teacher
 from app.seed import seed
 
@@ -18,10 +18,22 @@ API_PREFIX = "/api/v1"
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    # v0.1 uses create_all on SQLite; switch to Alembic migrations before production (docs/08 §5).
-    Base.metadata.create_all(engine)
-    with SessionLocal() as db:
-        seed(db)
+    s = get_settings()
+    if s.app_env == "production":
+        # Fail loudly instead of running with a guessable secret or a database that is wiped on every deploy.
+        if s.jwt_secret.startswith("dev-only") or len(s.jwt_secret) < 32:
+            raise RuntimeError("JWT_SECRET must be set to a random value of at least 32 characters in production")
+        if engine.url.get_backend_name() == "sqlite":
+            raise RuntimeError("DATABASE_URL must point to PostgreSQL (e.g. Neon) in production")
+    # v0.1 uses create_all; switch to Alembic migrations before real use (docs/08 §5).
+    # Schema changes go over the direct (unpooled) Neon connection when it is configured.
+    ddl = schema_engine()
+    Base.metadata.create_all(ddl)
+    if ddl is not engine:
+        ddl.dispose()
+    if get_settings().seed_demo:
+        with SessionLocal() as db:
+            seed(db)
     yield
 
 

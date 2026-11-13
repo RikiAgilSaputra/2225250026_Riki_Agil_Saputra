@@ -1,0 +1,47 @@
+# Netlify: frontend PWA (apps/web). The API runs on Render; /api/* is proxied so the site stays same-origin.
+# Docs: docs/DEPLOYMENT.md
+
+[build]
+  base = "apps/web"
+  command = "npm ci && npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Proxy the API to Render. If Render gives your service another URL, change it here.
+[[redirects]]
+  from = "/api/*"
+  to = "https://langkahku-api.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+# Single-page app: every other path serves index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# The service worker and manifest must not be cached, so updates reach students quickly
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Cache-Control = "no-cache"
+    Content-Type = "application/manifest+json"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
