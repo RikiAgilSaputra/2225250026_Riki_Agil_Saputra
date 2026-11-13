@@ -1,5 +1,5 @@
 // Local development server on Node (no Deno needed): npm run api:dev → http://localhost:8000/api/v1/health
-// Reads DATABASE_URL etc. from .env.local. The web app's dev server proxies /api to this port.
+// Reads DATABASE_URL etc. from the root .env. The web app's dev server proxies /api to this port.
 import { serve } from "@hono/node-server";
 import { app } from "./app.ts";
 

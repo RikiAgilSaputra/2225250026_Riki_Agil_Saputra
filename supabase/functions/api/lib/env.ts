@@ -1,4 +1,4 @@
-// Settings from environment variables (Supabase secrets in production, .env.local for `npm run api:dev`).
+// Settings from environment variables (Supabase secrets in production, the root .env for `npm run api:dev`).
 
 // deno-lint-ignore no-explicit-any -- the function runs on Deno (Supabase) and on Node (local dev, tests)
 const g = globalThis as any;
@@ -92,7 +92,7 @@ export function settings(): Settings {
     }
     if (!s.databaseUrl) throw new Error("No database: SUPABASE_DB_URL / DATABASE_URL is not set");
   }
-  if (!s.databaseUrl) throw new Error("Set DATABASE_URL (Supabase connection string) in .env.local");
+  if (!s.databaseUrl) throw new Error("Set DATABASE_URL (Supabase connection string) in .env");
   cached = s;
   return s;
 }

@@ -6,7 +6,7 @@
     "api:content": "node scripts/build-api-content.mjs",
     "api:test": "npm run api:content && node --test \"supabase/functions/api/**/*.test.ts\"",
     "api:typecheck": "npm run api:content && tsc -p supabase/functions/api/tsconfig.json",
-    "api:dev": "npm run api:content && node --env-file-if-exists=.env.local supabase/functions/api/dev-server.ts",
+    "api:dev": "npm run api:content && node --env-file-if-exists=.env supabase/functions/api/dev-server.ts",
     "api:deploy": "npm run api:content && supabase functions deploy api --no-verify-jwt",
     "db:push": "supabase db push --remote"
   },

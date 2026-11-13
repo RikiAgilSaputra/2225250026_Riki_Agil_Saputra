@@ -16,7 +16,7 @@ Kebutuhan produk: [docs/02-PRD.md](docs/02-PRD.md). Jika ada konflik antara kode
 | Matematika UI | KaTeX (render rumus), Mafs (grafik Kartesius interaktif) |
 | Mobile | vite-plugin-pwa (offline), Capacitor 6 (Android) |
 | Backend | Python 3.12, FastAPI, Pydantic v2, SQLAlchemy 2 (async), Alembic, SymPy |
-| AI | **Produksi (Supabase): Gemini** via `@google/genai` (Interactions API, kunci Google AI Studio `GEMINI_API_KEY`, default `gemini-3.8-flash`, keluaran JSON divalidasi Zod). Claude (`claude-opus-5-5`, `messages.parse`) tetap tersedia lewat `MODELER_PROVIDER=anthropic`. Backend Python lokal masih Claude saja. Hanya di backend |
+| AI | **Produksi (Supabase): Gemini** via `@google/genai` (Interactions API, kunci Google AI Studio `GEMINI_API_KEY`, default `gemini-3.5-flash-lite` dengan cadangan `gemini-3.8-flash` bila sibuk, batas waktu keras 20 detik, keluaran JSON divalidasi Zod). Claude (`claude-opus-5-5`, `messages.parse`) tetap tersedia lewat `MODELER_PROVIDER=anthropic`. Backend Python lokal masih Claude saja. Hanya di backend |
 | Auth | JWT access token (15 menit) + refresh token (httpOnly cookie di web, Secure Storage di Android) |
 | Database | PostgreSQL 16 |
 | Tes | Vitest + React Testing Library, Playwright (E2E), pytest + httpx |
@@ -81,7 +81,7 @@ npx cap sync android   # salin build ke proyek Android
 # Backend produksi: Supabase Edge Function (dari root)
 npm run api:test                   # 37 tes di Postgres sementara (PGlite), AI di-mock
 npm run api:typecheck
-npm run api:dev                    # API :8000, DATABASE_URL dari .env.local
+npm run api:dev                    # API :8000, DATABASE_URL dari .env
 npm run db:push                    # terapkan supabase/migrations/
 npm run api:deploy                 # bundel content/ + deploy fungsi `api`
 
@@ -139,7 +139,7 @@ Aturan ini adalah inti produk. Jangan dilanggar tanpa persetujuan eksplisit.
 ## Larangan
 
 - Jangan simpan data pribadi siswa (nama, nilai) di `localStorage`; gunakan IndexedDB terenkripsi/Secure Storage hanya untuk cache yang diperlukan offline.
-- Jangan hardcode secret, URL produksi, atau kredensial — gunakan `.env` (lihat [.env.example](.env.example)).
+- Jangan hardcode secret, URL produksi, atau kredensial — gunakan satu file `.env` di root (tidak di-commit; daftar variabel di [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md#variabel-lingkungan)). Jangan membuat `.env.local`/`.env.example` terpisah.
 - Jangan menambahkan pelacak/analitik pihak ketiga (pengguna adalah anak di bawah umur — lihat [docs/10-SECURITY-PRIVACY.md](docs/10-SECURITY-PRIVACY.md)).
 - Jangan mengubah skema database tanpa migrasi (`supabase/migrations/`, file baru — jangan ubah migrasi yang sudah diterapkan).
 - Jangan menulis konten soal langsung di komponen React — konten berada di `content/`.

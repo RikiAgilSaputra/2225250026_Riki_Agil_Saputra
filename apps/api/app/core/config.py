@@ -9,8 +9,8 @@ REPO_ROOT = Path(__file__).resolve().parents[4]
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        # Later files win: .env.local is written by `neon deploy` (Neon connection strings, never committed).
-        env_file=(REPO_ROOT / ".env", REPO_ROOT / ".env.local", ".env"), extra="ignore"
+        # One settings file for the whole repo: <repo>/.env (never committed).
+        env_file=REPO_ROOT / ".env", extra="ignore"
     )
 
     app_env: str = "development"
@@ -35,7 +35,7 @@ class Settings(BaseSettings):
     @field_validator("database_url")
     @classmethod
     def _default_sqlite(cls, v: str) -> str:
-        # An empty DATABASE_URL (as in .env.example) means "use the local SQLite file".
+        # An empty DATABASE_URL (as in the default .env) means "use the local SQLite file".
         return v.strip() or f"sqlite:///{(REPO_ROOT / 'apps' / 'api' / 'langkahku.db').as_posix()}"
 
     @property

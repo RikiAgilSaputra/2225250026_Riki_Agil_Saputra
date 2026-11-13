@@ -45,7 +45,7 @@ Kesetaraan diuji otomatis terhadap versi Python: 228 soal (konten dan varian tia
    npx supabase secrets set JWT_SECRET=<string-acak-minimal-32-karakter> SEED_DEMO=true
    # opsional, untuk Pemodel AI (kunci Gemini dari Google AI Studio; ketik di terminal, jangan dibagikan):
    npx supabase secrets set GEMINI_API_KEY=<kunci> MODELER_TIMEOUT_SECONDS=20 MODELER_MONTHLY_BUDGET_USD=10
-   # model default gemini-3.8-flash; ganti dengan MODELER_MODEL=... Untuk Claude: MODELER_PROVIDER=anthropic + ANTHROPIC_API_KEY
+   # model default gemini-3.5-flash-lite (cadangan gemini-3.8-flash); ganti dengan MODELER_MODEL=... Untuk Claude: MODELER_PROVIDER=anthropic + ANTHROPIC_API_KEY
    ```
 
    String acak bisa dibuat dengan `node -e "console.log(require('crypto').randomBytes(36).toString('base64url'))"`.
@@ -78,13 +78,36 @@ Kesetaraan diuji otomatis terhadap versi Python: 228 soal (konten dan varian tia
 ## Pengembangan lokal
 
 ```bash
-npm run api:test      # 37 tes (matematika, pemodel, API) di Postgres sementara (PGlite), tanpa memanggil API AI
+npm run api:test      # 38 tes (matematika, pemodel, API) di Postgres sementara (PGlite), tanpa memanggil API AI
 npm run api:typecheck # TypeScript strict
-npm run api:dev       # API di http://localhost:8000, memakai DATABASE_URL dari .env.local
+npm run api:dev       # API di http://localhost:8000, memakai DATABASE_URL dari .env
 cd apps/web && npm run dev   # frontend :5173, /api diteruskan ke :8000
 ```
 
-Untuk `api:dev`, isi `DATABASE_URL` di `.env.local` dengan connection string Supabase (Project Settings → Database → **Session pooler**). Perhatian: itu database produksi. Untuk mencoba-coba tanpa menyentuh data produksi, buat proyek Supabase kedua khusus pengembangan.
+Untuk `api:dev`, isi `DATABASE_URL` di `.env` dengan connection string Supabase (Project Settings → Database → **Session pooler**). Perhatian: itu database produksi. Untuk mencoba-coba tanpa menyentuh data produksi, buat proyek Supabase kedua khusus pengembangan.
+
+### Variabel lingkungan
+
+Semua pengaturan lokal ada di **satu file `.env` di folder utama** (tidak ada `.env.local` atau `.env.example` terpisah). File ini berisi rahasia, jadi tidak di-commit. Kalau belum ada, buat `.env` baru berisi variabel di bawah. Produksi (Supabase) tidak membaca file ini: atur dengan `npx supabase secrets set NAMA=nilai`.
+
+| Variabel | Bawaan | Keterangan |
+|---|---|---|
+| `APP_ENV` | `development` (lokal), `production` (Supabase) | Produksi menolak `JWT_SECRET` bawaan |
+| `DATABASE_URL` | kosong | Kosong: backend Python memakai SQLite lokal. `api:dev`: connection string Supabase. Di Supabase otomatis `SUPABASE_DB_URL` |
+| `JWT_SECRET` | nilai dev | **Wajib** di produksi: string acak ≥ 32 karakter |
+| `JWT_ACCESS_TTL_MINUTES` | `720` | Masa berlaku login |
+| `CORS_ORIGINS` | `http://localhost:5173` | Dipisah koma; tidak perlu bila lewat proxy Netlify |
+| `SEED_DEMO` | `true` | Akun demo `siswa`/`guru`; `false` sebelum dipakai siswa sungguhan |
+| `GEMINI_API_KEY` | kosong | Kunci Google AI Studio untuk Pemodel AI (backend Supabase) |
+| `ANTHROPIC_API_KEY` | kosong | Claude: backend Python lokal, atau `MODELER_PROVIDER=anthropic` |
+| `MODELER_PROVIDER` | `gemini` bila `GEMINI_API_KEY` terisi | `gemini` atau `anthropic` |
+| `MODELER_MODEL` | `gemini-3.5-flash-lite` (Claude: `claude-opus-5-5`) | Ubah hanya setelah menjalankan set evaluasi |
+| `MODELER_FALLBACK_MODEL` | `gemini-3.8-flash` | Dipakai bila model utama sibuk; kosong = mati |
+| `MODELER_EFFORT` | `medium` | `low`, `medium`, `high` |
+| `MODELER_TIMEOUT_SECONDS` | `30` (Supabase diset `20`) | Harus di bawah batas proxy Netlify 26 detik |
+| `MODELER_DEFAULT_DAILY_QUOTA` | `10` | Per siswa per hari |
+| `MODELER_MONTHLY_BUDGET_USD` | `50` (Supabase diset `10`) | Pemodel dijeda bila terlampaui |
+| `MODELER_PRICE_IN_PER_M`, `MODELER_PRICE_OUT_PER_M` | Gemini `1.5`/`7.5`, Claude `4`/`20` | USD per 1 juta token untuk batas anggaran |
 
 ## 5. Sebelum dipakai siswa sungguhan
 

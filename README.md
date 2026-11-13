@@ -93,7 +93,7 @@ sh scripts/start.sh
 
 Buka **http://localhost:8000**. Akun demo: siswa `siswa` / `siswa123`, guru `guru` / `guru123` (kode kelas `K7Q2MX`).
 
-Pemodel AI butuh kunci API: salin `.env.example` menjadi `.env`, isi `ANTHROPIC_API_KEY`, lalu jalankan ulang. Tanpa kunci, fitur lain tetap berjalan dan pemodel menampilkan pesan "belum aktif".
+Pemodel AI butuh kunci API: isi `ANTHROPIC_API_KEY` di file `.env` (satu-satunya file pengaturan, di folder utama; daftar variabel di [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md#variabel-lingkungan)), lalu jalankan ulang. Tanpa kunci, fitur lain tetap berjalan dan pemodel menampilkan pesan "belum aktif".
 
 ### Pengembangan
 
