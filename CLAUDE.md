@@ -28,7 +28,8 @@ Kebutuhan produk: [docs/02-PRD.md](docs/02-PRD.md). Jika ada konflik antara kode
 | Tailwind CSS | CSS biasa + design tokens (`src/styles/tokens.css`) | Lebih sedikit tooling; token sama dengan docs/06 |
 | Mafs + KaTeX | `components/Graph.tsx` (SVG) + `components/MathText.tsx` | Ringan, offline, warna x/y terkontrol |
 | Capacitor APK | **PWA saja** (bisa dipasang di Android, Windows, macOS, iOS tanpa store) | Permintaan pengguna: unduh langsung tanpa store; Capacitor opsional nanti |
-| PostgreSQL + Alembic + SQLAlchemy async | SQLite lokal / **Neon PostgreSQL di produksi** (psycopg 3) + `create_all` + SQLAlchemy sinkron | Deploy: Netlify + Render + Neon ([docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)). Produksi menolak SQLite & JWT default. **Wajib Alembic sebelum dipakai siswa sungguhan** |
+| Backend Python (FastAPI + SymPy) | **Produksi: Supabase Edge Function `supabase/functions/api`** (TypeScript/Deno: Hono, postgres.js, pecahan eksak BigInt pengganti SymPy). `apps/api` (Python) tetap ada untuk jalan lokal offline (`scripts/start.*`, SQLite) dan sebagai acuan kesetaraan | Permintaan pengguna: backend & database di Supabase, yang hanya menjalankan TypeScript. Endpoint & JSON identik (diuji: 228 soal, 46.677 jawaban, 37 respons API). **Ubah logika di kedua backend, atau hapus `apps/api` setelah disepakati** |
+| PostgreSQL + Alembic + SQLAlchemy async | **Supabase PostgreSQL** + migrasi SQL di `supabase/migrations/` (RLS aktif tanpa policy) | Deploy: Netlify + Supabase ([docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)). Produksi menolak JWT default |
 | Refresh token httpOnly | Access token 12 jam di `localStorage` (bukan data pribadi) | Ganti ke refresh-token rotasi sebelum produksi (docs/10 §6.1) |
 | Diagnostik (FR-03), CSV (FR-16), offline sync jawaban (FR-17), buat soal sendiri (FR-25) | Belum dibuat | Backlog berikutnya |
 
@@ -43,7 +44,7 @@ apps/
       lib/             # api client, math helpers, storage
       routes/          # Definisi rute
     android/           # Proyek Android hasil Capacitor (jangan edit manual kecuali konfigurasi)
-  api/                 # FastAPI
+  api/                 # FastAPI (versi Python; lokal & acuan — produksi memakai supabase/functions/api)
     app/
       routers/         # auth, classes, content, attempts, diagnostic, notes, teacher
       models/          # SQLAlchemy models
@@ -53,6 +54,9 @@ apps/
       core/            # config, security, db session
     alembic/
     tests/
+supabase/
+  migrations/          # skema database (SQL), diterapkan dengan `npm run db:push`
+  functions/api/       # backend produksi (Edge Function): routes/, services/, math/, modeler/, lib/, tests/
 content/               # Materi & soal dalam JSON (sumber kebenaran konten), divalidasi skema
   path.json            # Jalur "Belajar & Literasi": 6 tahap; setiap modul wajib muncul tepat sekali
   modules/             # prerequisite, spldv, materi, literacy, bank_soal
@@ -74,7 +78,14 @@ npm run test:e2e       # Playwright
 npm run lint           # ESLint + Prettier check
 npx cap sync android   # salin build ke proyek Android
 
-# Backend (dari apps/api)
+# Backend produksi: Supabase Edge Function (dari root)
+npm run api:test                   # 35 tes di Postgres sementara (PGlite), Claude di-mock
+npm run api:typecheck
+npm run api:dev                    # API :8000, DATABASE_URL dari .env.local
+npm run db:push                    # terapkan supabase/migrations/
+npm run api:deploy                 # bundel content/ + deploy fungsi `api`
+
+# Backend Python (dari apps/api) — lokal/acuan
 uvicorn app.main:app --reload --port 8000
 pytest -q                          # tanpa memanggil Claude API (di-mock)
 pytest -m modeler_eval             # set evaluasi pemodel — MEMANGGIL API & BERBIAYA, jalankan hanya bila diminta
@@ -112,6 +123,7 @@ Aturan ini adalah inti produk. Jangan dilanggar tanpa persetujuan eksplisit.
 6. Selalu periksa `response.stop_reason == "refusal"` sebelum membaca `parsed_output`.
 7. Model, effort, dan versi prompt diatur lewat `.env` (`MODELER_MODEL`, `MODELER_EFFORT`) dan `PROMPT_VERSION`. Perubahan apa pun pada ketiganya wajib diikuti menjalankan set evaluasi dan mencatat hasilnya.
 8. Tes otomatis memakai respons Claude tiruan (mock); jangan memanggil API sungguhan di CI.
+9. Padanan di backend Supabase: `modeler/schema.ts` (Zod), `modeler/guard.ts`, `modeler/verifier.ts`, `modeler/prompt.ts` (salinan persis prompt Python; ubah keduanya bersamaan).
 
 ## Konvensi Kode
 
@@ -119,7 +131,7 @@ Aturan ini adalah inti produk. Jangan dilanggar tanpa persetujuan eksplisit.
 - Komponen React: function component + hooks, satu komponen per file, nama `PascalCase.tsx`.
 - State server → TanStack Query; state UI lokal → `useState`/Zustand. Jangan duplikasi data server di Zustand.
 - Python: type hints wajib, Ruff untuk lint & format, router tipis — logika di `services/`.
-- Validasi jawaban matematis **selalu di backend** dengan SymPy (`services/step_checker.py`); frontend hanya memberi umpan balik awal (format).
+- Validasi jawaban matematis **selalu di backend**: `supabase/functions/api/services/step_checker.ts` (produksi) dan `services/step_checker.py` (Python, SymPy); frontend hanya memberi umpan balik awal (format).
 - Identifier, nama file, endpoint, dan komentar kode dalam **bahasa Inggris**; teks yang tampil ke pengguna dalam **bahasa Indonesia** dan disimpan di file i18n `src/locales/id.json`.
 - Commit: Conventional Commits (`feat:`, `fix:`, `docs:`, `content:`, `test:`, `chore:`).
 - Setiap fitur baru menyertakan tes; setiap endpoint baru didokumentasikan di [docs/09-API-SPEC.md](docs/09-API-SPEC.md).
@@ -129,7 +141,7 @@ Aturan ini adalah inti produk. Jangan dilanggar tanpa persetujuan eksplisit.
 - Jangan simpan data pribadi siswa (nama, nilai) di `localStorage`; gunakan IndexedDB terenkripsi/Secure Storage hanya untuk cache yang diperlukan offline.
 - Jangan hardcode secret, URL produksi, atau kredensial — gunakan `.env` (lihat [.env.example](.env.example)).
 - Jangan menambahkan pelacak/analitik pihak ketiga (pengguna adalah anak di bawah umur — lihat [docs/10-SECURITY-PRIVACY.md](docs/10-SECURITY-PRIVACY.md)).
-- Jangan mengubah skema database tanpa migrasi Alembic.
+- Jangan mengubah skema database tanpa migrasi (`supabase/migrations/`, file baru — jangan ubah migrasi yang sudah diterapkan).
 - Jangan menulis konten soal langsung di komponen React — konten berada di `content/`.
 
 ## Referensi Dokumen

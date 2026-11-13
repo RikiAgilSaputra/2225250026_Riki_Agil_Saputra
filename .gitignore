@@ -9,5 +9,9 @@ apps/web/node_modules/
 apps/web/dist/
 apps/web/*.tsbuildinfo
 .DS_Store
-.neon
+
 node_modules/
+
+# Generated from content/ by scripts/build-api-content.mjs
+supabase/functions/api/content.gen.ts
+.neon

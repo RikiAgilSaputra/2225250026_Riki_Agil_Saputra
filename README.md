@@ -125,7 +125,12 @@ LangkahKu adalah **PWA** (Progressive Web App): dibuka lewat browser lalu dipasa
 
 ## Deploy
 
-Frontend di **Netlify**, backend di **Render**, database di **Neon** (semua paket gratis, deploy otomatis setiap `git push`). Konfigurasi: [netlify.toml](netlify.toml), [render.yaml](render.yaml). Langkah lengkap: **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)**.
+Frontend di **Netlify**, backend dan database di **Supabase** (Edge Function `api` + PostgreSQL). Konfigurasi: [netlify.toml](netlify.toml), [supabase/](supabase/). Langkah lengkap: **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)**.
+
+```bash
+npm install            # dari root: paket backend Supabase
+npm run api:test       # 35 tes backend Supabase (tanpa internet, tanpa Claude API)
+```
 
 ---
 

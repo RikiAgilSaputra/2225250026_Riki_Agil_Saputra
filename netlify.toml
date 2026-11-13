@@ -1,4 +1,4 @@
-# Netlify: frontend PWA (apps/web). The API runs on Render; /api/* is proxied so the site stays same-origin.
+# Netlify: frontend PWA (apps/web). The API is a Supabase Edge Function ("api"); /api/* is proxied so the site stays same-origin.
 # Docs: docs/DEPLOYMENT.md
 
 [build]
@@ -9,10 +9,10 @@
 [build.environment]
   NODE_VERSION = "20"
 
-# Proxy the API to Render. If Render gives your service another URL, change it here.
+# Proxy the API to the Supabase Edge Function "api" (project ref kxpufvxuskynjxewxxhm).
 [[redirects]]
   from = "/api/*"
-  to = "https://langkahku-api.onrender.com/api/:splat"
+  to = "https://kxpufvxuskynjxewxxhm.supabase.co/functions/v1/api/:splat"
   status = 200
   force = true
 

@@ -36,8 +36,8 @@ export const setUnauthorizedHandler = (fn: () => void) => {
   onUnauthorized = fn
 }
 
-// The free Render server sleeps when idle and needs up to ~1 minute to wake up; the Netlify proxy
-// answers 502/503/504 meanwhile. Requests that are safe to repeat are retried with a short pause.
+// The API (Supabase Edge Function) may need a moment on a cold start; the proxy may
+// answer 502/503/504 meanwhile. Requests that are safe to repeat are retried with a short pause.
 const WAKE_STATUSES = new Set([502, 503, 504])
 const WAKE_RETRIES = 4
 const WAKE_DELAY_MS = 5000

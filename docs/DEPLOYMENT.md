@@ -1,97 +1,114 @@
-# Deployment: Netlify (frontend) + Render (backend) + Neon (database)
+# Deployment: Netlify (frontend) + Supabase (backend & database)
 
 ```mermaid
 flowchart LR
     U[Siswa / guru<br/>browser atau PWA] --> N["Netlify<br/>apps/web (PWA)"]
-    N -- "/api/* (proxy)" --> R["Render<br/>apps/api (FastAPI)"]
-    R --> DB[("Neon<br/>PostgreSQL")]
-    R -. opsional .-> C[Claude API]
+    N -- "/api/* (proxy)" --> F["Supabase Edge Function<br/>supabase/functions/api"]
+    F --> DB[("Supabase<br/>PostgreSQL")]
+    F -. opsional .-> C[Claude API]
 ```
 
-- **Netlify** menyajikan PWA dan meneruskan `/api/*` ke Render (`netlify.toml`). Situs tetap satu domain: tanpa masalah CORS, dan cache offline tetap jalan.
-- **Render** menjalankan FastAPI dari `render.yaml` (paket gratis, region Singapura).
-- **Neon** menyimpan data. Disk Render gratis terhapus setiap deploy, jadi SQLite tidak bisa dipakai di produksi (server menolak berjalan bila `DATABASE_URL` masih SQLite).
+- **Netlify** menyajikan PWA dan meneruskan `/api/*` ke Supabase (`netlify.toml`). Situs tetap satu domain: tanpa masalah CORS, dan cache offline tetap jalan.
+- **Supabase Edge Function `api`** adalah backend (TypeScript, Deno). Endpoint dan JSON-nya sama dengan backend FastAPI sebelumnya, jadi frontend tidak berubah.
+- **Supabase Postgres** menyimpan data. Tabel dibuat dari `supabase/migrations/` (bukan `create_all`). Semua tabel memakai RLS tanpa policy, jadi data siswa tidak bisa dibaca lewat Data API publik Supabase; hanya Edge Function yang mengaksesnya.
 
-Semua layanan di bawah punya paket gratis. Deploy terjadi otomatis setiap kali ada `git push` ke GitHub.
+Supabase Edge Functions hanya menjalankan TypeScript, bukan Python. Karena itu backend Python (`apps/api`) diporting ke `supabase/functions/api`:
+
+| Python (lama) | TypeScript (Supabase) |
+|---|---|
+| SymPy di `mathparse.py`, `step_checker.py`, `step_builder.py` | `math/frac.ts` (pecahan eksak BigInt), `math/mathparse.ts`, `services/step_checker.ts`, `services/step_builder.ts` |
+| FastAPI + SQLAlchemy | Hono + postgres.js |
+| `anthropic` (`messages.parse` + Pydantic) | `@anthropic-ai/sdk` (`messages.parse` + Zod), prompt dan model sama |
+
+Kesetaraan diuji otomatis terhadap versi Python: 228 soal (konten dan varian tiap metode) identik, 46.677 jawaban contoh menghasilkan penilaian dan kode kesalahan yang sama, dan 37 permintaan API menghasilkan status dan bentuk JSON yang sama.
 
 ---
 
-## 1. Neon: database
+## 1. Supabase: proyek dan database
 
-Proyek Neon sudah tertaut ke repositori ini lewat CLI Neon (`neon.ts`, `.neon`; cabang `production`, region Singapura, PostgreSQL 18):
+1. Daftar di <https://supabase.com> (bisa dengan akun GitHub) → **New project** → nama `langkahku`, region **Southeast Asia (Singapore)**. Simpan password database di tempat aman.
+2. Catat **Project ref** (Project Settings → General), misalnya `abcdefghijklmnopqrst`.
+3. Dari folder repositori:
 
-```bash
-npm i -g neon@latest
-neon login          # sekali, lewat browser
-neon deploy         # menerapkan neon.ts dan menulis variabel Neon ke .env.local (tidak di-commit)
-```
+   ```bash
+   npm install
+   npx supabase login                               # sekali, lewat browser
+   npx supabase link --project-ref <PROJECT_REF>    # meminta password database
+   npm run db:push                                  # membuat tabel dari supabase/migrations/
+   ```
 
-Backend membaca `.env.local` otomatis. Dua variabel yang dipakai:
+## 2. Supabase: deploy backend (Edge Function `api`)
 
-| Variabel | Jenis koneksi | Dipakai untuk |
-|---|---|---|
-| `DATABASE_URL` | **Pooled** (host berakhiran `-pooler`) | Semua permintaan aplikasi |
-| `DATABASE_URL_UNPOOLED` | **Direct** | Membuat/mengubah tabel saat server mulai (anjuran Neon untuk perubahan skema) |
+1. Atur secret (sekali; nilai tidak disimpan di repositori):
 
-Untuk Render, salin kedua nilai itu dari `.env.local` (atau Neon Console → **Connect**) tanpa membagikannya di tempat lain. Tabel dibuat otomatis saat backend pertama kali berjalan.
+   ```bash
+   npx supabase secrets set JWT_SECRET=<string-acak-minimal-32-karakter> SEED_DEMO=true
+   # opsional, untuk Pemodel AI:
+   npx supabase secrets set ANTHROPIC_API_KEY=<kunci> MODELER_TIMEOUT_SECONDS=20 MODELER_MONTHLY_BUDGET_USD=10
+   ```
 
-> **Perhatian:** dengan `.env.local`, server **lokal** juga tersambung ke cabang `production`. Untuk mencoba-coba tanpa mengubah data produksi, buat cabang pengembangan: `neon checkout dev --create` lalu `neon deploy` (cabang dev kedaluwarsa otomatis 7 hari, sesuai `neon.ts`). Tes otomatis (`pytest`) selalu memakai SQLite sementara dan tidak menyentuh Neon.
+   String acak bisa dibuat dengan `node -e "console.log(require('crypto').randomBytes(36).toString('base64url'))"`.
+   Koneksi database (`SUPABASE_DB_URL`) disediakan Supabase secara otomatis.
+2. Deploy:
 
-## 2. Render: deploy backend
+   ```bash
+   npm run api:deploy
+   ```
 
-1. Daftar di <https://render.com> dengan akun GitHub, beri akses ke repositori `2225250026_Riki_Agil_Saputra`.
-2. **New → Blueprint** → pilih repositori → Render membaca `render.yaml` dan membuat layanan **`langkahku-api`**.
-3. Isi variabel yang diminta (`sync: false`):
+   Perintah ini membundel `content/` ke dalam fungsi, lalu menjalankan `supabase functions deploy api --no-verify-jwt`. Aplikasi memakai login sendiri (JWT), bukan Supabase Auth, jadi pemeriksaan JWT bawaan Supabase dimatikan untuk fungsi ini.
+3. Cek di browser: `https://<PROJECT_REF>.supabase.co/functions/v1/api/v1/health` → `{"ok":true,...}`. Akun demo dibuat pada permintaan pertama.
+4. Ganti `GANTI-PROJECT-REF` di `netlify.toml` (bagian `[[redirects]] from = "/api/*"`) dengan project ref, lalu commit dan push.
 
-   | Variabel | Isi |
-   |---|---|
-   | `DATABASE_URL` | Connection string Neon **pooled** dari langkah 1 |
-   | `DATABASE_URL_UNPOOLED` | Connection string Neon **direct** dari langkah 1 |
-   | `CORS_ORIGINS` | URL Netlify, misalnya `https://langkahku.netlify.app` (boleh dikosongkan karena lewat proxy) |
-   | `ANTHROPIC_API_KEY` | Opsional, untuk Pemodel AI. Kosongkan bila belum dipakai |
-
-   `JWT_SECRET` dibuat otomatis oleh Render.
-4. **Apply** → tunggu build selesai (±3–5 menit).
-5. Catat URL layanan, misalnya `https://langkahku-api.onrender.com`. Cek di browser:
-   `https://langkahku-api.onrender.com/api/v1/health` → `{"ok": true, ...}`
-
-> Jika Render memberi URL lain (nama sudah dipakai orang), ganti alamat di `netlify.toml` bagian `[[redirects]] from = "/api/*"`, lalu commit dan push.
+> Konten (`content/`) ikut dibundel saat deploy. Setelah mengubah materi atau soal, jalankan lagi `npm run api:deploy`.
 
 ## 3. Netlify: deploy frontend
 
 1. Daftar di <https://app.netlify.com> dengan akun GitHub.
 2. **Add new site → Import an existing project → GitHub** → pilih repositori.
 3. Netlify membaca `netlify.toml` (base `apps/web`, perintah `npm ci && npm run build`, folder `dist`). Tidak perlu mengisi apa pun, klik **Deploy**.
-4. (Opsional) **Site configuration → Change site name** → misalnya `langkahku` → alamat menjadi `https://langkahku.netlify.app`. Masukkan alamat ini ke `CORS_ORIGINS` di Render.
+4. (Opsional) **Site configuration → Change site name** → misalnya `langkahku` → `https://langkahku.netlify.app`. Bila frontend memanggil API langsung (tanpa proxy), isi `CORS_ORIGINS` dengan alamat ini: `npx supabase secrets set CORS_ORIGINS=https://langkahku.netlify.app`.
 
 ## 4. Uji setelah deploy
 
 1. Buka situs Netlify → masuk dengan akun demo **siswa / siswa123** atau **guru / guru123**.
-   Permintaan pertama setelah server lama diam bisa memakan ±1 menit (server gratis Render "tidur"); aplikasi menampilkan "Server sedang dinyalakan…" dan mencoba ulang otomatis.
-2. Buka satu modul, kerjakan satu soal, lalu cek **Kemajuan** → poin bertambah (berarti data tersimpan di Neon).
+2. Buka satu modul, kerjakan satu soal, lalu cek **Kemajuan** → poin bertambah (data tersimpan di Supabase).
 3. Di HP: buka situs di Chrome → **Pasang aplikasi**; di iPhone: Safari → Bagikan → **Tambah ke Layar Utama**.
+
+## Pengembangan lokal
+
+```bash
+npm run api:test      # 35 tes (matematika, pemodel, API) di Postgres sementara (PGlite), tanpa Claude API
+npm run api:typecheck # TypeScript strict
+npm run api:dev       # API di http://localhost:8000, memakai DATABASE_URL dari .env.local
+cd apps/web && npm run dev   # frontend :5173, /api diteruskan ke :8000
+```
+
+Untuk `api:dev`, isi `DATABASE_URL` di `.env.local` dengan connection string Supabase (Project Settings → Database → **Session pooler**). Perhatian: itu database produksi. Untuk mencoba-coba tanpa menyentuh data produksi, buat proyek Supabase kedua khusus pengembangan.
 
 ## 5. Sebelum dipakai siswa sungguhan
 
-- Ubah `SEED_DEMO` menjadi `false` di Render (akun demo memakai password yang diketahui umum), atau segera ganti password akun demo.
+- `npx supabase secrets set SEED_DEMO=false` (akun demo memakai password yang diketahui umum), atau segera ganti password akun demo.
 - Baca [10-SECURITY-PRIVACY.md](10-SECURITY-PRIVACY.md): persetujuan orang tua, kebijakan privasi, dan pengungkapan pemakaian AI.
-- Ganti `create_all` dengan migrasi Alembic dan pertimbangkan refresh token (lihat "Perbedaan v0.1" di [CLAUDE.md](../CLAUDE.md)).
+- Perubahan skema selalu lewat file baru di `supabase/migrations/` (`npx supabase migration new <nama>`), lalu `npm run db:push`.
 
 ## Batasan paket gratis
 
 | Layanan | Batasan | Dampak |
 |---|---|---|
-| Render Free | Server tidur setelah 15 menit tanpa akses; bangun ±50 detik | Akses pertama lambat; aplikasi mencoba ulang otomatis |
-| Render Free | 750 jam/bulan | Cukup untuk satu layanan yang menyala terus |
+| Supabase Free | Proyek dijeda setelah 7 hari tanpa aktivitas | Aktifkan lagi lewat dashboard (Restore); data tetap ada |
+| Supabase Free | 500 MB database, 500 ribu pemanggilan Edge Function/bulan | Cukup untuk beberapa kelas |
+| Supabase Edge Function | Waktu CPU terbatas per permintaan | Password di-hash dengan bcrypt cost 10 agar tetap di bawah batas |
 | Netlify proxy | Batas waktu 26 detik per permintaan | Pemodel AI diberi batas 20 detik (`MODELER_TIMEOUT_SECONDS`) |
-| Neon Free | 0,5 GB penyimpanan, komputasi tidur saat idle | Cukup untuk beberapa kelas; bangun cepat (< 1 detik) |
 
 ## Pemecahan masalah
 
 | Gejala | Penyebab & solusi |
 |---|---|
-| Deploy Render gagal: `DATABASE_URL must point to PostgreSQL` | `DATABASE_URL` belum diisi di Render → isi connection string Neon |
-| Deploy Render gagal: `JWT_SECRET must be set` | Variabel terhapus → isi string acak ≥ 32 karakter |
-| Situs terbuka tetapi login selalu gagal "Server sedang dinyalakan" | Alamat proxy di `netlify.toml` tidak sama dengan URL Render → samakan, commit, push |
-| Error `password authentication failed` di log Render | Connection string Neon salah atau password sudah di-reset → salin ulang dari Neon |
+| Health menjawab error 500, log fungsi: `JWT_SECRET must be set` | Secret belum diisi → `npx supabase secrets set JWT_SECRET=...` |
+| Health menjawab `401 Missing authorization header` | Fungsi ter-deploy dengan pemeriksaan JWT → deploy ulang dengan `npm run api:deploy` (memakai `--no-verify-jwt`) |
+| Error `relation "users" does not exist` di log | Migrasi belum dijalankan → `npm run db:push` |
+| Login gagal "Server sedang dinyalakan" | Alamat proxy di `netlify.toml` masih `GANTI-PROJECT-REF` atau salah → samakan, commit, push |
+| Materi baru tidak muncul | Konten dibundel saat deploy → `npm run api:deploy` |
 | Perubahan tidak muncul di HP | PWA memakai cache; tutup lalu buka lagi aplikasinya (pembaruan dipasang otomatis) |
+
+Log fungsi: Supabase Dashboard → Edge Functions → `api` → **Logs**.

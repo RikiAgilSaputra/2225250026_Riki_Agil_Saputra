@@ -11,7 +11,7 @@ class Base(DeclarativeBase):
 
 
 def normalize_database_url(url: str) -> str:
-    """Hosted Postgres (Neon, Render) hands out postgres:// or postgresql:// URLs; use the psycopg 3 driver."""
+    """Hosted Postgres (Neon, Supabase) hands out postgres:// or postgresql:// URLs; use the psycopg 3 driver."""
     for prefix in ("postgres://", "postgresql://"):
         if url.startswith(prefix):
             return "postgresql+psycopg://" + url[len(prefix):]
