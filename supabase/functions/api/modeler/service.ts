@@ -11,9 +11,6 @@ import { PROMPT_VERSION, repairMessage, userMessage } from "./prompt.ts";
 import type { WordProblemModel } from "./schema.ts";
 import { type Verification, verify } from "./verifier.ts";
 
-// Opus 5.5 list prices (USD per token) for the monthly budget guard (docs/14 §10)
-const PRICE_IN = 4 / 1_000_000;
-const PRICE_OUT = 20 / 1_000_000;
 
 export const MESSAGES: Record<string, string> = {
   not_spldv: "Soal ini bukan SPLDV, jadi belum bisa dimodelkan di sini.",
@@ -57,7 +54,8 @@ async function monthCost(sql: Db): Promise<number> {
   const [r] = await sql`
     select coalesce(sum(input_tokens), 0)::float8 as tin, coalesce(sum(output_tokens), 0)::float8 as tout
     from modeler_submissions where created_at >= date_trunc('month', now() at time zone 'utc') at time zone 'utc'`;
-  return r.tin * PRICE_IN + r.tout * PRICE_OUT;
+  // Prices of the selected provider/model come from settings (docs/14 §10)
+  return r.tin * settings().modelerPriceIn + r.tout * settings().modelerPriceOut;
 }
 
 const PUBLIC_KEYS = [
@@ -133,7 +131,7 @@ export async function analyze(sql: Db, user: User, cls: ClassRow | null, rawText
       return await callModel(content);
     } catch (e) {
       if (e instanceof ModelerUnavailable) {
-        throw new ApiError(503, "MODELER_UNAVAILABLE", "Pemodel AI belum aktif di server ini (ANTHROPIC_API_KEY belum diisi).");
+        throw new ApiError(503, "MODELER_UNAVAILABLE", "Pemodel AI belum aktif di server ini (kunci API belum diisi atau tidak valid).");
       }
       if (e instanceof ModelerBusy) throw new ApiError(429, "MODELER_BUSY", "Pemodel sedang sibuk, coba lagi sebentar.");
       throw e;

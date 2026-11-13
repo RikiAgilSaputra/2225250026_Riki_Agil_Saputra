@@ -7,6 +7,7 @@
     "zod": "npm:zod@4.6.7",
     "@anthropic-ai/sdk": "npm:@anthropic-ai/sdk@1.8.0",
     "@anthropic-ai/sdk/": "npm:/@anthropic-ai/sdk@1.8.0/",
+    "@google/genai": "npm:@google/genai@3.3.0",
     "@hono/node-server": "npm:@hono/node-server@2.1.8"
   }
 }

@@ -5,7 +5,7 @@ flowchart LR
     U[Siswa / guru<br/>browser atau PWA] --> N["Netlify<br/>apps/web (PWA)"]
     N -- "/api/* (proxy)" --> F["Supabase Edge Function<br/>supabase/functions/api"]
     F --> DB[("Supabase<br/>PostgreSQL")]
-    F -. opsional .-> C[Claude API]
+    F -. opsional .-> C["Gemini API<br/>(atau Claude)"]
 ```
 
 - **Netlify** menyajikan PWA dan meneruskan `/api/*` ke Supabase (`netlify.toml`). Situs tetap satu domain: tanpa masalah CORS, dan cache offline tetap jalan.
@@ -43,8 +43,9 @@ Kesetaraan diuji otomatis terhadap versi Python: 228 soal (konten dan varian tia
 
    ```bash
    npx supabase secrets set JWT_SECRET=<string-acak-minimal-32-karakter> SEED_DEMO=true
-   # opsional, untuk Pemodel AI:
-   npx supabase secrets set ANTHROPIC_API_KEY=<kunci> MODELER_TIMEOUT_SECONDS=20 MODELER_MONTHLY_BUDGET_USD=10
+   # opsional, untuk Pemodel AI (kunci Gemini dari Google AI Studio; ketik di terminal, jangan dibagikan):
+   npx supabase secrets set GEMINI_API_KEY=<kunci> MODELER_TIMEOUT_SECONDS=20 MODELER_MONTHLY_BUDGET_USD=10
+   # model default gemini-3.8-flash; ganti dengan MODELER_MODEL=... Untuk Claude: MODELER_PROVIDER=anthropic + ANTHROPIC_API_KEY
    ```
 
    String acak bisa dibuat dengan `node -e "console.log(require('crypto').randomBytes(36).toString('base64url'))"`.
@@ -77,7 +78,7 @@ Kesetaraan diuji otomatis terhadap versi Python: 228 soal (konten dan varian tia
 ## Pengembangan lokal
 
 ```bash
-npm run api:test      # 35 tes (matematika, pemodel, API) di Postgres sementara (PGlite), tanpa Claude API
+npm run api:test      # 37 tes (matematika, pemodel, API) di Postgres sementara (PGlite), tanpa memanggil API AI
 npm run api:typecheck # TypeScript strict
 npm run api:dev       # API di http://localhost:8000, memakai DATABASE_URL dari .env.local
 cd apps/web && npm run dev   # frontend :5173, /api diteruskan ke :8000
@@ -89,6 +90,7 @@ Untuk `api:dev`, isi `DATABASE_URL` di `.env.local` dengan connection string Sup
 
 - `npx supabase secrets set SEED_DEMO=false` (akun demo memakai password yang diketahui umum), atau segera ganti password akun demo.
 - Baca [10-SECURITY-PRIVACY.md](10-SECURITY-PRIVACY.md): persetujuan orang tua, kebijakan privasi, dan pengungkapan pemakaian AI.
+- **Gemini paket gratis:** menurut ketentuan Gemini API, isi permintaan di paket gratis (unpaid) dapat dipakai Google untuk meningkatkan produknya. Pengguna adalah anak di bawah umur, jadi aktifkan penagihan (paid tier) di Google AI Studio sebelum siswa sungguhan memakai Pemodel AI, atau matikan Pemodel AI per kelas. PII tetap disamarkan oleh `guard.ts` sebelum dikirim.
 - Perubahan skema selalu lewat file baru di `supabase/migrations/` (`npx supabase migration new <nama>`), lalu `npm run db:push`.
 
 ## Batasan paket gratis

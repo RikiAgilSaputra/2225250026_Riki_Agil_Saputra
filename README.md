@@ -129,7 +129,7 @@ Frontend di **Netlify**, backend dan database di **Supabase** (Edge Function `ap
 
 ```bash
 npm install            # dari root: paket backend Supabase
-npm run api:test       # 35 tes backend Supabase (tanpa internet, tanpa Claude API)
+npm run api:test       # 37 tes backend Supabase (tanpa internet, tanpa memanggil API AI)
 ```
 
 ---

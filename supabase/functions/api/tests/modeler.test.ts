@@ -68,3 +68,44 @@ test("MV-10 PII masked", () => {
   assert.ok(maskPii("hubungi 081234567890 ya").includes("[nomor HP]"));
   assert.ok(maskPii("email ani@sekolah.sch.id").includes("[email]"));
 });
+
+// ------------------------------------------------------------------ Gemini adapter (no network)
+test("Gemini schema: nullable as type array, strict objects, no $schema", async () => {
+  const { geminiSchema } = await import("../modeler/gemini.ts");
+  const s = geminiSchema() as Record<string, any>; // deno-lint-ignore no-explicit-any -- JSON Schema
+  assert.equal(s.$schema, undefined);
+  assert.equal(s.additionalProperties, false);
+  assert.deepEqual(s.properties.not_spldv_reason.type, ["string", "null"]);
+  assert.deepEqual(s.properties.variables.items.properties.symbol.enum, ["x", "y"]);
+  assert.ok(s.required.includes("equations") && s.required.includes("target_unit"));
+  assert.ok(!JSON.stringify(s).includes("anyOf"));
+});
+
+test("Gemini result mapping: completed, blocked, invalid JSON", async () => {
+  const { fromInteraction } = await import("../modeler/gemini.ts");
+  const usage = { total_input_tokens: 900, total_output_tokens: 200, total_thought_tokens: 50 };
+  const good = fromInteraction(
+    { status: "completed", output_text: JSON.stringify(makeModel(["2*x + 3*y = 19000", "x + 2*y = 11000"])), usage },
+    12, "gemini-test",
+  );
+  assert.equal(good.refused, false);
+  assert.equal(good.model?.equations[0].equation, "2*x + 3*y = 19000");
+  assert.equal(good.inputTokens, 900);
+  assert.equal(good.outputTokens, 250); // thinking tokens are billed as output
+  assert.equal(good.modelId, "gemini-test");
+  const blocked = fromInteraction({ status: "failed", usage }, 5, "gemini-test");
+  assert.equal(blocked.refused, true);
+  assert.equal(blocked.model, null);
+  const broken = fromInteraction({ status: "completed", output_text: "{not json" }, 5, "gemini-test");
+  assert.equal(broken.refused, false);
+  assert.equal(broken.model, null);
+  const wrongShape = fromInteraction({ status: "completed", output_text: '{"is_spldv": true}' }, 5, "gemini-test");
+  assert.equal(wrongShape.model, null);
+});
+
+test("Gemini fallback model order", async () => {
+  const { modelOrder } = await import("../modeler/gemini.ts");
+  assert.deepEqual(modelOrder("gemini-3.8-flash", "gemini-3.5-flash-lite"), ["gemini-3.8-flash", "gemini-3.5-flash-lite"]);
+  assert.deepEqual(modelOrder("gemini-3.8-flash", ""), ["gemini-3.8-flash"]); // MODELER_FALLBACK_MODEL="" disables
+  assert.deepEqual(modelOrder("gemini-3.8-flash", "gemini-3.8-flash"), ["gemini-3.8-flash"]);
+});

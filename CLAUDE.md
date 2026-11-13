@@ -16,7 +16,7 @@ Kebutuhan produk: [docs/02-PRD.md](docs/02-PRD.md). Jika ada konflik antara kode
 | Matematika UI | KaTeX (render rumus), Mafs (grafik Kartesius interaktif) |
 | Mobile | vite-plugin-pwa (offline), Capacitor 6 (Android) |
 | Backend | Python 3.12, FastAPI, Pydantic v2, SQLAlchemy 2 (async), Alembic, SymPy |
-| AI | Claude API via SDK Python `anthropic` — model `claude-opus-5-5`, `client.messages.parse()` + Pydantic, hanya di backend |
+| AI | **Produksi (Supabase): Gemini** via `@google/genai` (Interactions API, kunci Google AI Studio `GEMINI_API_KEY`, default `gemini-3.8-flash`, keluaran JSON divalidasi Zod). Claude (`claude-opus-5-5`, `messages.parse`) tetap tersedia lewat `MODELER_PROVIDER=anthropic`. Backend Python lokal masih Claude saja. Hanya di backend |
 | Auth | JWT access token (15 menit) + refresh token (httpOnly cookie di web, Secure Storage di Android) |
 | Database | PostgreSQL 16 |
 | Tes | Vitest + React Testing Library, Playwright (E2E), pytest + httpx |
@@ -79,7 +79,7 @@ npm run lint           # ESLint + Prettier check
 npx cap sync android   # salin build ke proyek Android
 
 # Backend produksi: Supabase Edge Function (dari root)
-npm run api:test                   # 35 tes di Postgres sementara (PGlite), Claude di-mock
+npm run api:test                   # 37 tes di Postgres sementara (PGlite), AI di-mock
 npm run api:typecheck
 npm run api:dev                    # API :8000, DATABASE_URL dari .env.local
 npm run db:push                    # terapkan supabase/migrations/
@@ -120,10 +120,10 @@ Aturan ini adalah inti produk. Jangan dilanggar tanpa persetujuan eksplisit.
 3. Teks bebas dari AI tidak ditampilkan ke siswa, kecuali `source_text` yang sudah terbukti ada di input.
 4. Input siswa dibungkus `<soal>…</soal>` dan diperlakukan sebagai data. Jangan pernah memberi AI tool atau akses lain.
 5. Tidak mengirim identitas siswa (ID, nama, kelas) ke Claude API. Jalankan `guard.py` (PII, kuota, cache) sebelum setiap pemanggilan.
-6. Selalu periksa `response.stop_reason == "refusal"` sebelum membaca `parsed_output`.
-7. Model, effort, dan versi prompt diatur lewat `.env` (`MODELER_MODEL`, `MODELER_EFFORT`) dan `PROMPT_VERSION`. Perubahan apa pun pada ketiganya wajib diikuti menjalankan set evaluasi dan mencatat hasilnya.
+6. Selalu periksa penolakan sebelum membaca hasil: Claude `stop_reason == "refusal"`; Gemini status interaksi selain `completed` (diblokir/gagal) → `rejected`. Keluaran Gemini selalu divalidasi `WordProblemModelSchema` sebelum dipakai.
+7. Penyedia, model, effort, dan versi prompt diatur lewat env (`MODELER_PROVIDER`, `MODELER_MODEL`, `MODELER_EFFORT`) dan `PROMPT_VERSION`. Perubahan apa pun pada keempatnya wajib diikuti menjalankan set evaluasi dan mencatat hasilnya. (Peralihan ke Gemini 2026-11-14 belum dievaluasi; set evaluasi Python masih memanggil Claude.)
 8. Tes otomatis memakai respons Claude tiruan (mock); jangan memanggil API sungguhan di CI.
-9. Padanan di backend Supabase: `modeler/schema.ts` (Zod), `modeler/guard.ts`, `modeler/verifier.ts`, `modeler/prompt.ts` (salinan persis prompt Python; ubah keduanya bersamaan).
+9. Padanan di backend Supabase: `modeler/schema.ts` (Zod), `modeler/guard.ts`, `modeler/verifier.ts`, `modeler/prompt.ts` (salinan persis prompt Python; ubah keduanya bersamaan), `modeler/llm.ts` (Claude) dan `modeler/gemini.ts` (Gemini, `store: false`).
 
 ## Konvensi Kode
 

@@ -32,7 +32,7 @@ app.use("*", async (_c, next) => {
   await next();
 });
 
-app.get("/health", (c) => c.json({ ok: true, ai_configured: Boolean(settings().anthropicApiKey) }));
+app.get("/health", (c) => c.json({ ok: true, ai_configured: Boolean(settings().modelerApiKey) }));
 
 for (const r of [authRoutes, contentRoutes, attemptRoutes, homeRoutes, modelerRoutes, teacherRoutes]) {
   app.route("/", r);
