@@ -7,10 +7,12 @@
     "subtitle": "x dan y mewakili sesuatu",
     "icon": "var",
     "objective": "Kamu bisa menyatakan arti x dan y dari sebuah cerita.",
+    "meaning": "Variabel memberi nama pada hal yang belum diketahui, sehingga cerita bisa ditulis dalam bahasa matematika.",
+    "bridge": "Di setiap soal cerita, langkah pertamamu adalah menentukan arti x dan y.",
     "recall": [{ "label": "Persamaan linear satu variabel", "module_id": "PRE-2" }],
     "screens": [
       {
-        "concept": "variabel-wakil",
+        "concept": "variabel-wakil", "cognitive_function": "labeling",
         "instruction": "Variabel adalah wakil sesuatu yang belum diketahui nilainya.",
         "blocks": [
           { "type": "vars", "x": "harga 1 buku", "y": "harga 1 pensil" },
@@ -18,7 +20,7 @@
         ]
       },
       {
-        "concept": "kalimat-ke-pldv",
+        "concept": "kalimat-ke-pldv", "cognitive_function": "encoding",
         "instruction": "Kalimat cerita bisa ditulis menjadi persamaan dengan dua variabel.",
         "blocks": [
           { "type": "quote", "text": "Harga 2 buku dan 3 pensil Rp19.000." },
@@ -27,7 +29,7 @@
         ]
       },
       {
-        "concept": "banyak-penyelesaian",
+        "concept": "banyak-penyelesaian", "cognitive_function": "functional_relationship",
         "instruction": "Satu PLDV punya banyak pasangan (x, y) yang memenuhi.",
         "blocks": [
           { "type": "math", "text": "x + y = 5" },
@@ -68,15 +70,17 @@
     "subtitle": "Dua persamaan, satu jawaban",
     "icon": "system",
     "objective": "Kamu tahu bahwa penyelesaian SPLDV memenuhi kedua persamaan sekaligus.",
+    "meaning": "Penyelesaian SPLDV harus benar untuk kedua persamaan sekaligus, bukan hanya satu.",
+    "bridge": "Bukti logis di akhir setiap soal memeriksa hal ini: masukkan (x, y) ke kedua persamaan.",
     "recall": [{ "label": "Koordinat Kartesius", "module_id": "PRE-3" }],
     "screens": [
       {
-        "concept": "dua-persamaan",
+        "concept": "dua-persamaan", "cognitive_function": "labeling",
         "instruction": "SPLDV adalah dua PLDV yang berlaku bersamaan.",
         "blocks": [{ "type": "system", "equations": ["x + y = 5", "x − y = 1"] }]
       },
       {
-        "concept": "memenuhi-keduanya",
+        "concept": "memenuhi-keduanya", "cognitive_function": "logical_evidence",
         "instruction": "Penyelesaiannya adalah pasangan (x, y) yang cocok di kedua persamaan.",
         "blocks": [
           { "type": "math", "text": "(3, 2):  3 + 2 = 5 ✓   3 − 2 = 1 ✓" },
@@ -84,7 +88,7 @@
         ]
       },
       {
-        "concept": "titik-potong",
+        "concept": "titik-potong", "cognitive_function": "comparing",
         "instruction": "Di grafik, penyelesaiannya adalah titik potong kedua garis.",
         "blocks": [{ "type": "graph", "lines": ["x + y = 5", "x - y = 1"], "points": [{ "x": 3, "y": 2, "label": "(3, 2)" }] }]
       }
@@ -118,10 +122,12 @@
     "icon": "graph",
     "method": "graph",
     "objective": "Kamu bisa menyelesaikan SPLDV dengan menggambar dua garis.",
+    "meaning": "Grafik membuat penyelesaian terlihat: titik yang dilalui kedua garis.",
+    "bridge": "Grafik juga dipakai untuk membandingkan harga, kecepatan, atau biaya dalam kehidupan sehari-hari.",
     "recall": [{ "label": "Fungsi y = f(x)", "module_id": "PRE-4" }],
     "screens": [
       {
-        "concept": "titik-mudah",
+        "concept": "titik-mudah", "cognitive_function": "functional_relationship",
         "instruction": "Cari dua titik mudah: saat x = 0 dan saat y = 0.",
         "blocks": [
           { "type": "math", "text": "x + y = 4" },
@@ -129,12 +135,12 @@
         ]
       },
       {
-        "concept": "gambar-garis",
+        "concept": "gambar-garis", "cognitive_function": "functional_relationship",
         "instruction": "Hubungkan kedua titik menjadi garis.",
         "blocks": [{ "type": "graph", "lines": ["x + y = 4"], "points": [{ "x": 0, "y": 4 }, { "x": 4, "y": 0 }] }]
       },
       {
-        "concept": "dua-garis",
+        "concept": "dua-garis", "cognitive_function": "comparing",
         "instruction": "Gambar garis kedua. Titik potongnya adalah penyelesaian.",
         "blocks": [{ "type": "graph", "lines": ["x + y = 4", "2*x - y = 2"], "points": [{ "x": 2, "y": 2, "label": "(2, 2)" }] }]
       }
@@ -159,15 +165,17 @@
     "icon": "subst",
     "method": "substitution",
     "objective": "Kamu bisa menyelesaikan SPLDV dengan memasukkan satu persamaan ke persamaan lain.",
+    "meaning": "Substitusi mengubah dua persamaan menjadi satu persamaan yang lebih mudah diselesaikan.",
+    "bridge": "Mengganti sesuatu dengan nilai yang setara juga dipakai dalam rumus fisika dan resep masakan.",
     "recall": [{ "label": "Memindahkan suku", "module_id": "PRE-2" }],
     "screens": [
       {
-        "concept": "arti-substitusi",
+        "concept": "arti-substitusi", "cognitive_function": "labeling",
         "instruction": "Substitusi artinya MEMASUKKAN.",
         "blocks": [{ "type": "callout", "text": "Kita masukkan y dari satu persamaan ke persamaan yang lain." }]
       },
       {
-        "concept": "y-sendirian",
+        "concept": "y-sendirian", "cognitive_function": "conserving_constancy",
         "instruction": "Langkah 1: buat y sendirian di salah satu persamaan.",
         "blocks": [
           { "type": "system", "equations": ["2x + y = 7", "3x + y = 10"] },
@@ -175,7 +183,7 @@
         ]
       },
       {
-        "concept": "masukkan",
+        "concept": "masukkan", "cognitive_function": "projecting_relationships",
         "instruction": "Langkah 2: masukkan bentuk y itu ke persamaan (2).",
         "blocks": [
           { "type": "math", "text": "3x + (7 − 2x) = 10" },
@@ -183,7 +191,7 @@
         ]
       },
       {
-        "concept": "cari-y",
+        "concept": "cari-y", "cognitive_function": "projecting_relationships",
         "instruction": "Langkah 3: masukkan x = 3 untuk mencari y.",
         "blocks": [{ "type": "math", "text": "y = 7 − 2(3) = 1" }, { "type": "callout", "text": "Penyelesaian: (3, 1)" }]
       }
@@ -209,15 +217,17 @@
     "icon": "elim",
     "method": "elimination",
     "objective": "Kamu bisa menyelesaikan SPLDV dengan menghilangkan salah satu variabel.",
+    "meaning": "Eliminasi menghilangkan satu variabel agar yang tersisa bisa dihitung.",
+    "bridge": "Membandingkan dua keadaan untuk melihat selisihnya adalah cara berpikir yang sama dengan eliminasi.",
     "recall": [{ "label": "Bilangan bulat", "module_id": "PRE-1" }],
     "screens": [
       {
-        "concept": "arti-eliminasi",
+        "concept": "arti-eliminasi", "cognitive_function": "labeling",
         "instruction": "Eliminasi artinya MENGHILANGKAN.",
         "blocks": [{ "type": "callout", "text": "Kita hilangkan satu variabel supaya tinggal satu." }]
       },
       {
-        "concept": "samakan-koefisien",
+        "concept": "samakan-koefisien", "cognitive_function": "conserving_constancy",
         "instruction": "Samakan dulu angka di depan variabel yang mau dihilangkan.",
         "blocks": [
           { "type": "system", "equations": ["2x + y = 7", "3x + 2y = 12"] },
@@ -225,7 +235,7 @@
         ]
       },
       {
-        "concept": "kurangkan",
+        "concept": "kurangkan", "cognitive_function": "analyzing_integrating",
         "instruction": "Tanda sama: kurangkan. Tanda berlawanan: jumlahkan.",
         "blocks": [
           { "type": "math", "text": "4x + 2y = 14" },
@@ -234,7 +244,7 @@
         ]
       },
       {
-        "concept": "ulangi",
+        "concept": "ulangi", "cognitive_function": "analogical_thinking",
         "instruction": "Ulangi cara yang sama untuk menghilangkan x.",
         "blocks": [{ "type": "callout", "text": "Hasilnya y = 3. Penyelesaian: (2, 3)" }]
       }
@@ -260,20 +270,22 @@
     "icon": "mixed",
     "method": "mixed",
     "objective": "Kamu bisa memakai eliminasi lalu substitusi untuk menyelesaikan SPLDV.",
+    "meaning": "Metode campuran memakai bagian terkuat dari eliminasi dan substitusi.",
+    "bridge": "Memilih dan menggabungkan alat yang tepat adalah kebiasaan pemecah masalah yang baik.",
     "recall": [{ "label": "Metode Eliminasi", "module_id": "SPL-5" }],
     "screens": [
       {
-        "concept": "gabungan",
+        "concept": "gabungan", "cognitive_function": "analogical_thinking",
         "instruction": "Metode campuran = eliminasi dulu, lalu substitusi.",
         "blocks": [{ "type": "callout", "text": "Lebih cepat: cukup satu kali eliminasi." }]
       },
       {
-        "concept": "eliminasi-sekali",
+        "concept": "eliminasi-sekali", "cognitive_function": "analyzing_integrating",
         "instruction": "Hilangkan y untuk mendapatkan x.",
         "blocks": [{ "type": "system", "equations": ["x + y = 7", "x − y = 1"] }, { "type": "math", "text": "jumlahkan: 2x = 8  →  x = 4" }]
       },
       {
-        "concept": "masukkan-nilai",
+        "concept": "masukkan-nilai", "cognitive_function": "projecting_relationships",
         "instruction": "Masukkan x = 4 ke persamaan (1) untuk mendapatkan y.",
         "blocks": [{ "type": "math", "text": "4 + y = 7  →  y = 3" }]
       }

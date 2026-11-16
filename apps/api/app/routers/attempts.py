@@ -22,7 +22,7 @@ from app.services.step_checker import check_step
 
 router = APIRouter(tags=["attempts"])
 
-PUBLIC_STEP_KEYS = ("id", "instruction", "check", "choices", "modeling_stage", "show_graph", "variable", "prefilled")
+PUBLIC_STEP_KEYS = ("id", "instruction", "check", "choices", "modeling_stage", "cognitive_function", "show_graph", "variable", "prefilled")
 
 
 def sanitize(problem: dict, state: dict) -> dict:

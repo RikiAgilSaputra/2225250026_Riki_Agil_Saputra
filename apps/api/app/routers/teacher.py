@@ -68,6 +68,7 @@ def overview(user: User = Depends(teacher_only), db: Session = Depends(get_db)):
         "class": {"id": cls.id, "name": cls.name, "join_code": cls.join_code, "settings": class_settings(cls)},
         "students": sorted(rows, key=lambda r: r["name"]),
         "literacy": prog.literacy_profile(db, ids),
+        "thinking": prog.thinking_profile(db, ids),
         "hardest_steps": hard[:8],
         "module_count": len(modules),
         "submissions": [{"id": x.id, "text": x.input_text[:160], "status": x.status, "rating": x.rating,

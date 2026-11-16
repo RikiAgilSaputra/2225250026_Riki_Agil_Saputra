@@ -11,8 +11,9 @@ const METHOD_TONE: Record<Method, string> = {
   elimination: 'tone-elim',
   mixed: 'tone-mixed',
 }
-const KIND_LABEL: Record<ModuleSummary['kind'], string> = { prerequisite: 'Prasyarat', spldv: 'SPLDV', literacy: 'Literasi' }
+const KIND_LABEL: Record<ModuleSummary['kind'], string> = { thinking: 'Alat Berpikir', prerequisite: 'Prasyarat', spldv: 'SPLDV', literacy: 'Literasi' }
 const STAGE_ICON: Record<string, string> = {
+  berpikir: 'search',
   prasyarat: 'calc',
   konsep: 'var',
   metode: 'mixed',

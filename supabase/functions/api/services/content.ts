@@ -1,6 +1,6 @@
 // Learning content from content/modules/*.json (source of truth, docs/05). Port of app/content.py.
 import { learningPath, moduleFiles } from "../content.gen.ts";
-import { buildProblem } from "./step_builder.ts";
+import { buildProblem, tagCognitive } from "./step_builder.ts";
 import type { Json, Problem, Step, Story } from "./types.ts";
 
 export interface Module extends Json {
@@ -32,12 +32,14 @@ export interface Content {
 
 function handSteps(problem: Problem): Problem {
   const steps = problem.steps.map((s, i) => ({ ...s, id: `s${i + 1}`, prefilled: problem.mode === "worked" }));
+  tagCognitive(steps);
   return { ...problem, source: "content", steps };
 }
 
 export function appendExtraSteps(p: Problem): void {
   const n = p.steps.length;
   (p.extra_steps ?? []).forEach((s, i) => p.steps.push({ ...s, id: `s${n + i + 1}`, prefilled: false } as Step));
+  tagCognitive(p.steps);
 }
 
 /** Same problem, steps for another method (US-12: student picks the method). */

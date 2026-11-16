@@ -16,7 +16,7 @@ import type { Problem, Step } from "../services/types.ts";
 
 export const attemptRoutes = new Hono();
 
-const PUBLIC_STEP_KEYS = ["id", "instruction", "check", "choices", "modeling_stage", "show_graph", "variable", "prefilled"];
+const PUBLIC_STEP_KEYS = ["id", "instruction", "check", "choices", "modeling_stage", "cognitive_function", "show_graph", "variable", "prefilled"];
 
 /** Problem as the client may see it: no answer keys for unsolved steps. */
 export function sanitize(problem: Problem, state: AttemptState) {

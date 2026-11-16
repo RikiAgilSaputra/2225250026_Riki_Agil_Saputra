@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Graph } from '../components/Graph'
 import { Icon } from '../components/Icon'
 import { MathText, VarChips } from '../components/MathText'
+import { CognitiveChip } from '../components/CognitiveChip'
 import { Bar } from '../components/ProgressRing'
 import { api, ApiError } from '../lib/api'
 import { useApi } from '../lib/hooks'
@@ -297,6 +298,7 @@ export function Solver() {
                   Langkah {graded.indexOf(current) + 1}
                   {current.modeling_stage ? ` · ${STAGE_LABEL[current.modeling_stage]}` : ''}
                 </span>
+                <CognitiveChip id={current.cognitive_function} />
                 <p className="instruction" style={{ fontSize: '1.1rem' }}>
                   <MathText text={current.instruction} className="" />
                 </p>

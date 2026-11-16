@@ -110,6 +110,8 @@ contentRoutes.get("/modules/:id", async (c) => {
   return c.json({
     ...moduleSummary(m, st),
     objective: m.objective ?? null,
+    meaning: m.meaning ?? null,
+    bridge: m.bridge ?? null,
     source: m.source ?? null,
     recall: m.recall ?? [],
     screens: m.screens,

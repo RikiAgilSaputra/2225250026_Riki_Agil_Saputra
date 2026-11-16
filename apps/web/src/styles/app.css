@@ -1957,3 +1957,33 @@ table.data th {
 .scan-result.other {
   border-left: 4px solid var(--text-muted);
 }
+
+/* RMT cognitive function chip (docs/15 §4): small, folded explanation */
+.cog {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+.cog-chip {
+  border: 0;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--hint);
+  background: var(--hint-soft);
+  cursor: pointer;
+}
+.cog-detail {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+.meaning-note {
+  font-size: 0.95rem;
+}
+.chip.active {
+  background: var(--primary);
+  color: var(--on-primary);
+}

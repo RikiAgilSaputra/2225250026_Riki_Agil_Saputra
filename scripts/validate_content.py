@@ -11,6 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "apps" / "api"))
 
 from app.content import load_content  # noqa: E402
+from app.services.progress import COGNITIVE_FUNCTIONS  # noqa: E402
 from app.services.step_checker import check_step  # noqa: E402
 
 MAX_WORDS = 25
@@ -34,6 +35,16 @@ for m in content["modules"].values():
             errors.append(f"{m['id']} screen {i + 1}: instruction too long ({words(ins)} words)")
         if not screen.get("concept"):
             errors.append(f"{m['id']} screen {i + 1}: missing single concept")
+        # RMT (docs/15 §4): every screen names the cognitive function it trains
+        if screen.get("cognitive_function") not in COGNITIVE_FUNCTIONS:
+            errors.append(f"{m['id']} screen {i + 1}: cognitive_function missing or unknown")
+    # RMT mediation (docs/15 §3): meaning (why) and bridge (transcendence), short like any instruction
+    for key in ("meaning", "bridge"):
+        text = m.get(key) or ""
+        if not text:
+            errors.append(f"{m['id']}: missing {key}")
+        elif words(text) > MAX_WORDS or sentences(text) > 2:
+            errors.append(f"{m['id']}: {key} too long ({words(text)} words)")
     card = m.get("method_card")
     if card and len(card["steps"]) > 4:
         errors.append(f"{m['id']}: method card has more than 4 steps")
@@ -44,6 +55,8 @@ for p in content["problems"].values():
         where = f"{p['id']}/{s['id']}"
         if len(s.get("hints", [])) != 3:
             errors.append(f"{where}: needs exactly 3 hints")
+        if s.get("cognitive_function") not in COGNITIVE_FUNCTIONS:
+            errors.append(f"{where}: unknown cognitive_function {s.get('cognitive_function')}")
         if words(s["instruction"]) > MAX_WORDS:
             errors.append(f"{where}: instruction {words(s['instruction'])} words")
         exp = s["expected"]
@@ -66,4 +79,4 @@ print(f"{len(content['modules'])} modules, {len(content['problems'])} problems c
 if errors:
     print("\n".join(f"  ✗ {e}" for e in errors))
     sys.exit(1)
-print("✓ content OK")
+print("content OK")

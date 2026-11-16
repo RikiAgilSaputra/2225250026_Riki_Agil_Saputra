@@ -39,6 +39,7 @@ Rincian lengkap: [docs/01-RESEARCH-INSIGHTS.md](docs/01-RESEARCH-INSIGHTS.md).
 | Catatan pribadi per materi | Siswa | GL01 |
 | Dashboard guru, analitik kesalahan, ekspor CSV | Guru | K02 |
 | Siklus pemodelan 7 tahap & bank soal literasi L1–L3 | Siswa | K01, IL01, literasi |
+| Rigorous Mathematical Thinking: tahap Alat Berpikir, fungsi berpikir di setiap layar dan langkah, bukti logis, refleksi, profil fungsi berpikir | Siswa, guru | EL01, IL02, K01 ([docs/15](docs/15-RIGOROUS-MATHEMATICAL-THINKING.md)) |
 | Pemodel soal cerita otomatis (Gemini API dari Google AI Studio + verifikasi SymPy) | Siswa, guru | K01, IL01, EL01 |
 | Scanner soal: foto (kamera HP) atau teks → soal cerita dimodelkan AI, SPLDV berbentuk persamaan langsung dikerjakan langkah demi langkah | Siswa, guru | K01, EL01, DS01 |
 | Buat soal sendiri & profil literasi | Siswa, guru | GL04, literasi |

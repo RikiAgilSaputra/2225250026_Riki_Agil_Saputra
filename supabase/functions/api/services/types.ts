@@ -9,6 +9,8 @@ export interface Step {
   hints: string[];
   prefilled?: boolean;
   modeling_stage?: number | null;
+  /** RMT cognitive function this step trains (docs/15 §4). */
+  cognitive_function?: string;
   variable?: string;
   other_value?: string;
   choices?: { id: string; label: string }[];

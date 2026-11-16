@@ -4,7 +4,7 @@ import json
 from functools import lru_cache
 
 from app.core.config import get_settings
-from app.services.step_builder import build_problem
+from app.services.step_builder import build_problem, tag_cognitive
 
 
 def _hand_steps(problem: dict) -> dict:
@@ -12,6 +12,7 @@ def _hand_steps(problem: dict) -> dict:
     for i, s in enumerate(problem["steps"]):
         s = {**s, "id": f"s{i + 1}", "prefilled": problem.get("mode") == "worked"}
         steps.append(s)
+    tag_cognitive(steps)
     return {**problem, "source": "content", "steps": steps}
 
 
@@ -19,6 +20,7 @@ def append_extra_steps(p: dict) -> None:
     n = len(p["steps"])
     for i, s in enumerate(p.get("extra_steps", [])):
         p["steps"].append({**s, "id": f"s{n + i + 1}", "prefilled": False})
+    tag_cognitive(p["steps"])
 
 
 def rebuild_with_method(p: dict, method: str) -> dict:

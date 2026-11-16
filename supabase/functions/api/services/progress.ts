@@ -193,6 +193,31 @@ const STAGE_INDICATOR: Record<number, string> = {
   5: "menafsirkan", 6: "menafsirkan", 7: "penalaran",
 };
 
+/** RMT cognitive functions (docs/15 §4), in teaching order. */
+export const COGNITIVE_FUNCTIONS = [
+  "labeling", "comparing", "systematic_search", "encoding", "conserving_constancy", "analyzing_integrating",
+  "projecting_relationships", "analogical_thinking", "functional_relationship", "logical_evidence",
+] as const;
+
+/** Average step score (0–100) per cognitive function; null = not practised yet. */
+export async function thinkingProfile(sql: Db, studentIds: string[]): Promise<Record<string, number | null>> {
+  const sums: Record<string, number[]> = Object.fromEntries(COGNITIVE_FUNCTIONS.map((k) => [k, []]));
+  if (studentIds.length) {
+    const attempts = await sql<{ problem_snapshot: Problem; state: AttemptState }[]>`
+      select problem_snapshot, state from attempts
+      where student_id in ${sql(studentIds)} and completed_at is not null`;
+    for (const a of attempts) {
+      for (const s of a.problem_snapshot.steps) {
+        const cf = s.cognitive_function;
+        if (!cf || s.prefilled || !(cf in sums)) continue;
+        sums[cf].push(stepScore(a.state[s.id]));
+      }
+    }
+  }
+  return Object.fromEntries(Object.entries(sums).map(([k, v]) =>
+    [k, v.length ? pyRound((100 * v.reduce((t, x) => t + x, 0)) / v.length) : null]));
+}
+
 /** Average step score per literacy indicator (docs/13 §8) and per context. */
 export async function literacyProfile(sql: Db, studentIds: string[]) {
   const sums: Record<string, number[]> = { merumuskan: [], menerapkan: [], menafsirkan: [], penalaran: [] };

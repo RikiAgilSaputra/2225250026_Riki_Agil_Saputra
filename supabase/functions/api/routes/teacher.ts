@@ -69,6 +69,7 @@ teacherRoutes.get("/teacher/overview", async (c) => {
     class: { id: cls.id, name: cls.name, join_code: cls.join_code, settings: classSettings(cls) },
     students: rows.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0)),
     literacy: await prog.literacyProfile(sql, ids),
+    thinking: await prog.thinkingProfile(sql, ids),
     hardest_steps: hard.slice(0, 8),
     module_count: loadContent().modules.size,
     submissions: subs.map((x) => ({

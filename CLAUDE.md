@@ -5,7 +5,7 @@ Panduan untuk Claude Code saat bekerja di repositori ini. Baca file ini sebelum 
 ## Ringkasan Proyek
 
 **LangkahKu** — aplikasi belajar SPLDV untuk siswa SMP (kelas 8–9), web (PWA) + Android (Capacitor), dengan dashboard guru.
-Prinsip utama: **mengurangi beban kognitif ekstrinsik** (Cognitive Load Theory) dan **menumbuhkembangkan literasi matematika** melalui pemodelan soal cerita ([docs/13-MATH-LITERACY.md](docs/13-MATH-LITERACY.md), [docs/14-WORD-PROBLEM-MODELER.md](docs/14-WORD-PROBLEM-MODELER.md)). Setiap fitur berasal dari temuan wawancara siswa — lihat [docs/01-RESEARCH-INSIGHTS.md](docs/01-RESEARCH-INSIGHTS.md).
+Prinsip utama: **mengurangi beban kognitif ekstrinsik** (Cognitive Load Theory), **membentuk cara berpikir matematika yang rigor** (Rigorous Mathematical Thinking — [docs/15-RIGOROUS-MATHEMATICAL-THINKING.md](docs/15-RIGOROUS-MATHEMATICAL-THINKING.md)), dan **menumbuhkembangkan literasi matematika** melalui pemodelan soal cerita ([docs/13-MATH-LITERACY.md](docs/13-MATH-LITERACY.md), [docs/14-WORD-PROBLEM-MODELER.md](docs/14-WORD-PROBLEM-MODELER.md)). Setiap fitur berasal dari temuan wawancara siswa — lihat [docs/01-RESEARCH-INSIGHTS.md](docs/01-RESEARCH-INSIGHTS.md).
 Kebutuhan produk: [docs/02-PRD.md](docs/02-PRD.md). Jika ada konflik antara kode dan dokumen, **tanyakan dulu**, jangan menebak.
 
 ## Stack
@@ -112,6 +112,11 @@ Aturan ini adalah inti produk. Jangan dilanggar tanpa persetujuan eksplisit.
 9. **Hindari redundansi** — jangan menampilkan teks yang sama dengan narasi/gambar secara bersamaan; tidak ada animasi dekoratif.
 10. Bahasa Indonesia baku yang ramah siswa SMP; hindari istilah yang belum diperkenalkan.
 11. **Soal cerita** memiliki metadata `literacy` dan setiap langkah memiliki `modeling_stage` (1–7); cerita selalu terlihat di atas tahap pemodelan.
+12. **RMT** ([docs/15](docs/15-RIGOROUS-MATHEMATICAL-THINKING.md)) melengkapi CLT, tidak menggantikannya:
+    - Setiap layar materi punya `cognitive_function` dari 10 fungsi berpikir.
+    - Setiap modul punya `meaning` (mengapa penting) dan `bridge` (jembatan), masing-masing ≤ 25 kata.
+    - Setiap soal SPLDV non-cerita diakhiri langkah **bukti logis**.
+    - Daftar fungsi berpikir sama di `step_builder.ts`/`.py`, `progress.ts`/`.py`, dan `apps/web/src/lib/cognitive.ts`.
 
 ## Aturan Pemodel AI (WAJIB)
 
@@ -147,7 +152,7 @@ Aturan ini adalah inti produk. Jangan dilanggar tanpa persetujuan eksplisit.
 ## Referensi Dokumen
 
 - Kebutuhan: [PRD](docs/02-PRD.md), [User Stories](docs/03-USER-STORIES.md)
-- Pedagogi: [Learning Design](docs/04-LEARNING-DESIGN.md), [Content Spec](docs/05-CONTENT-SPEC.md), [Math Literacy](docs/13-MATH-LITERACY.md)
+- Pedagogi: [Learning Design](docs/04-LEARNING-DESIGN.md), [Content Spec](docs/05-CONTENT-SPEC.md), [Math Literacy](docs/13-MATH-LITERACY.md), [Rigorous Mathematical Thinking](docs/15-RIGOROUS-MATHEMATICAL-THINKING.md)
 - AI: [Word Problem Modeler](docs/14-WORD-PROBLEM-MODELER.md)
 - Desain: [UI/UX Guidelines](docs/06-UI-UX-GUIDELINES.md)
 - Teknis: [Architecture](docs/07-ARCHITECTURE.md), [Data Model](docs/08-DATA-MODEL.md), [API Spec](docs/09-API-SPEC.md)

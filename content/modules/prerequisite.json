@@ -7,9 +7,11 @@
     "subtitle": "Positif, negatif, dan tandanya",
     "icon": "calc",
     "objective": "Kamu bisa menghitung bilangan negatif tanpa salah tanda.",
+    "meaning": "Hampir semua langkah SPLDV memindahkan dan mengalikan bilangan negatif. Satu tanda salah mengubah seluruh jawaban.",
+    "bridge": "Saat eliminasi, kamu mengurangkan persamaan. Aturan tanda inilah yang menjaga hasilnya benar.",
     "screens": [
       {
-        "concept": "garis-bilangan",
+        "concept": "garis-bilangan", "cognitive_function": "comparing",
         "instruction": "Bilangan negatif ada di kiri nol. Makin ke kiri, makin kecil.",
         "blocks": [
           { "type": "numberline", "from": -5, "to": 5, "marks": [-3, 2] },
@@ -17,7 +19,7 @@
         ]
       },
       {
-        "concept": "tambah-kurang-negatif",
+        "concept": "tambah-kurang-negatif", "cognitive_function": "analyzing_integrating",
         "instruction": "Mengurangi sama dengan menambah lawannya.",
         "blocks": [
           { "type": "math", "text": "5 − 8 = 5 + (−8) = −3" },
@@ -25,7 +27,7 @@
         ]
       },
       {
-        "concept": "kali-tanda",
+        "concept": "kali-tanda", "cognitive_function": "comparing",
         "instruction": "Tanda sama hasilnya positif. Tanda beda hasilnya negatif.",
         "blocks": [
           { "type": "table", "rows": [["×", "+", "−"], ["+", "+", "−"], ["−", "−", "+"]] },
@@ -33,7 +35,7 @@
         ]
       },
       {
-        "concept": "kuadrat-negatif",
+        "concept": "kuadrat-negatif", "cognitive_function": "encoding",
         "instruction": "Kuadrat artinya dikali dirinya sendiri. Perhatikan tanda kurungnya.",
         "blocks": [
           { "type": "math", "text": "(−3)² = (−3) × (−3) = 9" },
@@ -65,10 +67,12 @@
     "subtitle": "Menyelesaikan ax + b = c",
     "icon": "balance",
     "objective": "Kamu bisa mencari nilai x dan memindahkan suku dengan benar.",
+    "meaning": "Persamaan seperti timbangan: apa pun yang dilakukan, keseimbangannya harus tetap.",
+    "bridge": "Substitusi dan eliminasi memakai langkah yang sama: mengolah kedua ruas tanpa merusak keseimbangan.",
     "recall": [{ "label": "Bilangan bulat", "module_id": "PRE-1" }],
     "screens": [
       {
-        "concept": "timbangan",
+        "concept": "timbangan", "cognitive_function": "conserving_constancy",
         "instruction": "Persamaan seperti timbangan seimbang. Ruas kiri sama berat dengan ruas kanan.",
         "blocks": [
           { "type": "math", "text": "3x + 5 = 20" },
@@ -76,7 +80,7 @@
         ]
       },
       {
-        "concept": "pindah-suku",
+        "concept": "pindah-suku", "cognitive_function": "conserving_constancy",
         "instruction": "Memindahkan suku ke ruas lain mengubah tandanya.",
         "blocks": [
           { "type": "math", "text": "3x + 5 = 20" },
@@ -85,7 +89,7 @@
         ]
       },
       {
-        "concept": "bagi-koefisien",
+        "concept": "bagi-koefisien", "cognitive_function": "analyzing_integrating",
         "instruction": "Bagi kedua ruas dengan angka di depan x.",
         "blocks": [
           { "type": "math", "text": "3x = 15" },
@@ -94,7 +98,7 @@
         ]
       },
       {
-        "concept": "y-sendirian",
+        "concept": "y-sendirian", "cognitive_function": "conserving_constancy",
         "instruction": "Cara yang sama dipakai untuk membuat y sendirian.",
         "blocks": [
           { "type": "math", "text": "2x + y = 9" },
@@ -127,19 +131,21 @@
     "subtitle": "Membaca dan menempatkan titik",
     "icon": "grid",
     "objective": "Kamu bisa membaca titik (x, y) di bidang Kartesius.",
+    "meaning": "Bidang Kartesius adalah alat untuk melihat pasangan x dan y sekaligus.",
+    "bridge": "Metode grafik mencari penyelesaian SPLDV sebagai satu titik di bidang Kartesius.",
     "screens": [
       {
-        "concept": "sumbu",
+        "concept": "sumbu", "cognitive_function": "labeling",
         "instruction": "Sumbu x mendatar dan sumbu y tegak. Keduanya bertemu di titik (0, 0).",
         "blocks": [{ "type": "graph", "lines": [], "points": [{ "x": 0, "y": 0, "label": "O" }] }]
       },
       {
-        "concept": "titik",
+        "concept": "titik", "cognitive_function": "encoding",
         "instruction": "Titik (3, 2): geser 3 ke kanan, lalu 2 ke atas.",
         "blocks": [{ "type": "graph", "lines": [], "points": [{ "x": 3, "y": 2, "label": "A(3, 2)" }] }]
       },
       {
-        "concept": "titik-negatif",
+        "concept": "titik-negatif", "cognitive_function": "comparing",
         "instruction": "Nilai negatif berarti ke kiri atau ke bawah.",
         "blocks": [{ "type": "graph", "lines": [], "points": [{ "x": -2, "y": 3, "label": "B(−2, 3)" }, { "x": 1, "y": -3, "label": "C(1, −3)" }] }]
       }
@@ -165,10 +171,12 @@
     "subtitle": "Dari x ke y, dari tabel ke garis",
     "icon": "func",
     "objective": "Kamu bisa mencari nilai y jika x diketahui, lalu menggambarnya.",
+    "meaning": "Fungsi menunjukkan bagaimana y ikut berubah saat x berubah.",
+    "bridge": "Setiap persamaan dalam SPLDV adalah sebuah garis: kumpulan pasangan x dan y yang saling bergantung.",
     "recall": [{ "label": "Koordinat Kartesius", "module_id": "PRE-3" }],
     "screens": [
       {
-        "concept": "mesin-fungsi",
+        "concept": "mesin-fungsi", "cognitive_function": "functional_relationship",
         "instruction": "Fungsi seperti mesin. Masukkan x, keluar y.",
         "blocks": [
           { "type": "math", "text": "y = 2x − 1" },
@@ -176,12 +184,12 @@
         ]
       },
       {
-        "concept": "tabel-xy",
+        "concept": "tabel-xy", "cognitive_function": "functional_relationship",
         "instruction": "Coba beberapa nilai x, catat y-nya di tabel.",
         "blocks": [{ "type": "table", "rows": [["x", "0", "1", "2", "3"], ["y", "−1", "1", "3", "5"]] }]
       },
       {
-        "concept": "tabel-ke-garis",
+        "concept": "tabel-ke-garis", "cognitive_function": "functional_relationship",
         "instruction": "Setiap pasangan (x, y) adalah titik. Hubungkan titiknya, jadilah garis.",
         "blocks": [{ "type": "graph", "lines": ["2*x - y = 1"], "points": [{ "x": 0, "y": -1 }, { "x": 1, "y": 1 }, { "x": 2, "y": 3 }, { "x": 3, "y": 5 }] }]
       }

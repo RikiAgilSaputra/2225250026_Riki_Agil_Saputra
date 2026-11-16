@@ -8,15 +8,17 @@
     "subtitle": "Langsung: semua informasi di teks",
     "icon": "story",
     "objective": "Kamu bisa mengubah cerita menjadi SPLDV lalu menafsirkan jawabannya.",
+    "meaning": "Soal cerita melatihmu membawa matematika ke kehidupan nyata, lalu kembali ke cerita.",
+    "bridge": "Siklus pemodelan berlaku juga untuk masalah lain di luar SPLDV.",
     "recall": [{ "label": "Makna variabel", "module_id": "SPL-1" }],
     "screens": [
       {
-        "concept": "siklus-pemodelan",
+        "concept": "siklus-pemodelan", "cognitive_function": "systematic_search",
         "instruction": "Soal cerita diselesaikan dalam 6 tahap. Ikuti satu per satu.",
         "blocks": [{ "type": "cycle" }]
       },
       {
-        "concept": "kalimat-ke-matematika",
+        "concept": "kalimat-ke-matematika", "cognitive_function": "encoding",
         "instruction": "Pahami arti kalimatnya, jangan hanya mencari kata kunci.",
         "blocks": [
           { "type": "quote", "text": "Umur ayah 3 kali umur anak." },
@@ -76,9 +78,11 @@
     "subtitle": "Tabel, struk, dan informasi berlebih",
     "icon": "receipt",
     "objective": "Kamu bisa memilih informasi yang diperlukan dari tabel atau struk.",
+    "meaning": "Tidak semua informasi berguna. Memilih yang penting adalah bagian dari berpikir teliti.",
+    "bridge": "Struk belanja, jadwal, dan tabel harga sehari-hari juga penuh informasi yang tidak diperlukan.",
     "screens": [
       {
-        "concept": "info-berlebih",
+        "concept": "info-berlebih", "cognitive_function": "systematic_search",
         "instruction": "Tidak semua angka di cerita dipakai. Coret yang tidak perlu.",
         "blocks": [{ "type": "callout", "text": "Contoh: jam belanja atau nomor struk tidak dipakai untuk menghitung harga." }]
       }
@@ -136,9 +140,11 @@
     "subtitle": "Menalar dan mengambil keputusan",
     "icon": "reason",
     "objective": "Kamu bisa memakai SPLDV untuk menilai pilihan atau klaim.",
+    "meaning": "Matematika membantu menilai pilihan dan klaim dengan bukti, bukan dugaan.",
+    "bridge": "Gunakan bukti yang sama untuk menilai promo, tarif, atau klaim iklan.",
     "screens": [
       {
-        "concept": "keputusan",
+        "concept": "keputusan", "cognitive_function": "logical_evidence",
         "instruction": "Di soal penalaran, jawabannya bukan hanya angka, tetapi keputusan.",
         "blocks": [{ "type": "callout", "text": "Hitung dulu, lalu bandingkan dan beri alasan." }]
       }

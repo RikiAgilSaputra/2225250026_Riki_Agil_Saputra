@@ -83,7 +83,7 @@ test("learning path covers every module once", async () => {
   const all: string[] = (await call("GET", "/modules", { token })).body.items.map((m: Json) => m.id);
   assert.deepEqual([...ids].sort(), [...all].sort());
   assert.equal(ids.length, new Set(ids).size);
-  assert.equal(lp.stages[0].id, "prasyarat");
+  assert.deepEqual(lp.stages.slice(0, 2).map((s: Json) => s.id), ["berpikir", "prasyarat"]); // RMT phase I first (docs/15)
   assert.ok(ids.includes(lp.next_module_id));
   assert.ok(lp.stages.some((s: Json) => s.show_cycle));
 });
@@ -112,7 +112,7 @@ test("guided attempt with feedback, hints and points", async () => {
   assert.ok(ok.correct);
   assert.equal(ok.points, 10);
   let last: Json = {};
-  for (const [sid, ans] of [["s2", "2x + 3(x - 1) = 12"], ["s3", "x = 3"], ["s4", "y = 2"]]) {
+  for (const [sid, ans] of [["s2", "2x + 3(x - 1) = 12"], ["s3", "x = 3"], ["s4", "y = 2"], ["s5", "12"]]) {
     last = (await call("POST", `/attempts/${aid}/steps`, { token, body: { step_id: sid, answer: ans } })).body;
     assert.ok(last.correct, `${sid} ${JSON.stringify(last)}`);
   }
@@ -121,6 +121,10 @@ test("guided attempt with feedback, hints and points", async () => {
   assert.equal(last.bonus, 20);
   const hist = (await call("GET", "/attempts", { token })).body.items;
   assert.ok(hist.some((x: Json) => x.id === aid && x.score === 100));
+  // RMT thinking profile (docs/15 §7): the proof step counts toward "logical evidence"
+  const thinking = (await call("GET", "/progress/summary", { token })).body.thinking;
+  assert.equal(thinking.logical_evidence, 100);
+  assert.ok("analogical_thinking" in thinking);
   const again = await call("POST", `/attempts/${aid}/steps`, { token, body: { step_id: "s4", answer: "y = 2" } });
   assert.equal(again.status, 400);
 });

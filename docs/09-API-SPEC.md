@@ -237,6 +237,20 @@ Catatan pribadi **tidak** dapat dibaca guru.
 
 ---
 
+## 8b. Rigorous Mathematical Thinking (docs/15)
+
+Tidak ada endpoint baru. Kolom tambahan:
+
+| Endpoint | Kolom | Isi |
+|---|---|---|
+| `GET /modules/{id}` | `meaning`, `bridge` | Teks mediasi modul (string atau `null`) |
+| `GET /modules/{id}` | `screens[].cognitive_function` | Fungsi berpikir tiap layar |
+| `POST /attempts`, `GET /attempts/{id}` | `problem.steps[].cognitive_function` | Fungsi berpikir tiap langkah |
+| `GET /progress/summary` | `thinking` | `{ "<fungsi>": 0–100 \| null }` untuk 10 fungsi berpikir, rata-rata skor langkah siswa |
+| `GET /teacher/overview` | `thinking` | Sama, untuk seluruh siswa di kelas |
+
+Soal SPLDV non-cerita kini punya satu langkah terakhir tambahan (bukti logis, `check: "value"`, jawabannya ruas kanan persamaan (2)).
+
 ## 8a. Literasi & Pemodel Soal Cerita
 
 ### Literasi

@@ -418,6 +418,45 @@ function storySteps(story: Story, eqs: Eq[], sol: Sol, includeHighlight: boolean
   return [before, after];
 }
 
+// ---------------------------------------------------------------- RMT (docs/15)
+/** Cognitive function trained by each generated step (docs/15 §4), keyed by the builder's step id. */
+export const STEP_COGNITIVE: Record<string, string> = {
+  p1: "systematic_search", p2: "labeling", t1: "encoding", t2: "encoding",
+  m1: "conserving_constancy", m2: "projecting_relationships", m3: "analyzing_integrating",
+  m4: "projecting_relationships", e1: "conserving_constancy", e2: "conserving_constancy",
+  e3: "analyzing_integrating", e4: "analyzing_integrating", e5: "analogical_thinking",
+  c1: "projecting_relationships", c2: "analyzing_integrating", g1: "functional_relationship",
+  g2: "functional_relationship", g3: "comparing", r0: "analyzing_integrating", r1: "encoding",
+  r2: "logical_evidence", v1: "logical_evidence",
+};
+
+/** Default for hand-written content steps without an explicit cognitive_function. */
+const CHECK_COGNITIVE: Record<string, string> = {
+  define_variables: "labeling", highlight_spans: "systematic_search", interpret: "encoding",
+  choice: "comparing", point: "comparing", value: "analyzing_integrating",
+  equation_equivalent: "encoding", equation_scaled: "conserving_constancy",
+};
+
+export function tagCognitive(steps: Step[]): void {
+  for (const s of steps) s.cognitive_function ??= CHECK_COGNITIVE[s.check] ?? "analyzing_integrating";
+}
+
+/** Rigor: a solution is accepted only with logical evidence that it satisfies BOTH equations (docs/15 §5). */
+function evidenceStep(eqs: Eq[], sol: Sol): Step {
+  const [a2, b2, c2] = eqs[1];
+  const x = fmtNumber(sol.x);
+  const y = fmtNumber(sol.y);
+  return step(
+    "v1", `Bukti logis: masukkan x = ${x} dan y = ${y} ke persamaan (2). Berapa hasil ruas kiri?`, "value",
+    num(c2), `${fmtNumber(c2)} = ruas kanan ✓ (x, y) memenuhi kedua persamaan`,
+    [
+      "Jawaban benar jika memenuhi kedua persamaan, bukan hanya satu.",
+      `Hitung ${fmtNumber(a2)} × ${x} + ${fmtNumber(b2)} × ${y}.`,
+      fmtNumber(c2),
+    ],
+  );
+}
+
 // ---------------------------------------------------------------- public API
 export interface BuildArgs {
   pid: string;
@@ -444,14 +483,20 @@ export function buildProblem(args: BuildArgs): Problem {
   for (const s of methodSteps) if (!("modeling_stage" in s)) s.modeling_stage = story ? 4 : null;
   let before: Step[] = [];
   let after: Step[] = [];
+  // Story problems already check the answer against the story (r2); other problems get a proof step.
   if (story) [before, after] = storySteps(story, eqs, sol, source === "content");
+  else after = [evidenceStep(eqs, sol)];
   const steps = [...before, ...methodSteps, ...after];
+  for (const s of steps) s.cognitive_function = STEP_COGNITIVE[s.id] ?? "analyzing_integrating";
+  const evidence = story ? null : steps.at(-1)!;
   steps.forEach((s, i) => {
     s.id = `s${i + 1}`;
     s.prefilled = mode === "worked";
   });
   if (mode === "completion") {
-    for (const s of steps.slice(0, Math.max(0, steps.length - (args.completion_blanks ?? 1)))) s.prefilled = true;
+    // Fading counts the solving steps only; the proof step always stays open.
+    const core = steps.filter((s) => s !== evidence);
+    for (const s of core.slice(0, Math.max(0, core.length - (args.completion_blanks ?? 1)))) s.prefilled = true;
   }
   return {
     id: pid,

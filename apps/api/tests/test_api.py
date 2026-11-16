@@ -23,7 +23,7 @@ def test_learning_path_covers_every_module_once(client, student):
     ids = [m["id"] for s in lp["stages"] for m in s["modules"]]
     all_ids = [m["id"] for m in client.get("/api/v1/modules", headers=student).json()["items"]]
     assert sorted(ids) == sorted(all_ids) and len(ids) == len(set(ids))
-    assert [s["id"] for s in lp["stages"]][0] == "prasyarat"
+    assert [s["id"] for s in lp["stages"]][:2] == ["berpikir", "prasyarat"]  # RMT phase I first (docs/15)
     assert lp["next_module_id"] in ids
     assert any(s["show_cycle"] for s in lp["stages"])
 
@@ -45,12 +45,15 @@ def test_guided_attempt_with_feedback_hints_and_points(client, student):
     assert h["level"] == 1 and len(h["hints"]) == 1
     ok = client.post(f"/api/v1/attempts/{aid}/steps", json={"step_id": s1, "answer": "y = x - 1"}, headers=student).json()
     assert ok["correct"] and ok["points"] == 10
-    answers = {"s2": "2x + 3(x - 1) = 12", "s3": "x = 3", "s4": "y = 2"}
+    answers = {"s2": "2x + 3(x - 1) = 12", "s3": "x = 3", "s4": "y = 2", "s5": "12"}
     last = None
     for sid, ans in answers.items():
         last = client.post(f"/api/v1/attempts/{aid}/steps", json={"step_id": sid, "answer": ans}, headers=student).json()
         assert last["correct"], (sid, last)
     assert last["completed"] and last["score"] == 100 and last["bonus"] == 20
+    # RMT thinking profile (docs/15 §7): the proof step counts toward "logical evidence"
+    thinking = client.get("/api/v1/progress/summary", headers=student).json()["thinking"]
+    assert thinking["logical_evidence"] == 100 and "analogical_thinking" in thinking
 
 
 def test_choose_method_rebuilds_steps(client, student):

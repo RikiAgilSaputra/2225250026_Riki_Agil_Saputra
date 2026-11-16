@@ -1,4 +1,5 @@
 import { Bar } from '../components/ProgressRing'
+import { ThinkingBars } from '../components/ThinkingBars'
 import { Flame, Gem } from '../components/Icon'
 import { useApi } from '../lib/hooks'
 import type { LiteracyProfile, ModuleSummary } from '../lib/types'
@@ -28,7 +29,7 @@ export function LiteracyBars({ profile }: { profile: LiteracyProfile }) {
 }
 
 export function Progress() {
-  const { data } = useApi<{ modules: ModuleSummary[]; literacy: LiteracyProfile; points: number; streak: number }>('/progress/summary')
+  const { data } = useApi<{ modules: ModuleSummary[]; literacy: LiteracyProfile; thinking?: Record<string, number | null>; points: number; streak: number }>('/progress/summary')
   if (!data) return <div className="empty"><div className="spinner" /></div>
   const done = data.modules.filter((m) => m.status === 'completed').length
   return (
@@ -63,6 +64,13 @@ export function Progress() {
           Merumuskan = mengubah cerita jadi model. Menerapkan = menyelesaikan. Menafsirkan = mengembalikan ke cerita.
         </p>
         <LiteracyBars profile={data.literacy} />
+      </section>
+      <section className="card">
+        <h2 style={{ fontSize: '1.1rem', marginBottom: 6 }}>Profil fungsi berpikir</h2>
+        <p className="muted" style={{ marginBottom: 14, fontSize: '0.9rem' }}>
+          Nilai rata-rata langkah yang melatih setiap cara berpikir. Tanda – berarti belum dilatih.
+        </p>
+        <ThinkingBars profile={data.thinking} />
       </section>
       <section className="card">
         <h2 style={{ fontSize: '1.1rem', marginBottom: 14 }}>Modul</h2>

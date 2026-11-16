@@ -1,0 +1,244 @@
+[
+  {
+    "id": "RMT-1",
+    "kind": "thinking",
+    "order": -3,
+    "title": "Membandingkan dengan Teliti",
+    "subtitle": "Beri label, bandingkan, cari informasi",
+    "icon": "search",
+    "objective": "Kamu bisa membandingkan dua hal memakai ukuran pembanding yang jelas.",
+    "meaning": "Matematika dimulai dari melihat dengan teliti. Salah melihat membuat hitungan yang benar pun menjadi salah.",
+    "bridge": "Saat memilih metode SPLDV, kamu membandingkan koefisien. Saat membaca soal cerita, kamu mencari informasi secara urut.",
+    "screens": [
+      {
+        "concept": "label-ciri",
+        "cognitive_function": "labeling",
+        "instruction": "Beri nama sesuatu berdasarkan ciri pentingnya. Nama yang tepat membantu kita berpikir.",
+        "blocks": [
+          { "type": "table", "rows": [["Persamaan", "Ciri penting", "Nama"], ["2x + 3y = 12", "dua variabel, pangkat satu", "PLDV"], ["x² + y = 5", "ada pangkat dua", "bukan PLDV"]] }
+        ]
+      },
+      {
+        "concept": "ukuran-pembanding",
+        "cognitive_function": "comparing",
+        "instruction": "Sebelum membandingkan, pilih ukuran pembandingnya. Lalu periksa satu per satu.",
+        "blocks": [
+          { "type": "table", "rows": [["Ukuran", "2x + 3y = 12", "2x² + 3y = 12", "Sama?"], ["Banyak variabel", "2", "2", "sama"], ["Pangkat x", "1", "2", "beda"], ["Konstanta", "12", "12", "sama"]] },
+          { "type": "callout", "text": "Sekilas mirip, tetapi pangkat x berbeda." }
+        ]
+      },
+      {
+        "concept": "cari-sistematis",
+        "cognitive_function": "systematic_search",
+        "instruction": "Kumpulkan informasi secara urut: yang diketahui, yang ditanya, lalu yang tidak dipakai.",
+        "blocks": [
+          { "type": "quote", "text": "Toko buka pukul 08.00. Harga 2 buku dan 1 pensil Rp12.000. Berapa harga 1 buku?" },
+          { "type": "table", "rows": [["Diketahui", "Ditanya", "Tidak dipakai"], ["2 buku dan 1 pensil Rp12.000", "harga 1 buku", "buka pukul 08.00"]] }
+        ]
+      },
+      {
+        "concept": "perintah-tersirat",
+        "cognitive_function": "systematic_search",
+        "instruction": "Baca juga perintah yang tersirat. “Tentukan x dan y” berarti kedua nilai harus ada.",
+        "blocks": [
+          { "type": "math", "text": "Tentukan himpunan penyelesaian → {(x, y)}" },
+          { "type": "callout", "text": "Menjawab x saja berarti jawabannya belum lengkap." }
+        ]
+      }
+    ],
+    "problems": [
+      {
+        "id": "RMT-1-p1",
+        "title": "Latihan membandingkan",
+        "mode": "independent",
+        "steps": [
+          {
+            "instruction": "Ukuran apa yang membedakan 2x + 3y = 12 dan 2x² + 3y = 12?", "check": "choice", "expected": "a", "display": "Pangkat x",
+            "cognitive_function": "comparing",
+            "choices": [{ "id": "a", "label": "Pangkat x" }, { "id": "b", "label": "Koefisien y" }, { "id": "c", "label": "Konstanta" }],
+            "hints": ["Bandingkan satu ukuran setiap kali.", "Koefisien y keduanya 3, konstanta keduanya 12.", "Yang berbeda: pangkat x."]
+          },
+          {
+            "instruction": "Mana yang PLDV?", "check": "choice", "expected": "b", "display": "x + y = 5",
+            "cognitive_function": "labeling",
+            "choices": [{ "id": "a", "label": "x² − y = 1" }, { "id": "b", "label": "x + y = 5" }, { "id": "c", "label": "3x = 9" }],
+            "hints": ["PLDV punya dua variabel berpangkat satu.", "Pilihan a punya pangkat dua. Pilihan c hanya satu variabel.", "x + y = 5"]
+          },
+          {
+            "instruction": "Soal meminta “himpunan penyelesaian”. Jawaban lengkapnya berbentuk apa?", "check": "choice", "expected": "c", "display": "{(x, y)}",
+            "cognitive_function": "systematic_search",
+            "choices": [{ "id": "a", "label": "nilai x saja" }, { "id": "b", "label": "nilai y saja" }, { "id": "c", "label": "{(x, y)}" }],
+            "hints": ["Perhatikan perintah yang tersirat.", "Penyelesaian SPLDV adalah pasangan nilai.", "{(x, y)}"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "RMT-2",
+    "kind": "thinking",
+    "order": -2,
+    "title": "Yang Tetap dan Yang Berubah",
+    "subtitle": "Variabel dan hubungan fungsional",
+    "icon": "var",
+    "objective": "Kamu bisa menunjukkan apa yang tetap dan apa yang berubah dalam sebuah situasi.",
+    "meaning": "Variabel adalah sesuatu yang berubah. Kita baru bisa melihat perubahan jika tahu apa yang tetap.",
+    "bridge": "Saat mengolah persamaan SPLDV, bentuknya berubah tetapi penyelesaiannya tetap. Itu yang membuat langkahmu sah.",
+    "screens": [
+      {
+        "concept": "tetap-berubah",
+        "cognitive_function": "conserving_constancy",
+        "instruction": "Dalam setiap perubahan, cari dulu apa yang tetap. Yang berubah disebut variabel.",
+        "blocks": [
+          { "type": "table", "rows": [["Hari", "Harga 1 buku", "Banyak buku", "Total bayar"], ["Senin", "Rp5.000", "2", "Rp10.000"], ["Selasa", "Rp5.000", "4", "Rp20.000"]] },
+          { "type": "callout", "text": "Harga 1 buku tetap. Banyak buku dan total bayar berubah." }
+        ]
+      },
+      {
+        "concept": "hubungan-fungsional",
+        "cognitive_function": "functional_relationship",
+        "instruction": "Jika satu besaran berubah, besaran lain ikut berubah dengan aturan tetap. Itulah hubungan fungsional.",
+        "blocks": [
+          { "type": "math", "text": "total bayar = 5.000 × banyak buku" },
+          { "type": "math", "text": "y = 5.000x" }
+        ]
+      },
+      {
+        "concept": "bentuk-berubah-isi-tetap",
+        "cognitive_function": "conserving_constancy",
+        "instruction": "Mengolah persamaan mengubah bentuknya. Penyelesaiannya tetap sama.",
+        "blocks": [
+          { "type": "eq", "lines": ["2x + y = 7", "y = 7 − 2x", "4x + 2y = 14"] },
+          { "type": "callout", "text": "Ketiganya dipenuhi (1, 5). Bentuk berubah, isinya tetap." }
+        ]
+      },
+      {
+        "concept": "pasangan-tetap",
+        "cognitive_function": "conserving_constancy",
+        "instruction": "Pada SPLDV, pasangan (x, y) yang dicari harus sama di kedua persamaan.",
+        "blocks": [
+          { "type": "system", "equations": ["x + y = 6", "x − y = 2"] },
+          { "type": "callout", "text": "(4, 2) memenuhi keduanya. (5, 1) hanya memenuhi persamaan pertama." }
+        ]
+      }
+    ],
+    "problems": [
+      {
+        "id": "RMT-2-p1",
+        "title": "Latihan tetap dan berubah",
+        "mode": "independent",
+        "steps": [
+          {
+            "instruction": "Ongkos ojek Rp4.000 per km. Apa yang tetap?", "check": "choice", "expected": "a", "display": "Tarif per km",
+            "cognitive_function": "conserving_constancy",
+            "choices": [{ "id": "a", "label": "Tarif per km" }, { "id": "b", "label": "Jarak" }, { "id": "c", "label": "Total ongkos" }],
+            "hints": ["Cari besaran yang sama untuk setiap perjalanan.", "Jarak dan total ongkos bisa berbeda tiap perjalanan.", "Tarif per km"]
+          },
+          {
+            "instruction": "Total = 4.000 × jarak. Berapa total ongkos untuk 3 km?", "check": "value", "expected": "12000", "display": "Rp12.000",
+            "cognitive_function": "functional_relationship",
+            "hints": ["Masukkan jarak ke aturannya.", "Hitung 4.000 × 3.", "12.000"]
+          },
+          {
+            "instruction": "Mana yang setara dengan 2x + y = 7?", "check": "choice", "expected": "a", "display": "y = 7 − 2x",
+            "cognitive_function": "conserving_constancy",
+            "choices": [{ "id": "a", "label": "y = 7 − 2x" }, { "id": "b", "label": "y = 2x − 7" }, { "id": "c", "label": "y = 7 + 2x" }],
+            "hints": ["Persamaan setara punya penyelesaian yang sama.", "Pindahkan 2x ke ruas kanan. Tandanya berubah.", "y = 7 − 2x"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "RMT-3",
+    "kind": "thinking",
+    "order": -1,
+    "title": "Alat Berpikir & Bukti Logis",
+    "subtitle": "Tabel, garis bilangan, Kartesius, persamaan",
+    "icon": "graph",
+    "objective": "Kamu bisa memilih alat matematika yang tepat dan membuktikan jawabanmu.",
+    "meaning": "Alat matematika membantu kepala menyusun informasi. Bukti logis membuatmu yakin jawabanmu benar, bukan sekadar menebak.",
+    "bridge": "Di setiap soal SPLDV, langkah terakhirmu adalah bukti logis: masukkan (x, y) ke kedua persamaan.",
+    "screens": [
+      {
+        "concept": "alat-tabel",
+        "cognitive_function": "functional_relationship",
+        "instruction": "Tabel adalah alat. Kolom mengelompokkan nilai, baris memasangkan x dengan y-nya.",
+        "blocks": [
+          { "type": "math", "text": "y = 2x + 1" },
+          { "type": "table", "rows": [["x", "0", "1", "2", "3"], ["y", "1", "3", "5", "7"]] }
+        ]
+      },
+      {
+        "concept": "alat-garis-bilangan",
+        "cognitive_function": "analyzing_integrating",
+        "instruction": "Garis bilangan adalah alat untuk membandingkan dan menghitung jarak dua bilangan.",
+        "blocks": [
+          { "type": "numberline", "from": -5, "to": 5, "marks": [-2, 3] },
+          { "type": "callout", "text": "Dari −2 ke 3 ada 5 langkah: 3 − (−2) = 5." }
+        ]
+      },
+      {
+        "concept": "alat-kartesius",
+        "cognitive_function": "functional_relationship",
+        "instruction": "Bidang Kartesius memasangkan x dan y menjadi titik. Garis memuat semua pasangan yang memenuhi.",
+        "blocks": [
+          { "type": "graph", "lines": ["x + y = 6", "x - y = 2"], "points": [{ "x": 4, "y": 2, "label": "(4, 2)" }] }
+        ]
+      },
+      {
+        "concept": "alat-persamaan",
+        "cognitive_function": "encoding",
+        "instruction": "Persamaan adalah alat. Tanda = berarti ruas kiri dan ruas kanan bernilai sama.",
+        "blocks": [
+          { "type": "quote", "text": "Harga 2 buku dan 3 pensil Rp19.000." },
+          { "type": "arrow", "label": "disandikan" },
+          { "type": "math", "text": "2x + 3y = 19.000" }
+        ]
+      },
+      {
+        "concept": "bukti-logis",
+        "cognitive_function": "logical_evidence",
+        "instruction": "Jawaban belum selesai sebelum dibuktikan. Masukkan (x, y) ke kedua persamaan.",
+        "blocks": [
+          { "type": "system", "equations": ["x − y = 1", "2x + 3y = 12"] },
+          { "type": "eq", "lines": ["(x, y) = (3, 2)", "(1) 3 − 2 = 1 ✓", "(2) 2(3) + 3(2) = 12 ✓"] }
+        ]
+      },
+      {
+        "concept": "berpikir-analogi",
+        "cognitive_function": "analogical_thinking",
+        "instruction": "Soal baru sering mirip soal lama. Cari struktur yang sama, bukan angka yang sama.",
+        "blocks": [
+          { "type": "table", "rows": [["", "Soal lama", "Soal baru"], ["Cerita", "2 buku + 3 pensil = 19.000", "3 apel + 2 jeruk = 16.000"], ["Model", "2x + 3y = 19.000", "3x + 2y = 16.000"]] }
+        ]
+      }
+    ],
+    "problems": [
+      {
+        "id": "RMT-3-p1",
+        "title": "Latihan bukti logis",
+        "mode": "independent",
+        "steps": [
+          {
+            "instruction": "Buktikan (3, 2) pada persamaan x + 2y = 7. Hitung ruas kiri.", "check": "value", "expected": "7", "display": "7 = ruas kanan ✓",
+            "cognitive_function": "logical_evidence",
+            "hints": ["Ganti x dengan 3 dan y dengan 2.", "Hitung 3 + 2 × 2.", "7"]
+          },
+          {
+            "instruction": "Rina menjawab (2, 1) untuk x + y = 3 dan x − y = 2. Benarkah?", "check": "choice", "expected": "a", "display": "Salah, tidak memenuhi persamaan kedua",
+            "cognitive_function": "logical_evidence",
+            "choices": [{ "id": "a", "label": "Salah, tidak memenuhi persamaan kedua" }, { "id": "b", "label": "Benar, memenuhi persamaan pertama" }, { "id": "c", "label": "Benar, karena x lebih besar" }],
+            "hints": ["Penyelesaian harus memenuhi kedua persamaan.", "Periksa persamaan kedua: 2 − 1 = ?", "2 − 1 = 1, bukan 2. Jadi salah."]
+          },
+          {
+            "instruction": "Alat mana yang paling tepat untuk melihat titik potong dua garis?", "check": "choice", "expected": "b", "display": "Bidang Kartesius",
+            "cognitive_function": "comparing",
+            "choices": [{ "id": "a", "label": "Garis bilangan" }, { "id": "b", "label": "Bidang Kartesius" }, { "id": "c", "label": "Tabel satu kolom" }],
+            "hints": ["Bandingkan apa yang bisa ditunjukkan tiap alat.", "Garis bilangan hanya punya satu sumbu.", "Bidang Kartesius"]
+          }
+        ]
+      }
+    ]
+  }
+]

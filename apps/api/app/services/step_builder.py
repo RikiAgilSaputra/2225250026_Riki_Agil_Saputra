@@ -438,6 +438,46 @@ def _shuffle_stable(options: list[dict]) -> list[dict]:
 
 
 # ---------------------------------------------------------------- public API
+# ---------------------------------------------------------------- RMT (docs/15)
+STEP_COGNITIVE = {
+    "p1": "systematic_search", "p2": "labeling", "t1": "encoding", "t2": "encoding",
+    "m1": "conserving_constancy", "m2": "projecting_relationships", "m3": "analyzing_integrating",
+    "m4": "projecting_relationships", "e1": "conserving_constancy", "e2": "conserving_constancy",
+    "e3": "analyzing_integrating", "e4": "analyzing_integrating", "e5": "analogical_thinking",
+    "c1": "projecting_relationships", "c2": "analyzing_integrating", "g1": "functional_relationship",
+    "g2": "functional_relationship", "g3": "comparing", "r0": "analyzing_integrating", "r1": "encoding",
+    "r2": "logical_evidence", "v1": "logical_evidence",
+}
+"""Cognitive function trained by each generated step (docs/15 §4), keyed by the builder's step id."""
+
+CHECK_COGNITIVE = {
+    "define_variables": "labeling", "highlight_spans": "systematic_search", "interpret": "encoding",
+    "choice": "comparing", "point": "comparing", "value": "analyzing_integrating",
+    "equation_equivalent": "encoding", "equation_scaled": "conserving_constancy",
+}
+
+
+def tag_cognitive(steps: list[dict]) -> None:
+    """Default for hand-written content steps without an explicit cognitive_function."""
+    for s in steps:
+        s.setdefault("cognitive_function", CHECK_COGNITIVE.get(s["check"], "analyzing_integrating"))
+
+
+def evidence_step(eqs, sol) -> dict:
+    """Rigor: a solution is accepted only with logical evidence that it satisfies BOTH equations (docs/15 §5)."""
+    a2, b2, c2 = eqs[1]
+    x, y = fmt_number(sol["x"]), fmt_number(sol["y"])
+    return _step(
+        "v1", f"Bukti logis: masukkan x = {x} dan y = {y} ke persamaan (2). Berapa hasil ruas kiri?", "value",
+        _num(c2), f"{fmt_number(c2)} = ruas kanan ✓ (x, y) memenuhi kedua persamaan",
+        [
+            "Jawaban benar jika memenuhi kedua persamaan, bukan hanya satu.",
+            f"Hitung {fmt_number(a2)} × {x} + {fmt_number(b2)} × {y}.",
+            fmt_number(c2),
+        ],
+    )
+
+
 def build_problem(
     *,
     pid: str,
@@ -458,15 +498,23 @@ def build_problem(
     method_steps = BUILDERS[method](eqs, sol)
     for s in method_steps:
         s.setdefault("modeling_stage", 4 if story else None)
+    # Story problems already check the answer against the story (r2); other problems get a proof step.
     before, after = ([], [])
     if story:
         before, after = story_steps(story, eqs, sol, include_highlight=source == "content")
+    else:
+        after = [evidence_step(eqs, sol)]
     steps = before + method_steps + after
+    for s in steps:
+        s["cognitive_function"] = STEP_COGNITIVE.get(s["id"], "analyzing_integrating")
+    evidence = None if story else steps[-1]
     for i, s in enumerate(steps):
         s["id"] = f"s{i + 1}"
         s["prefilled"] = mode == "worked"
     if mode == "completion":
-        for s in steps[: max(0, len(steps) - completion_blanks)]:
+        # Fading counts the solving steps only; the proof step always stays open.
+        core = [s for s in steps if s is not evidence]
+        for s in core[: max(0, len(core) - completion_blanks)]:
             s["prefilled"] = True
     return {
         "id": pid,

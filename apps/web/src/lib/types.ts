@@ -11,7 +11,7 @@ export interface User {
 
 export interface ModuleSummary {
   id: string
-  kind: 'prerequisite' | 'spldv' | 'literacy'
+  kind: 'thinking' | 'prerequisite' | 'spldv' | 'literacy'
   title: string
   subtitle: string
   icon: string
@@ -72,6 +72,8 @@ export interface Block {
 
 export interface Screen {
   concept: string
+  /** RMT cognitive function this screen trains (docs/15 §4). */
+  cognitive_function?: string
   instruction: string
   blocks: Block[]
 }
@@ -95,6 +97,10 @@ export interface ProblemListItem {
 
 export interface ModuleDetail extends Omit<ModuleSummary, 'screens'> {
   objective: string
+  /** RMT mediation of meaning: why this module matters (docs/15 §3). */
+  meaning?: string | null
+  /** RMT transcendence: where the idea is used again (docs/15 §3). */
+  bridge?: string | null
   source?: string
   recall: { label: string; module_id: string }[]
   screens: Screen[]
@@ -122,6 +128,7 @@ export interface Step {
   check: string
   choices?: Choice[]
   modeling_stage?: number
+  cognitive_function?: string
   show_graph?: boolean
   variable?: 'x' | 'y'
   prefilled: boolean

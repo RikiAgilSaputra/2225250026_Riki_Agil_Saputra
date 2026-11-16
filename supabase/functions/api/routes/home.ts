@@ -64,6 +64,7 @@ homeRoutes.get("/progress/summary", async (c) => {
   return c.json({
     modules: [...loadContent().modules.values()].map((m) => moduleSummary(m, status[m.id])),
     literacy: await prog.literacyProfile(sql, [u.id]),
+    thinking: await prog.thinkingProfile(sql, [u.id]),
     points: await prog.totalPoints(sql, u.id),
     streak: await prog.streak(sql, u.id),
     daily_goal: await prog.dailyGoal(sql, u.id),

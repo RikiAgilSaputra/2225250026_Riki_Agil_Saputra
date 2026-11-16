@@ -68,6 +68,7 @@ def progress_summary(user: User = Depends(get_current_user), db: Session = Depen
     return {
         "modules": [module_summary(m, status[m["id"]]) for m in content.values()],
         "literacy": prog.literacy_profile(db, [user.id]),
+        "thinking": prog.thinking_profile(db, [user.id]),
         "points": prog.total_points(db, user.id),
         "streak": prog.streak(db, user.id),
         "daily_goal": prog.daily_goal(db, user.id),

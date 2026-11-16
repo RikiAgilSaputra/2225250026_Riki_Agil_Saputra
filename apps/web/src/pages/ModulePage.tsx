@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { BlockView } from '../components/Blocks'
+import { CognitiveChip } from '../components/CognitiveChip'
 import { Icon } from '../components/Icon'
 import { MathText } from '../components/MathText'
 import { Bar } from '../components/ProgressRing'
+import { ReflectionCard } from '../components/ReflectionCard'
 import { api, ApiError } from '../lib/api'
 import { useApi } from '../lib/hooks'
 import type { AttemptView, Method, MethodCard, ModuleDetail } from '../lib/types'
@@ -88,6 +90,8 @@ export function ModulePage() {
       {inScreens ? (
         <section className="card screen" style={{ marginTop: 16 }} aria-live="polite">
           {i === 0 && <p className="muted">🎯 {m.objective}</p>}
+          {i === 0 && m.meaning && <p className="meaning-note">💬 <b>Mengapa penting:</b> {m.meaning}</p>}
+          <CognitiveChip id={screen.cognitive_function} />
           <p className="instruction">
             <MathText text={screen.instruction} className="" />
           </p>
@@ -139,6 +143,7 @@ export function ModulePage() {
             </div>
             {err && <p className="error-box" style={{ marginTop: 12 }}>{err}</p>}
           </div>
+          <ReflectionCard moduleId={m.id} title={m.title} bridge={m.bridge ?? null} />
         </section>
       )}
 

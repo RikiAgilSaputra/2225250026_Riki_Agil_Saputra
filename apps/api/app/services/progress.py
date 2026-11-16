@@ -153,6 +153,29 @@ STAGE_INDICATOR = {1: "merumuskan", 2: "merumuskan", 3: "merumuskan", 4: "menera
                    5: "menafsirkan", 6: "menafsirkan", 7: "penalaran"}
 
 
+COGNITIVE_FUNCTIONS = (
+    "labeling", "comparing", "systematic_search", "encoding", "conserving_constancy", "analyzing_integrating",
+    "projecting_relationships", "analogical_thinking", "functional_relationship", "logical_evidence",
+)
+"""RMT cognitive functions (docs/15 §4), in teaching order."""
+
+
+def thinking_profile(db: Session, student_ids: list[str]) -> dict:
+    """Average step score (0–100) per cognitive function; None = not practised yet."""
+    sums: dict[str, list[float]] = {k: [] for k in COGNITIVE_FUNCTIONS}
+    if student_ids:
+        attempts = db.scalars(
+            select(Attempt).where(Attempt.student_id.in_(student_ids), Attempt.completed_at.is_not(None))
+        )
+        for a in attempts:
+            for s in a.problem_snapshot["steps"]:
+                cf = s.get("cognitive_function")
+                if not cf or s.get("prefilled") or cf not in sums:
+                    continue
+                sums[cf].append(step_score(a.state.get(s["id"], {})))
+    return {k: (round(100 * sum(v) / len(v)) if v else None) for k, v in sums.items()}
+
+
 def literacy_profile(db: Session, student_ids: list[str]) -> dict:
     """Average step score per literacy indicator (docs/13 §8) and per context."""
     sums: dict[str, list[float]] = {k: [] for k in ("merumuskan", "menerapkan", "menafsirkan", "penalaran")}

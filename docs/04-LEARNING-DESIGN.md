@@ -155,6 +155,28 @@ Aturan tambahan:
 | R14 | Contoh "kalimat → matematika" selalu disertai contoh yang menjebak; hindari mengajarkan strategi kata kunci semata |
 | R15 | Fitur AI tidak boleh menggantikan proses berpikir siswa: default "bantu langkah demi langkah" ([14 §3.1](14-WORD-PROBLEM-MODELER.md#31-alur-pengguna)) |
 
+## 10a. Rigorous Mathematical Thinking (RMT)
+
+Model pembelajaran diperbarui mengikuti **Rigorous Mathematical Thinking** (Kinard & Kozulin, 2008). Rinciannya ada di [15-RIGOROUS-MATHEMATICAL-THINKING.md](15-RIGOROUS-MATHEMATICAL-THINKING.md). Ringkasannya:
+
+- **Fase I (pengembangan kognitif):** tahap **Alat Berpikir** (RMT-1..3) di awal jalur. Isinya membandingkan, melihat yang tetap dan yang berubah, memakai alat matematika, dan memberi bukti logis.
+- **Fase II (isi sebagai proses):** setiap layar menyebut **fungsi berpikir** yang dilatih (chip 🧠, penjelasannya dilipat). Tabel, garis bilangan, dan bidang Kartesius diperlakukan sebagai *alat*.
+- **Fase III (praktik konstruksi):** setiap langkah soal diberi label fungsi berpikir. Soal ditutup dengan **bukti logis**: masukkan (x, y) ke kedua persamaan.
+- **Mediasi:** "Mengapa penting" (makna) di layar pertama, "Jembatan" (transendensi) dan **Refleksi** di akhir modul.
+- **Profil fungsi berpikir** untuk siswa dan guru, di samping profil literasi.
+
+Struktur modul §5 menjadi:
+
+```
+Modul
+├── Tujuan + Mengapa penting (meaning)
+├── Layar materi 1..n (setiap layar: 1 konsep + 1 fungsi berpikir)
+├── Kartu metode / latihan bertahap (worked → fading → mandiri; setiap soal diakhiri bukti logis)
+└── Jembatan (bridge) + Refleksi → Catatanku
+```
+
+Aturan tambahan R16–R20: [15 §8](15-RIGOROUS-MATHEMATICAL-THINKING.md#8-aturan-konten-tambahan-r16r20).
+
 ## 11. Evaluasi Beban Kognitif (uji pengguna)
 
 - Skala subjektif **Paas** (1–9: "Seberapa besar usaha mentalmu?") ditampilkan opsional setelah modul selama periode uji.

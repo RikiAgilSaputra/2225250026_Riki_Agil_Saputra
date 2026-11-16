@@ -127,8 +127,11 @@ content/
 |---|---|---|
 | `id` | string | Unik, format `PRE-n` / `SPL-n` |
 | `objective` | string | 1 kalimat |
+| `meaning` | string | Wajib. Mengapa modul ini penting (mediasi makna, RMT). ≤ 25 kata, ≤ 2 kalimat (R17) |
+| `bridge` | string | Wajib. Di mana idenya dipakai lagi (transendensi, RMT). ≤ 25 kata, ≤ 2 kalimat (R17) |
 | `recall` | array | Opsional; tautan "Ingat kembali" (GL02) |
 | `screens[].concept` | string | **Tepat satu** konsep (R3) |
+| `screens[].cognitive_function` | enum | Wajib. Salah satu dari 10 fungsi berpikir ([15 §4](15-RIGOROUS-MATHEMATICAL-THINKING.md#4-fungsi-berpikir-fungsi-kognitif)) (R16) |
 | `screens[].instruction` | string | ≤ 25 kata, ≤ 2 kalimat (R1) |
 | `screens[].blocks[].type` | enum | `text`, `math`, `graph`, `table`, `arrow`, `image`, `callout` |
 

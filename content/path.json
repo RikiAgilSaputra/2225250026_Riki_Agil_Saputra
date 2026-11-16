@@ -3,6 +3,16 @@
   "description": "Satu jalur dari materi dasar sampai soal cerita. Ikuti tahapnya berurutan, atau buka modul mana pun yang kamu perlukan.",
   "stages": [
     {
+      "id": "berpikir",
+      "title": "Alat Berpikir",
+      "description": "Latih cara berpikir matematika: membandingkan, melihat yang tetap, memakai alat, dan membuktikan.",
+      "modules": [
+        { "id": "RMT-1", "role": "inti" },
+        { "id": "RMT-2", "role": "inti" },
+        { "id": "RMT-3", "role": "inti" }
+      ]
+    },
+    {
       "id": "prasyarat",
       "title": "Prasyarat",
       "description": "Ingat kembali bilangan bulat, persamaan, koordinat, dan fungsi sebelum belajar SPLDV.",

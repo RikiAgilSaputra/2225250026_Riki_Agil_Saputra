@@ -9,11 +9,13 @@
     "icon": "calc",
     "method": "mixed",
     "objective": "Kamu terampil menentukan himpunan penyelesaian SPLDV dengan metode yang paling tepat.",
+    "meaning": "Latihan beragam membuatmu melihat struktur yang sama di balik angka yang berbeda.",
+    "bridge": "Sebelum menghitung, tanyakan: soal ini mirip soal mana yang pernah kamu selesaikan?",
     "source": "Soal diadaptasi dari Kumpulan Soal SPLDV Kelas VIII (MGMP Matematika SATAP Malang), Soal Latihan SPLDV Kelas 8, Buku Ajar Matematika Kelas VIII Semester 1, dan BSE Matematika SMP Kelas VIII Bab 4.",
     "recall": [{ "label": "Langkah metode penyelesaian", "module_id": "MAT-3" }],
     "screens": [
       {
-        "concept": "memilih-metode",
+        "concept": "memilih-metode", "cognitive_function": "comparing",
         "instruction": "Pilih metode yang paling mudah untuk bentuk soalnya.",
         "blocks": [
           { "type": "table", "rows": [["Ciri soal", "Metode yang cocok"], ["Ada variabel berkoefisien 1, misalnya y = 2x", "Substitusi"], ["Semua koefisien besar atau negatif", "Eliminasi"], ["Angkanya kecil dan ingin melihat gambar", "Grafik"], ["Bentuk apa saja", "Campuran"]] },
@@ -21,7 +23,7 @@
         ]
       },
       {
-        "concept": "rapikan-bentuk",
+        "concept": "rapikan-bentuk", "cognitive_function": "conserving_constancy",
         "instruction": "Sebelum mulai, ubah kedua persamaan ke bentuk ax + by = c.",
         "blocks": [
           { "type": "eq", "lines": ["2y = 10 - x  →  x + 2y = 10", "2y + 3x + 2 = 0  →  3x + 2y = -2", "y = 2x  →  -2x + y = 0"] },
@@ -29,7 +31,7 @@
         ]
       },
       {
-        "concept": "yang-ditanya-gabungan",
+        "concept": "yang-ditanya-gabungan", "cognitive_function": "systematic_search",
         "instruction": "Jika yang ditanya bentuk lain, misalnya 4x + 3y, cari x dan y dulu lalu hitung.",
         "blocks": [
           { "type": "eq", "lines": ["3x - 2y = -1  dan  5x + y = 7", "x = 1  dan  y = 2", "4x + 3y = 4(1) + 3(2) = 10"] },
@@ -83,11 +85,13 @@
     "subtitle": "Belanja, umur, bangun datar, parkir, dan lainnya",
     "icon": "story",
     "objective": "Kamu terampil memodelkan dan menyelesaikan berbagai soal cerita SPLDV.",
+    "meaning": "Soal cerita yang beragam melatih kebiasaan memodelkan dengan teliti.",
+    "bridge": "Bandingkan strukturnya dengan soal sebelumnya, lalu pakai langkah yang sama.",
     "source": "Soal diadaptasi dari Kumpulan Soal SPLDV Kelas VIII (MGMP Matematika SATAP Malang), Soal Latihan SPLDV Kelas 8, Buku Ajar Matematika Kelas VIII Semester 1, dan BSE Matematika SMP Kelas VIII Bab 4.",
     "recall": [{ "label": "Dari soal cerita ke model", "module_id": "MAT-4" }],
     "screens": [
       {
-        "concept": "tabel-data",
+        "concept": "tabel-data", "cognitive_function": "systematic_search",
         "instruction": "Susun data cerita dalam tabel agar angkanya tidak tertukar.",
         "blocks": [
           { "type": "quote", "text": "Rafi membeli 4 kg beras dan 5 kg jagung seharga Rp45.500. Anisa membeli 5 kg beras dan 3 kg jagung seharga Rp39.000." },
@@ -96,7 +100,7 @@
         ]
       },
       {
-        "concept": "soal-bangun-datar",
+        "concept": "soal-bangun-datar", "cognitive_function": "encoding",
         "instruction": "Untuk persegi panjang, ingat rumus keliling = 2 × (panjang + lebar).",
         "blocks": [
           { "type": "quote", "text": "Keliling persegi panjang 34 cm, panjangnya 5 cm lebih dari lebarnya." },
@@ -106,7 +110,7 @@
         ]
       },
       {
-        "concept": "ditanya-gabungan",
+        "concept": "ditanya-gabungan", "cognitive_function": "systematic_search",
         "instruction": "Kadang yang ditanya gabungan, misalnya harga 6 CD dan 5 kaset. Cari harga satuannya dulu.",
         "blocks": [
           { "type": "eq", "lines": ["4x + 5y = 200000  dan  2x + 3y = 110000", "x = 25000  dan  y = 20000", "6x + 5y = 150000 + 100000 = 250000"] },

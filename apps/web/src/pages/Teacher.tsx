@@ -1,6 +1,7 @@
 import { api } from '../lib/api'
 import { useApi } from '../lib/hooks'
 import type { LiteracyProfile } from '../lib/types'
+import { ThinkingBars } from '../components/ThinkingBars'
 import { LiteracyBars } from './Progress'
 
 interface Overview {
@@ -21,6 +22,7 @@ interface Overview {
     literacy: Record<string, number | null>
   }[]
   literacy: LiteracyProfile
+  thinking?: Record<string, number | null>
   hardest_steps: { problem_id: string; step_id: string; tries: number; error_rate: number }[]
   module_count: number
   submissions: { id: string; text: string; status: string; rating: number; created_at: string }[]
@@ -139,6 +141,10 @@ export function Teacher() {
           <section className="card">
             <h2 style={{ fontSize: '1.1rem', marginBottom: 12 }}>Profil literasi kelas</h2>
             <LiteracyBars profile={data.literacy} />
+          </section>
+          <section className="card">
+            <h2 style={{ fontSize: '1.1rem', marginBottom: 12 }}>Profil fungsi berpikir kelas</h2>
+            <ThinkingBars profile={data.thinking} />
           </section>
           <section className="card">
             <h2 style={{ fontSize: '1.1rem' }}>Pengaturan kelas</h2>
