@@ -1,3 +1,5 @@
+from typing import Literal
+
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
@@ -8,6 +10,7 @@ from app.core.errors import ApiError
 from app.models import ClassRoom, ModelerSubmission, User
 from app.services.modeler import service
 from app.services.modeler.guard import MAX_CHARS
+from app.services.modeler.ocr import MAX_IMAGE_BASE64
 
 router = APIRouter(prefix="/modeler", tags=["modeler"])
 
@@ -48,6 +51,30 @@ def analyze(body: AnalyzeIn, user: User = Depends(get_current_user), db: Session
         if sub.status == "not_spldv" and sub.model_json:
             out["reason"] = sub.model_json.get("not_spldv_reason")
     return out
+
+
+class ImageIn(BaseModel):
+    data: str = Field(min_length=100, max_length=MAX_IMAGE_BASE64, pattern=r"^[A-Za-z0-9+/=\s]+$")
+    mime_type: Literal["image/jpeg", "image/png", "image/webp"]
+
+
+class ScanIn(BaseModel):
+    text: str | None = Field(default=None, max_length=MAX_CHARS * 2)
+    image: ImageIn | None = None
+
+
+@router.post("/scan")
+def scan(body: ScanIn, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Scanner (docs/14 §12): typed text or a photo (read by Gemini) → story | equations | other."""
+    if not body.image and not (body.text or "").strip():
+        raise ApiError(422, "VALIDATION_ERROR", "Isian belum lengkap atau tidak sesuai.")
+    cls = _class_for(db, user)
+    image = {"data": "".join(body.image.data.split()), "mime_type": body.image.mime_type} if body.image else None
+    out = service.scan(db, user, cls, body.text, image)
+    settings = service.class_settings(cls)
+    return {"source": out.source, "text": out.text, "kind": out.result.kind, "message": out.result.message,
+            "equations": out.result.equations, "system": out.result.system, "solvable": out.result.solvable,
+            "quota_remaining": max(0, settings["daily_quota"] - service.used_today(db, user.id))}
 
 
 class RatingIn(BaseModel):

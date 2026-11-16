@@ -66,7 +66,28 @@ export function modelOrder(main: string, fallback: string | undefined): string[]
   return fallback && fallback !== main ? [main, fallback] : [main];
 }
 
-export const callGemini: CallModel = async (userContent) => {
+/** Text and/or image parts sent as the interaction input. */
+// The v1 Interactions API accepts images only inside a "user_input" step (not as bare input parts).
+export type GeminiInput = string | {
+  type: "user_input";
+  content: ({ type: "text"; text: string } | { type: "image"; data: string; mime_type: string })[];
+}[];
+
+export interface RawInteraction {
+  status?: string;
+  output_text?: string;
+  model?: string;
+  usage?: Record<string, number | undefined>;
+}
+
+/**
+ * One structured-JSON call to Google AI Studio with the shared safety net: fallback model when the main one
+ * is overloaded, one hard time budget (MODELER_TIMEOUT_SECONDS), no SDK retries, store: false.
+ * Used by the modeler (story → WordProblemModel) and the scanner (photo → text).
+ */
+export async function geminiJson(
+  input: GeminiInput, systemInstruction: string, schema: JsonSchema,
+): Promise<{ interaction: RawInteraction; model: string; latencyMs: number }> {
   const s = settings();
   if (!s.modelerApiKey) throw new ModelerUnavailable("GEMINI_API_KEY is not set");
   // Google AI Studio only (vertexai: false; key sent as x-goog-api-key). No SDK retries: the whole call must fit in MODELER_TIMEOUT_SECONDS (Netlify proxy limit is 26 s).
@@ -81,21 +102,17 @@ export const callGemini: CallModel = async (userContent) => {
     try {
       const request = client.interactions.create({
         model,
-        system_instruction: SYSTEM_PROMPT,
-        input: userContent,
-        response_format: { type: "text", mime_type: "application/json", schema: geminiSchema() },
+        system_instruction: systemInstruction,
+        input,
+        response_format: { type: "text", mime_type: "application/json", schema },
         generation_config: { thinking_level: EFFORT_TO_THINKING[s.modelerEffort] ?? "medium" },
-        store: false, // do not keep students' story text on Google's side after the request
+        store: false, // do not keep students' text or photos on Google's side after the request
       }, { timeout_ms: remaining, retries: { strategy: "none" }, fetch_options: { signal: abort.signal } });
       // Hard deadline even if the SDK keeps waiting (an overloaded model can take a minute to answer 503).
       const timeout = new Promise<never>((_, reject) =>
         abort.signal.addEventListener("abort", () => reject(new Error(`timeout after ${remaining} ms`))));
       const interaction = await Promise.race([request, timeout]);
-      return fromInteraction(
-        interaction as unknown as Parameters<typeof fromInteraction>[0],
-        Math.round(performance.now() - started),
-        model,
-      );
+      return { interaction: interaction as unknown as RawInteraction, model, latencyMs: Math.round(performance.now() - started) };
     } catch (e) {
       const status = Number((e as { status?: number; statusCode?: number }).status ??
         (e as { statusCode?: number }).statusCode ?? 0);
@@ -113,4 +130,10 @@ export const callGemini: CallModel = async (userContent) => {
     }
   }
   throw new ModelerBusy(); // every model was busy, or the time budget ran out
+}
+
+/** Modeler: story text → WordProblemModel. */
+export const callGemini: CallModel = async (userContent) => {
+  const { interaction, model, latencyMs } = await geminiJson(userContent, SYSTEM_PROMPT, geminiSchema());
+  return fromInteraction(interaction, latencyMs, model);
 };

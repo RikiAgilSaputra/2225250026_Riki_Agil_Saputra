@@ -254,6 +254,7 @@ Soal literasi dikerjakan melalui `/attempts` seperti soal lain.
 
 | Metode | Endpoint | Peran | Deskripsi |
 |---|---|---|---|
+| POST | `/modeler/scan` | 🎓 👩‍🏫 | Scanner: teks atau foto soal → jenis soal (`story` / `equations` / `other`) |
 | POST | `/modeler/analyze` | 🎓 👩‍🏫 | Ubah soal cerita → model SPLDV terverifikasi |
 | GET | `/modeler/quota` | 🎓 | Sisa kuota hari ini |
 | POST | `/modeler/{submission_id}/attempt` | 🎓 | Mulai pengerjaan dari model `{mode, method}` |
@@ -263,6 +264,28 @@ Soal literasi dikerjakan melalui `/attempts` seperti soal lain.
 | GET | `/teacher/classes/{id}/modeler-submissions?status=&review_status=` | 👩‍🏫 | Daftar kiriman siswa |
 | POST | `/teacher/modeler-submissions/{id}/approve` | 👩‍🏫 | Setujui → soal bank kelas `{level, context_category, edits?}` |
 | PATCH | `/classes/{id}/ai-settings` | 👩‍🏫 | `{enabled, daily_quota, allow_full_solution}` |
+
+**POST `/modeler/scan`** (scanner soal, [docs/14 §12](14-WORD-PROBLEM-MODELER.md#12-scanner-soal))
+```json
+// request — isi salah satu: teks, atau foto (base64 tanpa awalan "data:", ≤ ±4 MB, jpeg/png/webp)
+{ "text": "2x + y = 7\nx − y = 2" }
+{ "image": { "data": "/9j/4AAQ…", "mime_type": "image/jpeg" } }
+
+// 200 — kind: story | equations | other
+{
+  "source": "image",                    // text | image
+  "text": "2x + y = 7\nx − y = 2",      // teks untuk diperiksa/diedit siswa (data pribadi disamarkan)
+  "kind": "equations",
+  "message": "Soal SPLDV berbentuk persamaan terdeteksi. Bisa langsung dikerjakan langkah demi langkah.",
+  "equations": ["2x + y = 7", "x − y = 2"],                         // hanya untuk kind = equations
+  "system": ["(2)*x + (1)*y = 7", "(1)*x + (-1)*y = 2"],          // kirim ke POST /attempts {system}
+  "solvable": true,
+  "quota_remaining": 9
+}
+```
+- Teks: jenis soal ditentukan **tanpa AI** (deterministik), tidak memakai kuota.
+- Foto: dibaca Gemini (OCR) lalu ditentukan jenisnya; **memakai 1 kuota** dan mengikuti `AI_DISABLED_FOR_CLASS`, `QUOTA_EXCEEDED`, `MODELER_BUSY`, `MODELER_UNAVAILABLE`, `MODELER_BUDGET_PAUSED`. Foto tidak disimpan; hanya teks hasil baca (setelah penyamaran) dicatat dengan `purpose = "scan"`.
+- `story` → lanjut ke `POST /modeler/analyze`. `equations` + `solvable` → `POST /attempts { "system": [...], "method": "mixed" }` (tanpa AI, `problem.source = "scan"`; 400 bila tidak punya penyelesaian tunggal).
 
 **POST `/modeler/analyze`**
 ```json

@@ -40,6 +40,7 @@ Rincian lengkap: [docs/01-RESEARCH-INSIGHTS.md](docs/01-RESEARCH-INSIGHTS.md).
 | Dashboard guru, analitik kesalahan, ekspor CSV | Guru | K02 |
 | Siklus pemodelan 7 tahap & bank soal literasi L1–L3 | Siswa | K01, IL01, literasi |
 | Pemodel soal cerita otomatis (Gemini API dari Google AI Studio + verifikasi SymPy) | Siswa, guru | K01, IL01, EL01 |
+| Scanner soal: foto (kamera HP) atau teks → soal cerita dimodelkan AI, SPLDV berbentuk persamaan langsung dikerjakan langkah demi langkah | Siswa, guru | K01, EL01, DS01 |
 | Buat soal sendiri & profil literasi | Siswa, guru | GL04, literasi |
 
 ---
@@ -100,7 +101,7 @@ Pemodel AI butuh kunci API Google AI Studio: ganti `TEMPEL_API_KEY_AQ_ANDA_DI_SI
 ```bash
 # Backend (apps/api) — API di :8000, dokumentasi di /docs
 .venv/Scripts/python -m uvicorn app.main:app --reload --port 8000
-.venv/Scripts/python -m pytest -q          # 58 tes, tanpa memanggil Gemini API
+.venv/Scripts/python -m pytest -q          # 69 tes, tanpa memanggil Gemini API
 
 # Frontend (apps/web) — hot reload di :5173, /api diteruskan ke :8000
 npm run dev
@@ -129,7 +130,7 @@ Frontend di **Netlify**, backend dan database di **Supabase** (Edge Function `ap
 
 ```bash
 npm install            # dari root: paket backend Supabase
-npm run api:test       # 37 tes backend Supabase (tanpa internet, tanpa memanggil API AI)
+npm run api:test       # 46 tes backend Supabase (tanpa internet, tanpa memanggil API AI)
 ```
 
 ---

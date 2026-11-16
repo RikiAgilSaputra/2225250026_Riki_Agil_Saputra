@@ -1,5 +1,7 @@
-"""Modeler pipeline: guard → cache → Claude → verify (→ repair once) → store (docs/14 §4)."""
+"""Modeler pipeline: guard → cache → Gemini → verify (→ repair once) → store (docs/14 §4); scanner (§12)."""
 
+import re
+from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 
 from sqlalchemy import func, select
@@ -10,9 +12,11 @@ from app.core.errors import ApiError
 from app.models import ClassRoom, ModelerSubmission, User
 from app.services.modeler import guard
 from app.services.modeler.llm_client import LlmResult, ModelerBusy, ModelerUnavailable, call_model
+from app.services.modeler.ocr import SCAN_PROMPT_VERSION, read_photo
 from app.services.modeler.prompt import PROMPT_VERSION, repair_message, user_message
 from app.services.modeler.schema import WordProblemModel
 from app.services.modeler.verifier import verify
+from app.services.scanner import ScanResult, scan_text
 from app.services.step_builder import build_problem
 
 
@@ -153,3 +157,47 @@ def problem_from_submission(sub: ModelerSubmission, method: str, mode: str) -> d
         literacy={"level": "L1", "context_category": m.get("context_category", "lainnya"),
                   "representation": "text", "akm_cognitive": "penerapan", "item_format": "isian"},
     )
+
+
+UNREADABLE_PHOTO = "Foto belum terbaca jelas. Foto ulang dengan cahaya cukup dan soal memenuhi layar."
+
+
+@dataclass
+class ScanOut:
+    source: str  # text | image
+    text: str  # shown to the student in an editable box (PII masked)
+    result: ScanResult
+
+
+def scan(db: Session, user: User, cls: ClassRoom | None, text: str | None, image: dict | None) -> ScanOut:
+    """Scanner (docs/14 §12): photo → text with Gemini (quota), then the deterministic type check."""
+    if image:
+        settings = class_settings(cls)
+        if user.role == "student" and not settings["ai_enabled"]:
+            raise ApiError(403, "AI_DISABLED_FOR_CLASS", "Pemodel AI belum diaktifkan gurumu.")
+        if user.role == "student" and used_today(db, user.id) >= settings["daily_quota"]:
+            raise ApiError(429, "QUOTA_EXCEEDED", "Kuota pemodel hari ini sudah habis. Coba lagi besok.")
+        if month_cost(db) >= get_settings().modeler_monthly_budget_usd:
+            raise ApiError(503, "MODELER_BUDGET_PAUSED", "Pemodel AI dijeda sementara karena batas anggaran bulan ini.")
+        try:
+            ocr = read_photo(image["data"], image["mime_type"])
+        except ModelerUnavailable as exc:
+            raise ApiError(503, "MODELER_UNAVAILABLE",
+                           "Pemodel AI belum aktif di server ini (kunci API belum diisi atau tidak valid).") from exc
+        except ModelerBusy as exc:
+            raise ApiError(429, "MODELER_BUSY", "Pemodel sedang sibuk, coba lagi sebentar.") from exc
+        # Keep line breaks (one equation per line); mask identity data before storing or showing it.
+        clean = re.sub(r"\n{3,}", "\n\n", re.sub(r"[ \t]+", " ", ocr.text)).strip()
+        clean = guard.mask_pii(clean)[: guard.MAX_CHARS]
+        db.add(ModelerSubmission(
+            user_id=user.id, class_id=cls.id if cls else None, purpose="scan", input_text=clean,
+            input_hash=guard.text_hash(clean), status="scanned" if ocr.readable else "unreadable",
+            llm_model=ocr.model_id, prompt_version=SCAN_PROMPT_VERSION, input_tokens=ocr.input_tokens,
+            output_tokens=ocr.output_tokens, latency_ms=ocr.latency_ms,
+        ))
+        db.commit()
+        if not ocr.readable:
+            return ScanOut("image", "", ScanResult("other", False, UNREADABLE_PHOTO))
+        return ScanOut("image", clean, scan_text(clean))
+    clean = guard.mask_pii((text or "").strip())[: guard.MAX_CHARS]
+    return ScanOut("text", clean, scan_text(clean))

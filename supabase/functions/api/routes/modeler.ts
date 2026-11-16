@@ -6,7 +6,8 @@ import { db } from "../lib/db.ts";
 import { ApiError } from "../lib/errors.ts";
 import { body, user } from "../lib/http.ts";
 import { MAX_CHARS } from "../modeler/guard.ts";
-import { analyze, MESSAGES, publicModel, usedToday } from "../modeler/service.ts";
+import { IMAGE_TYPES, MAX_IMAGE_BASE64 } from "../modeler/ocr.ts";
+import { analyze, MESSAGES, publicModel, scan, usedToday } from "../modeler/service.ts";
 
 export const modelerRoutes = new Hono();
 
@@ -46,6 +47,29 @@ modelerRoutes.post("/modeler/analyze", async (c) => {
     if (sub.status === "not_spldv" && sub.model_json) out.reason = sub.model_json.not_spldv_reason;
   }
   return c.json(out);
+});
+
+// Scanner: a typed/pasted text, or a photo (base64 without the "data:" prefix) read by Gemini.
+const ScanIn = z.object({
+  text: z.string().max(MAX_CHARS * 2).optional(),
+  image: z.object({
+    data: z.string().min(100).max(MAX_IMAGE_BASE64).regex(/^[A-Za-z0-9+/=\s]+$/),
+    mime_type: z.enum(IMAGE_TYPES),
+  }).optional(),
+}).refine((b) => Boolean(b.image) || Boolean(b.text?.trim()), { path: ["text"] });
+
+modelerRoutes.post("/modeler/scan", async (c) => {
+  const u = await user(c);
+  const b = await body(c, ScanIn);
+  const sql = db();
+  const cls = await classFor(sql, u);
+  const out = await scan(sql, u, cls, { text: b.text, image: b.image && { ...b.image, data: b.image.data.replace(/\s+/g, "") } });
+  const settings = classSettings(cls);
+  return c.json({
+    source: out.source, text: out.text, kind: out.result.kind, message: out.result.message,
+    equations: out.result.equations ?? null, system: out.result.system ?? null, solvable: out.result.solvable,
+    quota_remaining: Math.max(0, settings.daily_quota - (await usedToday(sql, u.id))),
+  });
 });
 
 const RatingIn = z.object({ rating: z.number().int().min(-1).max(1) });

@@ -78,7 +78,7 @@ Kesetaraan diuji otomatis terhadap versi Python: 228 soal (konten dan varian tia
 ## Pengembangan lokal
 
 ```bash
-npm run api:test      # 38 tes (matematika, pemodel, API) di Postgres sementara (PGlite), tanpa memanggil API AI
+npm run api:test      # 46 tes (matematika, pemodel, scanner, API) di Postgres sementara (PGlite), tanpa memanggil API AI
 npm run api:typecheck # TypeScript strict
 npm run api:dev       # API di http://localhost:8000, memakai DATABASE_URL dari .env
 cd apps/web && npm run dev   # frontend :5173, /api diteruskan ke :8000

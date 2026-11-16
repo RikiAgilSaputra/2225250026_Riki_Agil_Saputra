@@ -229,6 +229,18 @@ export interface AnalyzeResult {
   reason?: string
 }
 
+/** POST /modeler/scan: what kind of problem the text (typed or read from a photo) is. */
+export interface ScanResult {
+  source: 'text' | 'image'
+  text: string
+  kind: 'story' | 'equations' | 'other'
+  message: string
+  equations: string[] | null
+  system: string[] | null
+  solvable: boolean
+  quota_remaining: number
+}
+
 export interface Note {
   id: string
   module_id: string | null

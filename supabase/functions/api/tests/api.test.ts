@@ -288,3 +288,81 @@ test("MV-11 quota and AI switch", async () => {
   const q = (await call("GET", "/modeler/quota", { token: student })).body;
   assert.equal(q.enabled, true);
 });
+
+// ------------------------------------------------------------------ scanner (docs/14 §12)
+const PHOTO = { data: "A".repeat(400), mime_type: "image/jpeg" as const }; // content is irrelevant: OCR is mocked
+
+test("scan text: story, equations (solved without AI), other", async () => {
+  const token = await login();
+  const story = (await call("POST", "/modeler/scan", { token, body: { text: TEXT } })).body;
+  assert.equal(story.kind, "story");
+  assert.equal(story.source, "text");
+  const eq = (await call("POST", "/modeler/scan", { token, body: { text: "2x + y = 7\nx − y = 2" } })).body;
+  assert.equal(eq.kind, "equations");
+  assert.equal(eq.solvable, true);
+  assert.deepEqual(eq.equations, ["2x + y = 7", "x − y = 2"]);
+  const a = await call("POST", "/attempts", { token, body: { system: eq.system, method: "elimination" } });
+  assert.equal(a.status, 201, JSON.stringify(a.body));
+  assert.equal(a.body.problem.source, "scan");
+  assert.equal(a.body.problem.method, "elimination");
+  const other = (await call("POST", "/modeler/scan", { token, body: { text: "2x + 5 = 11" } })).body;
+  assert.equal(other.kind, "other");
+  const parallel = await call("POST", "/attempts", { token, body: { system: ["x + y = 5", "2x + 2y = 7"] } });
+  assert.equal(parallel.status, 400);
+  const empty = await call("POST", "/modeler/scan", { token, body: {} });
+  assert.equal(empty.status, 422);
+});
+
+test("scan photo: OCR text is masked, classified, counted in the quota", async () => {
+  const { setReadPhoto } = await import("../modeler/service.ts");
+  let calls = 0;
+  setReadPhoto(async (data, mime) => {
+    calls++;
+    assert.equal(mime, "image/jpeg");
+    assert.ok(data.length >= 100);
+    return {
+      readable: true, text: "Andi (081234567890) membeli 3 buku dan 2 pulpen Rp21.000.\nDimas membeli 2 buku dan 4 pulpen Rp22.000.\nBerapa harga 1 buku?",
+      refused: false, inputTokens: 1500, outputTokens: 80, latencyMs: 20, modelId: "mock",
+    };
+  });
+  try {
+    const token = await login();
+    const before = (await call("GET", "/modeler/quota", { token })).body.remaining;
+    const r = await call("POST", "/modeler/scan", { token, body: { image: PHOTO } });
+    assert.equal(r.status, 200, JSON.stringify(r.body));
+    assert.equal(r.body.source, "image");
+    assert.equal(r.body.kind, "story");
+    assert.ok(r.body.text.includes("[nomor HP]") && !r.body.text.includes("0812"));
+    assert.ok(r.body.text.includes("\n")); // line breaks kept for checking/editing
+    assert.equal(calls, 1);
+    assert.equal(r.body.quota_remaining, before - 1);
+    // Teacher overview lists modeling submissions only, not raw scans
+    const o = (await call("GET", "/teacher/overview", { token: await login("guru", "guru123") })).body;
+    assert.ok(o.submissions.every((s: Json) => s.status !== "scanned"));
+  } finally {
+    setReadPhoto(null);
+  }
+});
+
+test("scan photo: unreadable photo and invalid images", async () => {
+  const { setReadPhoto } = await import("../modeler/service.ts");
+  setReadPhoto(async () => ({ readable: false, text: "", refused: false, inputTokens: 10, outputTokens: 2, latencyMs: 5, modelId: "mock" }));
+  try {
+    const token = await login();
+    const r = (await call("POST", "/modeler/scan", { token, body: { image: PHOTO } })).body;
+    assert.equal(r.kind, "other");
+    assert.ok(r.message.startsWith("Foto belum terbaca jelas"));
+    const gif = await call("POST", "/modeler/scan", { token, body: { image: { ...PHOTO, mime_type: "image/gif" } } });
+    assert.equal(gif.status, 422);
+    const notBase64 = await call("POST", "/modeler/scan", { token, body: { image: { ...PHOTO, data: "<script>".repeat(30) } } });
+    assert.equal(notBase64.status, 422);
+  } finally {
+    setReadPhoto(null);
+  }
+});
+
+test("scan photo without an API key returns 503 (no mock)", async () => {
+  const r = await call("POST", "/modeler/scan", { token: await login(), body: { image: PHOTO } });
+  assert.equal(r.status, 503);
+  assert.equal(r.body.error.code, "MODELER_UNAVAILABLE");
+});

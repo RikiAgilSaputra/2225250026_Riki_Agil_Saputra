@@ -62,7 +62,8 @@ teacherRoutes.get("/teacher/overview", async (c) => {
     hard.sort((a, b) => b.error_rate - a.error_rate);
   }
   const subs = await sql`
-    select id, input_text, status, rating, created_at from modeler_submissions where class_id = ${cls.id}
+    select id, input_text, status, rating, created_at from modeler_submissions
+    where class_id = ${cls.id} and purpose = 'solve'
     order by created_at desc limit 20`;
   return c.json({
     class: { id: cls.id, name: cls.name, join_code: cls.join_code, settings: classSettings(cls) },

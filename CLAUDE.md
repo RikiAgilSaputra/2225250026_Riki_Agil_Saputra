@@ -79,7 +79,7 @@ npm run lint           # ESLint + Prettier check
 npx cap sync android   # salin build ke proyek Android
 
 # Backend produksi: Supabase Edge Function (dari root)
-npm run api:test                   # 37 tes di Postgres sementara (PGlite), AI di-mock
+npm run api:test                   # 46 tes di Postgres sementara (PGlite), AI di-mock
 npm run api:typecheck
 npm run api:dev                    # API :8000, DATABASE_URL dari .env
 npm run db:push                    # terapkan supabase/migrations/
@@ -117,7 +117,7 @@ Aturan ini adalah inti produk. Jangan dilanggar tanpa persetujuan eksplisit.
 
 1. AI **hanya menerjemahkan** cerita → `WordProblemModel` (Pydantic). Penyelesaian, nilai, langkah, dan umpan balik **selalu** dihitung SymPy/templat, bukan AI.
 2. Model AI **tidak boleh** ditampilkan atau dipakai sebelum lolos verifier V1–V7 ([docs/14 §6](docs/14-WORD-PROBLEM-MODELER.md#6-verifikasi-deterministik-sympy)). Maksimal satu putaran perbaikan.
-3. Teks bebas dari AI tidak ditampilkan ke siswa, kecuali `source_text` yang sudah terbukti ada di input.
+3. Teks bebas dari AI tidak ditampilkan ke siswa, kecuali `source_text` yang sudah terbukti ada di input. Pengecualian: teks hasil baca **foto soal** oleh scanner, ditampilkan di kotak yang bisa diedit dengan keterangan "hasil baca foto, periksa angkanya" ([docs/14 §12](docs/14-WORD-PROBLEM-MODELER.md#12-scanner-soal)). Jenis soal selalu diputuskan pemindai deterministik (`services/scanner.ts` / `scanner.py`), bukan AI.
 4. Input siswa dibungkus `<soal>…</soal>` dan diperlakukan sebagai data. Jangan pernah memberi AI tool atau akses lain.
 5. Tidak mengirim identitas siswa (ID, nama, kelas) ke Gemini API. Jalankan `guard.py`/`guard.ts` (PII, kuota, cache) sebelum setiap pemanggilan.
 6. Selalu periksa penolakan sebelum membaca hasil: status interaksi Gemini selain `completed` (diblokir/gagal) → `rejected`. Keluaran Gemini selalu divalidasi (`WordProblemModel` Pydantic / Zod) sebelum dipakai.

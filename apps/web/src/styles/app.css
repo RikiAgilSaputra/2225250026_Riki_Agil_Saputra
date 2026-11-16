@@ -1940,3 +1940,20 @@ table.data th {
     animation: none !important;
   }
 }
+
+/* Scanner (Pemodel): photo buttons and detection result */
+.scan-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.scan-actions .btn {
+  justify-content: center;
+}
+.scan-result.story,
+.scan-result.equations {
+  border-left: 4px solid var(--success);
+}
+.scan-result.other {
+  border-left: 4px solid var(--text-muted);
+}

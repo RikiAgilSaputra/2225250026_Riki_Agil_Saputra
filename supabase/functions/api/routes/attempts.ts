@@ -11,7 +11,7 @@ import { generate } from "../services/generator.ts";
 import * as prog from "../services/progress.ts";
 import type { AttemptRow, AttemptState, StepState } from "../services/progress.ts";
 import { checkStep } from "../services/step_checker.ts";
-import { METHOD_LABELS } from "../services/step_builder.ts";
+import { buildProblem, METHOD_LABELS } from "../services/step_builder.ts";
 import type { Problem, Step } from "../services/types.ts";
 
 export const attemptRoutes = new Hono();
@@ -62,6 +62,8 @@ const AttemptIn = z.object({
   submission_id: z.string().nullish(),
   method: z.enum(["graph", "substitution", "elimination", "mixed"]).nullish(),
   mode: z.enum(["guided", "model_only", "worked"]).nullish(),
+  // Scanner: an SPLDV already written as two equations (POST /modeler/scan → system)
+  system: z.array(z.string().min(3).max(120)).length(2).nullish(),
 });
 
 attemptRoutes.post("/attempts", async (c) => {
@@ -99,6 +101,22 @@ attemptRoutes.post("/attempts", async (c) => {
       for (const s of p.steps) if (s.modeling_stage === 2 || s.modeling_stage === 3) s.prefilled = true;
     }
     source = "ai";
+  } else if (b.system) {
+    // Built only from the student's own equations (no AI); the step builder checks linearity and the solution.
+    let built: Problem;
+    try {
+      built = buildProblem({
+        pid: `scan-${crypto.randomUUID().slice(0, 8)}`, system: b.system, method: b.method ?? "mixed",
+        mode: "independent", title: "Soal dari pindaian", source: "scan",
+      });
+    } catch (e) {
+      const unique = e instanceof Error && e.message.includes("unique");
+      throw new ApiError(400, "VALIDATION_ERROR", unique
+        ? "Kedua persamaan sejajar atau berimpit, jadi tidak ada penyelesaian tunggal."
+        : "Persamaannya belum bisa dibaca. Tulis seperti: 2x + y = 7");
+    }
+    p = built;
+    source = "scan";
   } else {
     throw new ApiError(400, "VALIDATION_ERROR", "Pilih soal terlebih dahulu.");
   }

@@ -1,5 +1,7 @@
 import copy
 import random
+import uuid
+from typing import Annotated
 from datetime import UTC, datetime
 
 from fastapi import APIRouter, Depends
@@ -15,7 +17,7 @@ from app.models import Attempt, ModelerSubmission, StepAttempt, User
 from app.services import progress as prog
 from app.services.generator import generate
 from app.services.modeler.service import class_settings, problem_from_submission
-from app.services.step_builder import METHOD_LABELS
+from app.services.step_builder import METHOD_LABELS, build_problem
 from app.services.step_checker import check_step
 
 router = APIRouter(tags=["attempts"])
@@ -68,6 +70,8 @@ class AttemptIn(BaseModel):
     submission_id: str | None = None
     method: str | None = Field(default=None, pattern=r"^(graph|substitution|elimination|mixed)$")
     mode: str | None = Field(default=None, pattern=r"^(guided|model_only|worked)$")
+    # Scanner: an SPLDV already written as two equations (POST /modeler/scan → system)
+    system: list[Annotated[str, Field(min_length=3, max_length=120)]] | None = Field(default=None, min_length=2, max_length=2)
 
 
 @router.post("/attempts", status_code=201)
@@ -101,6 +105,17 @@ def start_attempt(body: AttemptIn, user: User = Depends(get_current_user), db: S
                 if s.get("modeling_stage") in (2, 3):
                     s["prefilled"] = True
         source = "ai"
+    elif body.system:
+        # Built only from the student's own equations (no AI); the step builder checks linearity and the solution.
+        try:
+            p = build_problem(pid=f"scan-{uuid.uuid4().hex[:8]}", system=body.system, method=body.method or "mixed",
+                              mode="independent", title="Soal dari pindaian", source="scan")
+        except (ValueError, ZeroDivisionError) as exc:
+            unique = "unique" in str(exc)
+            raise ApiError(400, "VALIDATION_ERROR",
+                           "Kedua persamaan sejajar atau berimpit, jadi tidak ada penyelesaian tunggal." if unique
+                           else "Persamaannya belum bisa dibaca. Tulis seperti: 2x + y = 7") from exc
+        source = "scan"
     else:
         raise ApiError(400, "VALIDATION_ERROR", "Pilih soal terlebih dahulu.")
 

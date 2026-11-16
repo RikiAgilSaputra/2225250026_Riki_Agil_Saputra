@@ -310,6 +310,32 @@ Angka ini perkiraan. Biaya sebenarnya diukur dari `response.usage` dan disimpan 
 
 ## 11. Batasan & Pengembangan Lanjut
 
-- MVP: input **teks** saja. Foto soal (Claude vision) direncanakan untuk v1.2.
+- Input teks dan **foto soal** (scanner, §12). Penyedia AI: Gemini (Google AI Studio).
 - Hanya SPLDV. Perluasan ke PLSV, perbandingan, dan SPLTV mengikuti [12-ROADMAP.md §3](12-ROADMAP.md#3-pasca-mvp-backlog).
 - Mode B memerlukan internet. Saat offline, tombol Pemodel Otomatis dinonaktifkan dan siswa diarahkan ke mode A.
+
+## 12. Scanner Soal
+
+Scanner ada di halaman Pemodel. Siswa **memotret** soal (kamera HP), **memilih gambar**, atau **menempel teks**, lalu aplikasi mengenali jenis soalnya sebelum ada pemodelan.
+
+```mermaid
+flowchart LR
+    F[Foto soal] -->|Gemini menyalin teks<br/>1 kuota| T[Teks soal<br/>dapat diedit siswa]
+    K[Ketik / tempel] --> T
+    T --> S{Pemindai<br/>deterministik}
+    S -->|soal cerita| M[Pemodel AI §4]
+    S -->|2 persamaan linear| A[Langsung dikerjakan<br/>langkah demi langkah]
+    S -->|lainnya| O[Pesan singkat]
+```
+
+| Jenis | Aturan (tanpa AI) | Tindakan |
+|---|---|---|
+| `equations` | Tepat **dua** persamaan linear dalam x/y ditemukan (label "(1)", "1.", kata "dan", ";", baris baru dikenali) | Bila punya penyelesaian tunggal: `POST /attempts {system}` (sumber `scan`, tanpa AI). Bila sejajar/berimpit: pesan |
+| `story` | Bukan dua persamaan; ≥ 6 kata dan ada angka (digit atau kata bilangan) | Tombol **Buat model** → pemodel AI (§4–§6) |
+| `other` | Satu persamaan, ≥ 3 persamaan, atau tidak ada soal | Pesan singkat (instruksi ≤ 25 kata) |
+
+Aturan pembacaan foto:
+1. Gemini **hanya menyalin** teks soal (prompt `SCAN_PROMPT`, versi `SCAN_PROMPT_VERSION`); tidak menyelesaikan atau mengelompokkan soal. Jenis soal selalu diputuskan pemindai deterministik (`services/scanner.ts` dan `scanner.py`, keduanya diuji setara).
+2. Teks hasil foto **ditampilkan dalam kotak yang bisa diedit** dengan keterangan "hasil baca foto, periksa angkanya". Ini satu-satunya teks dari AI yang ditampilkan ke siswa (pengecualian aturan AI no. 3 di CLAUDE.md), karena isinya salinan soal milik siswa sendiri, bukan jawaban.
+3. Foto dikecilkan di perangkat (≤ 1600 px, JPEG) dan **tidak disimpan**; dikirim dengan `store: false`. Teks hasil baca disamarkan (nomor HP, email, NIK, NISN, alamat) sebelum disimpan dan ditampilkan.
+4. Membaca foto memakai kuota harian dan anggaran bulanan yang sama dengan pemodel; pemindaian teks tidak memakai kuota.

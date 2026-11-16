@@ -105,7 +105,9 @@ def _get_client() -> genai.Client:
     return _client
 
 
-def call_model(user_content: str) -> LlmResult:
+def gemini_json(input_, system_instruction: str, schema: dict):
+    """One structured-JSON call with the shared safety net (fallback model, one time budget, no SDK
+    retries, store=False). Returns (interaction, model, latency_ms). Used by the modeler and the scanner."""
     settings = get_settings()
     client = _get_client()
     started = time.monotonic()
@@ -117,14 +119,14 @@ def call_model(user_content: str) -> LlmResult:
         try:
             interaction = client.interactions.create(
                 model=model,
-                system_instruction=SYSTEM_PROMPT,
-                input=user_content,
-                response_format={"type": "text", "mime_type": "application/json", "schema": gemini_schema()},
+                system_instruction=system_instruction,
+                input=input_,
+                response_format={"type": "text", "mime_type": "application/json", "schema": schema},
                 generation_config={"thinking_level": EFFORT_TO_THINKING.get(settings.modeler_effort, "medium")},
-                store=False,  # do not keep students' story text on Google's side after the request
+                store=False,  # do not keep students' text or photos on Google's side after the request
                 timeout=remaining,
             )
-            return from_interaction(interaction, int((time.monotonic() - started) * 1000), model)
+            return interaction, model, int((time.monotonic() - started) * 1000)
         except Exception as exc:  # noqa: BLE001 - classified by HTTP status below
             status = int(getattr(exc, "status_code", None) or getattr(exc, "code", None) or 0)
             log.error("gemini error model=%s status=%s %s: %s", model, status, type(exc).__name__, str(exc)[:500])
@@ -132,3 +134,9 @@ def call_model(user_content: str) -> LlmResult:
                 raise ModelerUnavailable(str(exc)) from exc  # bad key or bad request
             # overloaded, rate limited, network error or timeout → try the fallback model
     raise ModelerBusy()
+
+
+def call_model(user_content: str) -> LlmResult:
+    """Modeler: story text → WordProblemModel."""
+    interaction, model, latency_ms = gemini_json(user_content, SYSTEM_PROMPT, gemini_schema())
+    return from_interaction(interaction, latency_ms, model)

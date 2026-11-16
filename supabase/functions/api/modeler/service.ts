@@ -7,7 +7,9 @@ import { buildProblem } from "../services/step_builder.ts";
 import type { Problem } from "../services/types.ts";
 import * as guard from "./guard.ts";
 import { type CallModel, callModel as realCallModel, type LlmResult, ModelerBusy, ModelerUnavailable } from "./llm.ts";
+import { readPhoto as realReadPhoto, SCAN_PROMPT_VERSION } from "./ocr.ts";
 import { PROMPT_VERSION, repairMessage, userMessage } from "./prompt.ts";
+import { scanText, type ScanResult } from "../services/scanner.ts";
 import type { WordProblemModel } from "./schema.ts";
 import { type Verification, verify } from "./verifier.ts";
 
@@ -22,6 +24,10 @@ export const MESSAGES: Record<string, string> = {
 let callModel: CallModel = realCallModel;
 export function setCallModel(fn: CallModel | null): void {
   callModel = fn ?? realCallModel;
+}
+let readPhoto: typeof realReadPhoto = realReadPhoto;
+export function setReadPhoto(fn: typeof realReadPhoto | null): void {
+  readPhoto = fn ?? realReadPhoto;
 }
 
 export interface Submission {
@@ -75,11 +81,13 @@ function evaluate(model: WordProblemModel, text: string): [string, Verification 
   return [ver.special ? "verified_special" : "verified", ver];
 }
 
-async function insertSubmission(sql: Db, s: Omit<Submission, "id" | "rating">): Promise<Submission> {
+async function insertSubmission(
+  sql: Db, s: Omit<Submission, "id" | "rating">, purpose: "solve" | "scan" = "solve",
+): Promise<Submission> {
   const [row] = await sql<Submission[]>`
-    insert into modeler_submissions (user_id, class_id, input_text, input_hash, status, model_json,
+    insert into modeler_submissions (user_id, class_id, purpose, input_text, input_hash, status, model_json,
       verification_json, repaired, cached, llm_model, prompt_version, input_tokens, output_tokens, latency_ms)
-    values (${s.user_id}, ${s.class_id}, ${s.input_text}, ${s.input_hash}, ${s.status},
+    values (${s.user_id}, ${s.class_id}, ${purpose}, ${s.input_text}, ${s.input_hash}, ${s.status},
       ${s.model_json === null ? null : sql.json(s.model_json as never)},
       ${s.verification_json === null ? null : sql.json(s.verification_json as never)},
       ${s.repaired}, ${s.cached}, ${s.llm_model}, ${s.prompt_version}, ${s.input_tokens}, ${s.output_tokens},
@@ -88,11 +96,35 @@ async function insertSubmission(sql: Db, s: Omit<Submission, "id" | "rating">): 
   return row;
 }
 
-export async function analyze(sql: Db, user: User, cls: ClassRow | null, rawText: string): Promise<Submission> {
+/** AI switch, daily quota and monthly budget: checked before every paid Gemini call. */
+async function aiGate(sql: Db, user: User, cls: ClassRow | null, checkQuota: boolean): Promise<void> {
   const cs = classSettings(cls);
   if (user.role === "student" && !cs.ai_enabled) {
     throw new ApiError(403, "AI_DISABLED_FOR_CLASS", "Pemodel AI belum diaktifkan gurumu.");
   }
+  if (!checkQuota) return;
+  if (user.role === "student" && (await usedToday(sql, user.id)) >= cs.daily_quota) {
+    throw new ApiError(429, "QUOTA_EXCEEDED", "Kuota pemodel hari ini sudah habis. Coba lagi besok.");
+  }
+  if ((await monthCost(sql)) >= settings().modelerMonthlyBudgetUsd) {
+    throw new ApiError(503, "MODELER_BUDGET_PAUSED", "Pemodel AI dijeda sementara karena batas anggaran bulan ini.");
+  }
+}
+
+async function withAiErrors<T>(fn: () => Promise<T>): Promise<T> {
+  try {
+    return await fn();
+  } catch (e) {
+    if (e instanceof ModelerUnavailable) {
+      throw new ApiError(503, "MODELER_UNAVAILABLE", "Pemodel AI belum aktif di server ini (kunci API belum diisi atau tidak valid).");
+    }
+    if (e instanceof ModelerBusy) throw new ApiError(429, "MODELER_BUSY", "Pemodel sedang sibuk, coba lagi sebentar.");
+    throw e;
+  }
+}
+
+export async function analyze(sql: Db, user: User, cls: ClassRow | null, rawText: string): Promise<Submission> {
+  await aiGate(sql, user, cls, false);
   let text = guard.normalizeText(rawText);
   if (text.length > guard.MAX_CHARS) {
     throw new ApiError(413, "INPUT_TOO_LONG", `Soal terlalu panjang (maks. ${guard.MAX_CHARS} karakter).`);
@@ -119,24 +151,9 @@ export async function analyze(sql: Db, user: User, cls: ClassRow | null, rawText
     });
   }
 
-  if (user.role === "student" && (await usedToday(sql, user.id)) >= cs.daily_quota) {
-    throw new ApiError(429, "QUOTA_EXCEEDED", "Kuota pemodel hari ini sudah habis. Coba lagi besok.");
-  }
-  if ((await monthCost(sql)) >= settings().modelerMonthlyBudgetUsd) {
-    throw new ApiError(503, "MODELER_BUDGET_PAUSED", "Pemodel AI dijeda sementara karena batas anggaran bulan ini.");
-  }
+  await aiGate(sql, user, cls, true);
 
-  const run = async (content: string): Promise<LlmResult> => {
-    try {
-      return await callModel(content);
-    } catch (e) {
-      if (e instanceof ModelerUnavailable) {
-        throw new ApiError(503, "MODELER_UNAVAILABLE", "Pemodel AI belum aktif di server ini (kunci API belum diisi atau tidak valid).");
-      }
-      if (e instanceof ModelerBusy) throw new ApiError(429, "MODELER_BUSY", "Pemodel sedang sibuk, coba lagi sebentar.");
-      throw e;
-    }
-  };
+  const run = (content: string): Promise<LlmResult> => withAiErrors(() => callModel(content));
 
   const result = await run(userMessage(text));
   sub.llm_model = result.modelId;
@@ -187,4 +204,35 @@ export function problemFromSubmission(sub: Submission, method: string, mode: str
       akm_cognitive: "penerapan", item_format: "isian",
     },
   });
+}
+
+export const UNREADABLE_PHOTO = "Foto belum terbaca jelas. Foto ulang dengan cahaya cukup dan soal memenuhi layar.";
+
+export interface ScanOut {
+  source: "text" | "image";
+  /** Text to show the student in an editable box (PII masked; from a photo: Gemini's transcription). */
+  text: string;
+  result: ScanResult;
+}
+
+/** Scanner (docs/14 §12): photo → text with Gemini (quota), then the deterministic type check. */
+export async function scan(
+  sql: Db, user: User, cls: ClassRow | null, input: { text?: string; image?: { data: string; mime_type: string } },
+): Promise<ScanOut> {
+  if (input.image) {
+    await aiGate(sql, user, cls, true);
+    const ocr = await withAiErrors(() => readPhoto(input.image!.data, input.image!.mime_type));
+    // Keep line breaks (one equation per line); mask identity data before storing or showing it.
+    const text = guard.maskPii(ocr.text.replace(/[ \t]+/g, " ").replace(/\n{3,}/g, "\n\n").trim()).slice(0, guard.MAX_CHARS);
+    await insertSubmission(sql, {
+      user_id: user.id, class_id: cls?.id ?? null, input_text: text, input_hash: await guard.textHash(text),
+      status: ocr.readable ? "scanned" : "unreadable", model_json: null, verification_json: null, repaired: false,
+      cached: false, llm_model: ocr.modelId, prompt_version: SCAN_PROMPT_VERSION, input_tokens: ocr.inputTokens,
+      output_tokens: ocr.outputTokens, latency_ms: ocr.latencyMs,
+    }, "scan");
+    if (!ocr.readable) return { source: "image", text: "", result: { kind: "other", solvable: false, message: UNREADABLE_PHOTO } };
+    return { source: "image", text, result: scanText(text) };
+  }
+  const text = guard.maskPii((input.text ?? "").trim()).slice(0, guard.MAX_CHARS);
+  return { source: "text", text, result: scanText(text) };
 }

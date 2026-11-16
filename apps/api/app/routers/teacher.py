@@ -61,7 +61,7 @@ def overview(user: User = Depends(teacher_only), db: Session = Depends(get_db)):
                 hard.append({"problem_id": pid, "step_id": sid, "tries": n, "error_rate": round(100 * (wrong or 0) / n)})
         hard.sort(key=lambda r: -r["error_rate"])
     subs = db.scalars(
-        select(ModelerSubmission).where(ModelerSubmission.class_id == cls.id)
+        select(ModelerSubmission).where(ModelerSubmission.class_id == cls.id, ModelerSubmission.purpose == "solve")
         .order_by(ModelerSubmission.created_at.desc()).limit(20)
     ).all()
     return {
