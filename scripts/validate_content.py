@@ -70,6 +70,11 @@ for p in content["problems"].values():
         if not p.get("literacy"):
             errors.append(f"{p['id']}: story problem missing literacy metadata")
 
+# RMT phase per stage (docs/15 §2): I cognitive development, II content as process, III construction practice
+for st in content["path"]["stages"]:
+    if st.get("rmt_phase") not in (1, 2, 3):
+        errors.append(f"path stage {st['id']}: rmt_phase must be 1, 2 or 3")
+
 path_ids = [i["id"] for s in content["path"]["stages"] if s["id"] != "lainnya" for i in s["modules"]]
 for mid in content["modules"]:
     if path_ids.count(mid) != 1:

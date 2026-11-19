@@ -46,6 +46,12 @@ def test_scan_text_and_start_attempt(client, student):
     a = client.post("/api/v1/attempts", json={"system": r["system"], "method": "elimination"}, headers=student)
     assert a.status_code == 201, a.text
     assert a.json()["problem"]["source"] == "scan"
+    # Full solution from the first step to the logical proof, all shown
+    w = client.post("/api/v1/attempts", json={"system": r["system"], "method": "substitution", "mode": "worked"}, headers=student)
+    assert w.status_code == 201, w.text
+    wp = w.json()["problem"]
+    assert wp["mode"] == "worked" and all(s["prefilled"] for s in wp["steps"])
+    assert wp["steps"][-1]["cognitive_function"] == "logical_evidence"
     bad = client.post("/api/v1/attempts", json={"system": ["x + y = 5", "2x + 2y = 7"]}, headers=student)
     assert bad.status_code == 400
     assert client.post("/api/v1/modeler/scan", json={}, headers=student).status_code == 422

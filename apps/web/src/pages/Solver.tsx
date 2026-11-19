@@ -6,6 +6,7 @@ import { MathText, VarChips } from '../components/MathText'
 import { CognitiveChip } from '../components/CognitiveChip'
 import { Bar } from '../components/ProgressRing'
 import { api, ApiError } from '../lib/api'
+import { COGNITIVE, reflectSteps, type Growth } from '../lib/cognitive'
 import { useApi } from '../lib/hooks'
 import type { AttemptView, Method, MethodCard, Problem, Step, StepResult } from '../lib/types'
 import { MethodCardView, startAttempt } from './ModulePage'
@@ -42,6 +43,8 @@ function Keypad({ onKey }: { onKey: (k: string) => void }) {
     </div>
   )
 }
+
+const GROWTH_LABEL: Record<Growth, string> = { lancar: 'lancar', berkembang: 'berkembang', perlu: 'perlu dilatih' }
 
 function isDone(s: Step) {
   return s.status !== 'todo'
@@ -392,9 +395,26 @@ export function Solver() {
                   {result.score >= 75 ? 'Hebat, kamu menyelesaikan soal ini!' : 'Selesai! Coba soal yang mirip untuk berlatih lagi.'}
                   {result.bonus ? ` Bonus +${result.bonus} poin.` : ''}
                 </p>
+                {reflectSteps(steps).length > 0 && (
+                  <div style={{ width: '100%', display: 'grid', gap: 8 }}>
+                    <b>🧠 Cara berpikir di soal ini</b>
+                    <div className="growth">
+                      {reflectSteps(steps).map((r) => (
+                        <span key={r.fn} className={`badge ${r.growth === 'lancar' ? 'success' : r.growth}`}>
+                          {COGNITIVE[r.fn].label}: {GROWTH_LABEL[r.growth]}
+                        </span>
+                      ))}
+                    </div>
+                    {reflectSteps(steps).some((r) => r.growth !== 'lancar') && (
+                      <small className="muted">
+                        Yang “berkembang” atau “perlu dilatih” akan direkomendasikan di <Link to="/latihan">Latihan</Link>.
+                      </small>
+                    )}
+                  </div>
+                )}
                 {!explained ? (
                   <div className="field" style={{ width: '100%', textAlign: 'left' }}>
-                    <label htmlFor="explain">Jelaskan dengan kata-katamu (boleh dilewati)</label>
+                    <label htmlFor="explain">Refleksi: strategi apa yang kamu pakai, dan langkah mana yang paling sulit? (boleh dilewati)</label>
                     <textarea
                       id="explain"
                       maxLength={280}

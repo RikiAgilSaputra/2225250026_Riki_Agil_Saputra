@@ -79,3 +79,64 @@ export const COGNITIVE_ORDER = Object.keys(COGNITIVE) as CognitiveFunction[]
 export function cognitiveInfo(id: string | null | undefined): CognitiveInfo | null {
   return id && id in COGNITIVE ? COGNITIVE[id as CognitiveFunction] : null
 }
+
+/** The three RMT phases (Kinard & Kozulin, ch. 5); each learning-path stage belongs to one (docs/15 §2). */
+export const RMT_PHASES: Record<number, { label: string; meaning: string }> = {
+  1: { label: 'Fase I · Alat berpikir', meaning: 'Membentuk cara berpikir: membandingkan, mencari teliti, membuktikan.' },
+  2: { label: 'Fase II · Isi sebagai proses', meaning: 'Membangun konsep dari pengalaman dengan alat matematika.' },
+  3: { label: 'Fase III · Membangun konsep', meaning: 'Memakai alat dan cara berpikir untuk menyelesaikan soal.' },
+}
+
+export type PracticeTemplate = 'graph' | 'substitution' | 'elimination' | 'mixed' | 'story'
+
+/** Cognitive functions each generated practice mainly trains (mirrors STEP_COGNITIVE in step_builder). */
+export const TEMPLATE_FUNCTIONS: Record<PracticeTemplate, CognitiveFunction[]> = {
+  graph: ['functional_relationship', 'comparing'],
+  substitution: ['conserving_constancy', 'projecting_relationships'],
+  elimination: ['conserving_constancy', 'analyzing_integrating'],
+  mixed: ['analyzing_integrating', 'analogical_thinking'],
+  story: ['labeling', 'systematic_search', 'encoding'],
+}
+
+/** Below this average step score a function is still "growing" (its zone of proximal development). */
+export const GROWING_BELOW = 80
+
+/**
+ * Picks the weakest practised function and a practice that trains it.
+ * Unpractised functions (null) are skipped: there is no evidence yet.
+ */
+export function recommendPractice(
+  profile: Record<string, number | null> | undefined,
+): { fn: CognitiveFunction; score: number; template: PracticeTemplate } | null {
+  let best: { fn: CognitiveFunction; score: number } | null = null
+  for (const fn of COGNITIVE_ORDER) {
+    const v = profile?.[fn]
+    if (v == null || v >= GROWING_BELOW) continue
+    if (!best || v < best.score) best = { fn, score: v }
+  }
+  if (!best) return null
+  const template =
+    (Object.keys(TEMPLATE_FUNCTIONS) as PracticeTemplate[]).find((t) => TEMPLATE_FUNCTIONS[t].includes(best.fn)) ?? 'mixed'
+  return { ...best, template }
+}
+
+export type Growth = 'lancar' | 'berkembang' | 'perlu'
+
+/**
+ * Reflection after a problem (RMT: elaborate the activity through cognitive categories).
+ * A function is "lancar" when every step was right first try, "perlu" when a step was revealed.
+ */
+export function reflectSteps(
+  steps: { cognitive_function?: string; prefilled: boolean; status: string; tries: number }[],
+): { fn: CognitiveFunction; growth: Growth }[] {
+  const worst = new Map<CognitiveFunction, Growth>()
+  const rank: Record<Growth, number> = { lancar: 0, berkembang: 1, perlu: 2 }
+  for (const s of steps) {
+    if (s.prefilled || !cognitiveInfo(s.cognitive_function)) continue
+    const fn = s.cognitive_function as CognitiveFunction
+    const g: Growth = s.status === 'revealed' ? 'perlu' : s.status === 'correct' && s.tries <= 1 ? 'lancar' : 'berkembang'
+    const prev = worst.get(fn)
+    if (!prev || rank[g] > rank[prev]) worst.set(fn, g)
+  }
+  return COGNITIVE_ORDER.filter((fn) => worst.has(fn)).map((fn) => ({ fn, growth: worst.get(fn)! }))
+}

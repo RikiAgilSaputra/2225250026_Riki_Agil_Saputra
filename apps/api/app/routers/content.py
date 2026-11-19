@@ -67,7 +67,7 @@ def learning_path(user: User = Depends(get_current_user), db: Session = Depends(
         done = sum(1 for x in mods if x["status"] == "completed")
         stages.append({
             "id": stage["id"], "title": stage["title"], "description": stage.get("description", ""),
-            "show_cycle": stage.get("show_cycle", False), "modules": mods,
+            "show_cycle": stage.get("show_cycle", False), "rmt_phase": stage.get("rmt_phase"), "modules": mods,
             "completed": done, "progress": round(sum(x["progress"] for x in mods) / len(mods)) if mods else 0,
         })
     return {"title": content["path"]["title"], "description": content["path"].get("description", ""),

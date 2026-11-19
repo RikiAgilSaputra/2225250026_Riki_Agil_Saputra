@@ -243,6 +243,8 @@ Tidak ada endpoint baru. Kolom tambahan:
 
 | Endpoint | Kolom | Isi |
 |---|---|---|
+| `POST /attempts` dengan `system` | `mode: "worked"` | Penyelesaian lengkap untuk persamaan hasil pindai. Ditolak `403 FULL_SOLUTION_NOT_ALLOWED` bila guru menonaktifkannya. |
+| `GET /learning-path` | `stages[].rmt_phase` | Fase RMT tahap (1, 2, atau 3) |
 | `GET /modules/{id}` | `meaning`, `bridge` | Teks mediasi modul (string atau `null`) |
 | `GET /modules/{id}` | `screens[].cognitive_function` | Fungsi berpikir tiap layar |
 | `POST /attempts`, `GET /attempts/{id}` | `problem.steps[].cognitive_function` | Fungsi berpikir tiap langkah |

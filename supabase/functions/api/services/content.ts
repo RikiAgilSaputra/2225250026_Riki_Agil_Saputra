@@ -21,7 +21,7 @@ interface PathItem {
 export interface LearningPath {
   title: string;
   description?: string;
-  stages: { id: string; title: string; description?: string; show_cycle?: boolean; modules: PathItem[] }[];
+  stages: { id: string; title: string; description?: string; show_cycle?: boolean; rmt_phase?: number; modules: PathItem[] }[];
 }
 
 export interface Content {

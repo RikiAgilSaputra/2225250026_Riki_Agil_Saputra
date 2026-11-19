@@ -107,9 +107,13 @@ def start_attempt(body: AttemptIn, user: User = Depends(get_current_user), db: S
         source = "ai"
     elif body.system:
         # Built only from the student's own equations (no AI); the step builder checks linearity and the solution.
+        # "worked" shows every step from start to finish, the same option the AI model offers.
+        worked = body.mode == "worked"
+        if worked and user.role == "student" and not class_settings(student_class(db, user.id))["allow_full_solution"]:
+            raise ApiError(403, "FULL_SOLUTION_NOT_ALLOWED", "Gurumu menonaktifkan penyelesaian lengkap.")
         try:
             p = build_problem(pid=f"scan-{uuid.uuid4().hex[:8]}", system=body.system, method=body.method or "mixed",
-                              mode="independent", title="Soal dari pindaian", source="scan")
+                              mode="worked" if worked else "independent", title="Soal dari pindaian", source="scan")
         except (ValueError, ZeroDivisionError) as exc:
             unique = "unique" in str(exc)
             raise ApiError(400, "VALIDATION_ERROR",

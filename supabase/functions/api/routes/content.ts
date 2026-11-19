@@ -81,6 +81,7 @@ contentRoutes.get("/learning-path", async (c) => {
     });
     return {
       id: stage.id, title: stage.title, description: stage.description ?? "", show_cycle: stage.show_cycle ?? false,
+      rmt_phase: stage.rmt_phase ?? null,
       modules: mods, completed: mods.filter((x) => x.status === "completed").length,
       progress: mods.length ? pyRound(mods.reduce((t, x) => t + x.progress, 0) / mods.length) : 0,
     };

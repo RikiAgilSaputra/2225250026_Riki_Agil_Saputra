@@ -25,6 +25,8 @@ def test_learning_path_covers_every_module_once(client, student):
     assert sorted(ids) == sorted(all_ids) and len(ids) == len(set(ids))
     assert [s["id"] for s in lp["stages"]][:2] == ["berpikir", "prasyarat"]  # RMT phase I first (docs/15)
     assert lp["next_module_id"] in ids
+    phases = [s["rmt_phase"] for s in lp["stages"]]  # RMT phases I → II → III (docs/15 §2)
+    assert phases[0] == 1 and all(p in (1, 2, 3) for p in phases) and phases == sorted(phases)
     assert any(s["show_cycle"] for s in lp["stages"])
 
 

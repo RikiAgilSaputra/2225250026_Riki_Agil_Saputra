@@ -1987,3 +1987,56 @@ table.data th {
   background: var(--primary);
   color: var(--on-primary);
 }
+
+/* RMT phases on the learning path (docs/15 §2) */
+.rmt-phases {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.rmt-phase {
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--surface);
+  border-left: 4px solid var(--primary);
+}
+.rmt-phase small {
+  font-size: 0.85rem;
+}
+.phase-badge {
+  justify-self: start;
+  margin-top: 4px;
+  font-size: 0.75rem;
+}
+.cog-mini {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--hint);
+  font-weight: 700;
+}
+.rmt-cycle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.rmt-cycle .chip.on {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.rmt-cycle .chip.done {
+  opacity: 0.7;
+}
+.growth {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+.growth .badge.berkembang {
+  background: var(--hint-soft);
+  color: var(--hint);
+}

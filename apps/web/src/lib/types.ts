@@ -35,6 +35,8 @@ export interface LearningStage {
   title: string
   description: string
   show_cycle: boolean
+  /** RMT phase 1–3 (docs/15 §2). */
+  rmt_phase: number | null
   modules: (ModuleSummary & { role: ModuleRole })[]
   completed: number
   progress: number

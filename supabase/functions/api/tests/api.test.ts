@@ -85,6 +85,10 @@ test("learning path covers every module once", async () => {
   assert.equal(ids.length, new Set(ids).size);
   assert.deepEqual(lp.stages.slice(0, 2).map((s: Json) => s.id), ["berpikir", "prasyarat"]); // RMT phase I first (docs/15)
   assert.ok(ids.includes(lp.next_module_id));
+  // RMT phases I → II → III along the path, never going back (docs/15 §2)
+  const phases: number[] = lp.stages.map((s: Json) => s.rmt_phase);
+  assert.equal(phases[0], 1);
+  assert.ok(phases.every((p, i) => [1, 2, 3].includes(p) && (i === 0 || p >= phases[i - 1])));
   assert.ok(lp.stages.some((s: Json) => s.show_cycle));
 });
 
@@ -309,6 +313,12 @@ test("scan text: story, equations (solved without AI), other", async () => {
   assert.equal(a.status, 201, JSON.stringify(a.body));
   assert.equal(a.body.problem.source, "scan");
   assert.equal(a.body.problem.method, "elimination");
+  // Full solution from the first step to the logical proof, all shown
+  const w = await call("POST", "/attempts", { token, body: { system: eq.system, method: "substitution", mode: "worked" } });
+  assert.equal(w.status, 201, JSON.stringify(w.body));
+  assert.equal(w.body.problem.mode, "worked");
+  assert.ok(w.body.problem.steps.every((s: Json) => s.prefilled));
+  assert.equal(w.body.problem.steps.at(-1).cognitive_function, "logical_evidence");
   const other = (await call("POST", "/modeler/scan", { token, body: { text: "2x + 5 = 11" } })).body;
   assert.equal(other.kind, "other");
   const parallel = await call("POST", "/attempts", { token, body: { system: ["x + y = 5", "2x + 2y = 7"] } });

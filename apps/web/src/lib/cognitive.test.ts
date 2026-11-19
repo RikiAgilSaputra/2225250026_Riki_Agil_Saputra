@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { COGNITIVE, COGNITIVE_ORDER, cognitiveInfo } from './cognitive'
+import { COGNITIVE, COGNITIVE_ORDER, cognitiveInfo, recommendPractice, reflectSteps, TEMPLATE_FUNCTIONS } from './cognitive'
 
 const MODULES_DIR = join(__dirname, '../../../../content/modules')
 
@@ -28,5 +28,36 @@ describe('RMT cognitive functions (docs/15 §4)', () => {
   it('ignores unknown ids', () => {
     expect(cognitiveInfo('nope')).toBeNull()
     expect(cognitiveInfo(undefined)).toBeNull()
+  })
+})
+
+describe('RMT practice support', () => {
+  it('recommends a practice for the weakest practised function', () => {
+    const r = recommendPractice({ comparing: 90, projecting_relationships: 55, encoding: 70, labeling: null })
+    expect(r).toEqual({ fn: 'projecting_relationships', score: 55, template: 'substitution' })
+  })
+
+  it('recommends nothing when every practised function is strong or unpractised', () => {
+    expect(recommendPractice({ comparing: 95, encoding: null })).toBeNull()
+    expect(recommendPractice(undefined)).toBeNull()
+  })
+
+  it('every template trains only known functions', () => {
+    for (const fns of Object.values(TEMPLATE_FUNCTIONS)) for (const fn of fns) expect(cognitiveInfo(fn)).not.toBeNull()
+  })
+
+  it('reflects each function by its weakest step', () => {
+    const r = reflectSteps([
+      { cognitive_function: 'labeling', prefilled: false, status: 'correct', tries: 1 },
+      { cognitive_function: 'encoding', prefilled: false, status: 'correct', tries: 3 },
+      { cognitive_function: 'encoding', prefilled: false, status: 'correct', tries: 1 },
+      { cognitive_function: 'logical_evidence', prefilled: false, status: 'revealed', tries: 2 },
+      { cognitive_function: 'comparing', prefilled: true, status: 'prefilled', tries: 0 },
+    ])
+    expect(r).toEqual([
+      { fn: 'labeling', growth: 'lancar' },
+      { fn: 'encoding', growth: 'berkembang' },
+      { fn: 'logical_evidence', growth: 'perlu' },
+    ])
   })
 })

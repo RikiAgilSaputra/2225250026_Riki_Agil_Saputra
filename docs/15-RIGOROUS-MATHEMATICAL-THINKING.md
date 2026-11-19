@@ -117,6 +117,20 @@ Guru dapat memakai profil ini untuk melihat apakah kesulitan kelas ada pada kons
 | R19 | Soal SPLDV non-cerita diakhiri langkah bukti logis; soal cerita diakhiri pemeriksaan ke cerita | Generator langkah, tes |
 | R20 | Petunjuk level 1 sebaiknya berupa arah atau pertanyaan mediasi ("Apa yang tetap?"), bukan jawaban | Review manual |
 
+## 8a. RMT di Tiga Bagian Aplikasi
+
+| Bagian | Gagasan RMT | Wujud |
+|---|---|---|
+| **Belajar & Literasi** | Tiga fase RMT | Setiap tahap di `content/path.json` punya `rmt_phase` (1–3) yang tampil sebagai label "Fase I/II/III". Penjelasan singkat ketiga fase ada di atas jalur. |
+| | Siklus penyelidikan: representasi → manipulasi → validasi | Enam langkah siklus pemodelan dikelompokkan ke tiga tahap itu. Setiap langkah menyebut fungsi berpikirnya. |
+| | Mendefinisikan masalah (soal "umur nakhoda") | Layar RMT-1 *cukupkah-informasi* dan satu soal: angka di soal tidak selalu bisa dipakai; kadang soal tidak bisa dijawab. |
+| **Latihan** | Aktivitas belajar (orientasi, rencana, pelaksanaan, refleksi) | Empat langkah aktivitas tampil di atas pilihan latihan. |
+| | Zona perkembangan proksimal: latih fungsi yang sedang tumbuh | Kartu rekomendasi memilih fungsi berpikir terlemah (skor < 80) dari profil, lalu menyarankan jenis latihan yang melatihnya (`TEMPLATE_FUNCTIONS`, `recommendPractice` di `lib/cognitive.ts`). |
+| | Elaborasi lewat kategori kognitif dan evaluasi diri | Di akhir soal, setiap fungsi berpikir diberi status *lancar* (benar sekali coba), *berkembang* (benar setelah salah), atau *perlu dilatih* (jawaban dibuka). Kotak penjelasan menjadi refleksi strategi. |
+| **Pemodel AI** | Siklus penyelidikan | Penanda alur: Orientasi → Representasi → Manipulasi → Validasi. Aplikasi hanya membantu sampai representasi. Manipulasi dan validasi (bukti logis) dikerjakan siswa di solver. |
+| | Resiprositas dan membandingkan | Sebelum model ditampilkan, siswa diajak menebak arti x dan y. Tebakannya tidak dikirim ke server atau AI. Setelah itu, siswa membandingkan tebakannya dengan model aplikasi. |
+| | Contoh kerja (*worked example*) tetap tersedia | Tombol "Tunjukkan penyelesaian lengkap" selalu terlihat, baik di kartu "Coba dulu" maupun untuk soal persamaan hasil pindai. Tombol ini menampilkan semua langkah dari tahap awal sampai bukti logis, selama guru mengizinkan (`allow_full_solution`). |
+
 ## 9. Batasan
 
 - Program *Instrumental Enrichment* (Feuerstein) berhak cipta. Tugas di modul RMT-1..3 adalah **tugas asli** yang mengikuti gagasan yang sama (membandingkan, perintah tersirat, yang tetap dan berubah, bukti logis), bukan salinan halaman IE.

@@ -1,5 +1,6 @@
 import { useRef, useState, type ChangeEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { CognitiveChip } from '../components/CognitiveChip'
 import { Icon } from '../components/Icon'
 import { MathText, prettyEquation } from '../components/MathText'
 import { api, ApiError } from '../lib/api'
@@ -28,6 +29,9 @@ function MethodSelect({ value, onChange }: { value: Method; onChange: (m: Method
   )
 }
 
+// RMT inquiry cycle (Kinard & Kozulin, ch. 6): the app's part ends at representation; the solver does the rest
+const CYCLE = ['Orientasi', 'Representasi', 'Manipulasi', 'Validasi']
+
 const EXAMPLES = [
   'Harga 2 buku dan 3 pensil Rp19.000. Harga 1 buku dan 2 pensil Rp11.000. Berapa harga 1 buku?',
   'Di kandang ada ayam dan kambing sebanyak 30 ekor. Jumlah kakinya 80. Berapa banyak kambing?',
@@ -52,6 +56,8 @@ export function Modeler() {
   const [err, setErr] = useState<string | null>(null)
   const [method, setMethod] = useState<Method>('mixed')
   const [rated, setRated] = useState<number | null>(null)
+  const [guess, setGuess] = useState('')
+  const [revealed, setRevealed] = useState(false)
   const cameraInput = useRef<HTMLInputElement>(null)
   const galleryInput = useRef<HTMLInputElement>(null)
   const navigate = useNavigate()
@@ -75,6 +81,7 @@ export function Modeler() {
     // The detection belongs to the text it was made from
     setScan(null)
     setRes(null)
+    setRevealed(false)
   }
 
   const scanText = () =>
@@ -101,14 +108,15 @@ export function Modeler() {
   const analyze = () =>
     run('model', async () => {
       setRated(null)
+      setRevealed(false)
       setRes(await api<AnalyzeResult>('/modeler/analyze', { method: 'POST', body: { text } }))
       void reload()
     }, 'Gagal memproses soal.')
 
-  const startSystem = () =>
+  const startSystem = (worked = false) =>
     run('model', async () => {
       if (!scan?.system) return
-      navigate(`/soal/${await startAttempt({ system: scan.system, method })}`)
+      navigate(`/soal/${await startAttempt({ system: scan.system, method, ...(worked ? { mode: 'worked' } : {}) })}`)
     }, 'Gagal memulai.')
 
   const start = async (mode: 'guided' | 'model_only' | 'worked') => {
@@ -140,10 +148,19 @@ export function Modeler() {
   }
 
   const m = res?.model
+  const stage = !scan ? 0 : scan.kind === 'equations' || m ? 2 : 1
   return (
     <div style={{ maxWidth: 880 }}>
       <h1 className="page-title">Pemodel Soal Cerita</h1>
       <p className="page-sub">Foto atau tempel soal. Aplikasi mengenali jenisnya dulu, lalu kamu menyelesaikannya langkah demi langkah.</p>
+      <div className="rmt-cycle" aria-label="Siklus berpikir">
+        {CYCLE.map((c, i) => (
+          <span key={c} className={`chip${i === stage ? ' on' : i < stage ? ' done' : ''}`}>
+            {i < stage ? '✓ ' : `${i + 1}. `}
+            {c}
+          </span>
+        ))}
+      </div>
 
       <section className="card" style={{ display: 'grid', gap: 12 }}>
         <div className="scan-actions">
@@ -166,6 +183,9 @@ export function Modeler() {
             onChange={(e) => editText(e.target.value)}
             placeholder="Contoh: Harga 2 buku dan 3 pensil Rp19.000…  atau  2x + y = 7 dan x − y = 2"
           />
+          <small className="muted" style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+            <span>🧭 Orientasi: baca dulu, apa yang diketahui dan apa yang ditanya?</span>
+          </small>
           <small className="muted" style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
             <span>⚠️ Jangan tulis atau memotret nama lengkap, alamat, atau nomor HP.</span>
             <span>
@@ -222,9 +242,16 @@ export function Modeler() {
               {scan.solvable && (
                 <>
                   <MethodSelect value={method} onChange={setMethod} />
-                  <button className="btn" disabled={busy} onClick={() => void startSystem()} style={{ justifySelf: 'start' }}>
-                    Kerjakan langkah demi langkah
-                  </button>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+                    <button className="btn" disabled={busy} onClick={() => void startSystem()}>
+                      Kerjakan langkah demi langkah
+                    </button>
+                    {quota?.allow_full_solution && (
+                      <button className="btn ghost" disabled={busy} onClick={() => void startSystem(true)}>
+                        Tunjukkan penyelesaian lengkap
+                      </button>
+                    )}
+                  </div>
                 </>
               )}
             </>
@@ -246,12 +273,39 @@ export function Modeler() {
         </section>
       )}
 
-      {m && (
+      {m && !revealed && (
+        <section className="card" style={{ marginTop: 18, display: 'grid', gap: 12 }}>
+          <h2 style={{ fontSize: '1.2rem' }}>Coba dulu sebelum melihat model</h2>
+          <CognitiveChip id="labeling" />
+          <div className="field">
+            <label htmlFor="guess">Menurutmu, x dan y mewakili apa? (boleh dilewati)</label>
+            <textarea id="guess" maxLength={200} value={guess} onChange={(e) => setGuess(e.target.value)} placeholder="x = harga 1 buku, y = …" style={{ minHeight: 70 }} />
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+            <button className="btn" onClick={() => setRevealed(true)}>
+              Lihat model dan bandingkan
+            </button>
+            {res?.status !== 'verified_special' && res?.allowed_modes?.includes('worked') && (
+              <button className="btn ghost" disabled={busy} onClick={() => void start('worked')}>
+                Tunjukkan penyelesaian lengkap
+              </button>
+            )}
+          </div>
+        </section>
+      )}
+
+      {m && revealed && (
         <section className="card" style={{ marginTop: 18, display: 'grid', gap: 14 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <h2 style={{ fontSize: '1.2rem', flex: 1 }}>Model Matematika</h2>
             {res?.cached && <span className="chip">tersimpan</span>}
           </div>
+          <CognitiveChip id="encoding" />
+          {guess.trim() && (
+            <p className="muted">
+              <b>Tebakanmu:</b> {guess.trim()}. Bandingkan dengan model di bawah: apa yang sama, apa yang berbeda?
+            </p>
+          )}
           <div className="var-chips">
             {m.variables.map((v) => (
               <span key={v.symbol} className={`var-chip ${v.symbol}`}>
@@ -275,7 +329,7 @@ export function Modeler() {
           ) : (
             <>
               <p className="muted" style={{ fontSize: '0.85rem' }}>
-                ⓘ Model dibuat otomatis oleh AI dan sudah diperiksa. Penyelesaiannya dihitung aplikasi, bukan AI.
+                ⓘ Model dibuat oleh AI dan sudah dibuktikan aplikasi. Penyelesaiannya dihitung aplikasi, bukan AI. Di akhir, kamu membuktikan jawabannya sendiri.
               </p>
               <MethodSelect value={method} onChange={setMethod} />
               <div style={{ display: 'grid', gap: 10 }}>
@@ -287,7 +341,7 @@ export function Modeler() {
                 </button>
                 {res?.allowed_modes?.includes('worked') && (
                   <button className="btn ghost" disabled={busy} onClick={() => void start('worked')}>
-                    Tunjukkan penyelesaian lengkap
+                    Tunjukkan penyelesaian lengkap (dari tahap awal sampai bukti)
                   </button>
                 )}
               </div>

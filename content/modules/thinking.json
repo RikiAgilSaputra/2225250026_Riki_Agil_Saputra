@@ -37,6 +37,15 @@
         ]
       },
       {
+        "concept": "cukupkah-informasi",
+        "cognitive_function": "systematic_search",
+        "instruction": "Sebelum menghitung, tanyakan: apakah informasinya cukup? Tidak semua angka harus dipakai.",
+        "blocks": [
+          { "type": "quote", "text": "Di truk ada 12 karung beras dan 8 karung gula. Berapa umur sopirnya?" },
+          { "type": "callout", "text": "Angka 12 dan 8 tidak berhubungan dengan umur. Soal ini tidak bisa dijawab." }
+        ]
+      },
+      {
         "concept": "perintah-tersirat",
         "cognitive_function": "systematic_search",
         "instruction": "Baca juga perintah yang tersirat. “Tentukan x dan y” berarti kedua nilai harus ada.",
@@ -63,6 +72,12 @@
             "cognitive_function": "labeling",
             "choices": [{ "id": "a", "label": "x² − y = 1" }, { "id": "b", "label": "x + y = 5" }, { "id": "c", "label": "3x = 9" }],
             "hints": ["PLDV punya dua variabel berpangkat satu.", "Pilihan a punya pangkat dua. Pilihan c hanya satu variabel.", "x + y = 5"]
+          },
+          {
+            "instruction": "Di kelas ada 18 kursi dan 9 meja. Berapa umur guru kelas itu?", "check": "choice", "expected": "c", "display": "Tidak bisa dijawab dari informasi ini",
+            "cognitive_function": "systematic_search",
+            "choices": [{ "id": "a", "label": "27 tahun" }, { "id": "b", "label": "9 tahun" }, { "id": "c", "label": "Tidak bisa dijawab dari informasi ini" }],
+            "hints": ["Tentukan dulu apa yang ditanya.", "Apakah banyak kursi atau meja memberi tahu umur seseorang?", "Tidak bisa dijawab dari informasi ini"]
           },
           {
             "instruction": "Soal meminta “himpunan penyelesaian”. Jawaban lengkapnya berbentuk apa?", "check": "choice", "expected": "c", "display": "{(x, y)}",

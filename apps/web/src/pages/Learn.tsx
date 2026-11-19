@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Icon } from '../components/Icon'
 import { Bar } from '../components/ProgressRing'
+import { COGNITIVE, RMT_PHASES, type CognitiveFunction } from '../lib/cognitive'
 import { useApi } from '../lib/hooks'
 import type { LearningPath, ModuleRole, ModuleSummary } from '../lib/types'
 
@@ -12,13 +13,14 @@ const ROLE_LABEL: Record<ModuleRole, string> = {
   latihan: 'Bank soal',
 }
 
-const CYCLE = [
-  ['1', 'Pahami', 'Tandai yang diketahui dan ditanya'],
-  ['2', 'Tentukan variabel', 'x dan y mewakili apa?'],
-  ['3', 'Terjemahkan', 'Kalimat → persamaan'],
-  ['4', 'Selesaikan', 'Pilih metode'],
-  ['5', 'Tafsirkan', 'Kembalikan ke cerita'],
-  ['6', 'Periksa', 'Apakah masuk akal?'],
+// Modeling cycle grouped into the RMT inquiry cycle: representation → manipulation → validation (docs/15 §2)
+const CYCLE: [string, string, string, CognitiveFunction, string][] = [
+  ['1', 'Pahami', 'Tandai yang diketahui dan ditanya', 'systematic_search', 'Representasi'],
+  ['2', 'Tentukan variabel', 'x dan y mewakili apa?', 'labeling', 'Representasi'],
+  ['3', 'Terjemahkan', 'Kalimat → persamaan', 'encoding', 'Representasi'],
+  ['4', 'Selesaikan', 'Pilih metode', 'analyzing_integrating', 'Manipulasi'],
+  ['5', 'Tafsirkan', 'Kembalikan ke cerita', 'encoding', 'Validasi'],
+  ['6', 'Periksa', 'Apakah masuk akal?', 'logical_evidence', 'Validasi'],
 ]
 
 export function ModuleCard({ m, role }: { m: ModuleSummary; role?: ModuleRole }) {
@@ -91,6 +93,17 @@ export function Learn() {
       <h1 className="page-title">{data.title}</h1>
       <p className="page-sub">{data.description}</p>
 
+      {!q && (
+        <section className="rmt-phases" aria-label="Model belajar Rigorous Mathematical Thinking">
+          {Object.entries(RMT_PHASES).map(([n, ph]) => (
+            <div key={n} className={`rmt-phase phase-${n}`}>
+              <b>{ph.label}</b>
+              <small className="muted">{ph.meaning}</small>
+            </div>
+          ))}
+        </section>
+      )}
+
       {q ? (
         <p className="info-box" style={{ marginBottom: 16 }}>
           Hasil pencarian “{q}”: {found} modul. <Link to="/belajar">Hapus pencarian</Link>
@@ -146,6 +159,9 @@ export function Learn() {
                 <span className="stage-title">
                   <b>{s.title}</b>
                   <small className="muted">{s.description}</small>
+                  {s.rmt_phase && RMT_PHASES[s.rmt_phase] && (
+                    <span className={`badge phase-badge phase-${s.rmt_phase}`}>{RMT_PHASES[s.rmt_phase].label}</span>
+                  )}
                 </span>
                 <span className="stage-progress">
                   <Bar value={s.progress} tone={s.completed === s.modules.length ? 'success' : undefined} />
@@ -159,9 +175,12 @@ export function Learn() {
                 <div className="stage-body">
                   {s.show_cycle && !q && (
                     <div className="card soft" style={{ marginBottom: 14 }}>
-                      <b style={{ display: 'block', marginBottom: 10 }}>Siklus pemodelan</b>
+                      <b style={{ display: 'block', marginBottom: 4 }}>Siklus pemodelan</b>
+                      <p className="muted" style={{ marginBottom: 10, fontSize: '0.9rem' }}>
+                        Representasi → Manipulasi → Validasi. Setiap langkah melatih satu cara berpikir.
+                      </p>
                       <div className="tiles" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))' }}>
-                        {CYCLE.map(([n, t, d]) => (
+                        {CYCLE.map(([n, t, d, cf, group]) => (
                           <div key={n} className="tile" style={{ cursor: 'default', background: 'var(--surface)' }}>
                             <span className="tile-icon" style={{ fontWeight: 800 }}>
                               {n}
@@ -169,6 +188,9 @@ export function Learn() {
                             <span>
                               <b>{t}</b>
                               <small>{d}</small>
+                              <small className="cog-mini">
+                                {group} · 🧠 {COGNITIVE[cf].label}
+                              </small>
                             </span>
                           </div>
                         ))}

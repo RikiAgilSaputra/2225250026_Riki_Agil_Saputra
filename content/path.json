@@ -4,6 +4,7 @@
   "stages": [
     {
       "id": "berpikir",
+      "rmt_phase": 1,
       "title": "Alat Berpikir",
       "description": "Latih cara berpikir matematika: membandingkan, melihat yang tetap, memakai alat, dan membuktikan.",
       "modules": [
@@ -14,6 +15,7 @@
     },
     {
       "id": "prasyarat",
+      "rmt_phase": 2,
       "title": "Prasyarat",
       "description": "Ingat kembali bilangan bulat, persamaan, koordinat, dan fungsi sebelum belajar SPLDV.",
       "modules": [
@@ -25,6 +27,7 @@
     },
     {
       "id": "konsep",
+      "rmt_phase": 2,
       "title": "Konsep Dasar PLDV & SPLDV",
       "description": "Makna variabel, koefisien, konstanta, dan arti penyelesaian SPLDV.",
       "modules": [
@@ -36,6 +39,7 @@
     },
     {
       "id": "metode",
+      "rmt_phase": 3,
       "title": "Metode Penyelesaian",
       "description": "Grafik, substitusi, eliminasi, dan campuran. Pelajari satu per satu, lalu bandingkan di ringkasan.",
       "modules": [
@@ -48,6 +52,7 @@
     },
     {
       "id": "pemodelan",
+      "rmt_phase": 3,
       "title": "Pemodelan Soal Cerita",
       "description": "Ubah cerita menjadi model matematika dengan siklus pemodelan, lalu tafsirkan jawabannya.",
       "show_cycle": true,
@@ -58,6 +63,7 @@
     },
     {
       "id": "literasi",
+      "rmt_phase": 3,
       "title": "Literasi Lanjut",
       "description": "Soal dengan tabel, struk, informasi berlebih, dan soal yang menuntut penalaran atau keputusan.",
       "modules": [
@@ -67,6 +73,7 @@
     },
     {
       "id": "bank-soal",
+      "rmt_phase": 3,
       "title": "Bank Soal",
       "description": "Latihan tambahan dari buku dan kumpulan soal: soal hitung dan soal cerita.",
       "modules": [

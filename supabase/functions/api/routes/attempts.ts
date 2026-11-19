@@ -103,11 +103,16 @@ attemptRoutes.post("/attempts", async (c) => {
     source = "ai";
   } else if (b.system) {
     // Built only from the student's own equations (no AI); the step builder checks linearity and the solution.
+    // "worked" shows every step from start to finish, the same option the AI model offers.
+    const worked = b.mode === "worked";
+    if (worked && u.role === "student" && !classSettings(await studentClass(sql, u.id)).allow_full_solution) {
+      throw new ApiError(403, "FULL_SOLUTION_NOT_ALLOWED", "Gurumu menonaktifkan penyelesaian lengkap.");
+    }
     let built: Problem;
     try {
       built = buildProblem({
         pid: `scan-${crypto.randomUUID().slice(0, 8)}`, system: b.system, method: b.method ?? "mixed",
-        mode: "independent", title: "Soal dari pindaian", source: "scan",
+        mode: worked ? "worked" : "independent", title: "Soal dari pindaian", source: "scan",
       });
     } catch (e) {
       const unique = e instanceof Error && e.message.includes("unique");
