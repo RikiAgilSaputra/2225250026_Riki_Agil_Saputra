@@ -144,7 +144,7 @@ Aturan ini adalah inti produk. Jangan dilanggar tanpa persetujuan eksplisit.
 ## Larangan
 
 - Jangan simpan data pribadi siswa (nama, nilai) di `localStorage`; gunakan IndexedDB terenkripsi/Secure Storage hanya untuk cache yang diperlukan offline.
-- Jangan hardcode secret, URL produksi, atau kredensial — gunakan satu file `.env` di root (tidak di-commit; daftar variabel di [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md#variabel-lingkungan)). Jangan membuat `.env.local`/`.env.example` terpisah.
+- Jangan hardcode secret, URL produksi, atau kredensial — gunakan satu file `.env` di root (di-commit **dengan nilai rahasia disamarkan** agar bisa dinilai; kunci asli hanya di komputer lokal — Git mengabaikannya lewat `git update-index --skip-worktree .env` — dan di Supabase secrets; daftar variabel di [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md#variabel-lingkungan)). Jangan membuat `.env.local`/`.env.example` terpisah.
 - Jangan menambahkan pelacak/analitik pihak ketiga (pengguna adalah anak di bawah umur — lihat [docs/10-SECURITY-PRIVACY.md](docs/10-SECURITY-PRIVACY.md)).
 - Jangan mengubah skema database tanpa migrasi (`supabase/migrations/`, file baru — jangan ubah migrasi yang sudah diterapkan).
 - Jangan menulis konten soal langsung di komponen React — konten berada di `content/`.

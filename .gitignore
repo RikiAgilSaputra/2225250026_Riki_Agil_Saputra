@@ -1,4 +1,4 @@
-.env
+# .env ikut di-commit dengan nilai rahasia disamarkan (lihat CLAUDE.md); kunci asli tidak pernah di-commit
 .env.local
 .env.*.local
 *.db
