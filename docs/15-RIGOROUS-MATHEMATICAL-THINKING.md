@@ -131,6 +131,23 @@ Guru dapat memakai profil ini untuk melihat apakah kesulitan kelas ada pada kons
 | | Resiprositas dan membandingkan | Sebelum model ditampilkan, siswa diajak menebak arti x dan y. Tebakannya tidak dikirim ke server atau AI. Setelah itu, siswa membandingkan tebakannya dengan model aplikasi. |
 | | Contoh kerja (*worked example*) tetap tersedia | Tombol "Tunjukkan penyelesaian lengkap" selalu terlihat, baik di kartu "Coba dulu" maupun untuk soal persamaan hasil pindai. Tombol ini menampilkan semua langkah dari tahap awal sampai bukti logis, selama guru mengizinkan (`allow_full_solution`). |
 
+## 8b. Gambar Benda Konkret
+
+Gambar benda menjembatani konsep sehari-hari ke konsep ilmiah (Vygotsky) dan menjawab temuan K02 (guru terlalu abstrak). Logikanya ada di `apps/web/src/lib/concrete.ts`, tampilannya di `components/ConcreteVisual.tsx`.
+
+- **Pemilihan ikon:** ikon dipilih dari arti variabel, misalnya "harga 1 buku" menjadi 📘 dan "banyak ayam" menjadi 🐔. Bila tidak ada ikon yang cocok, dipakai ubin x biru dan y oranye (aturan warna CLT).
+- **Arti koefisien:**
+  - Untuk **nilai per benda** ("harga 1 buku"), 2x digambar sebagai dua buku.
+  - Untuk **banyak benda** ("banyak ayam"), 2x digambar sebagai "2 × 🐔". Contohnya kaki ayam: angka 2 adalah banyak kaki tiap ekor, bukan dua ekor ayam.
+- **Urutan tampil di solver soal cerita**, supaya jawaban tidak terbocorkan:
+  1. Sebelum siswa memilih variabel: hanya daftar benda, tanpa x/y.
+  2. Setelah memilih variabel: benda diberi label x/y.
+  3. Setelah persamaan ditulis: gambar persamaan.
+- **Tempat:**
+  - **Solver** (Latihan dan soal di Belajar & Literasi). Soal tanpa cerita memakai ubin x/y, dengan panel tertutup secara bawaan.
+  - **Pemodel AI:** daftar benda di kartu "Coba dulu", dan gambar di bawah setiap persamaan model. Persamaan hasil pindai memakai ubin.
+  - **Materi:** blok `concrete` di layar SPL-1 *kalimat-ke-pldv*, RMT-3 *alat-persamaan*, dan MAT-4 *contoh-model*. Blok `vars` kini juga menampilkan ikon benda.
+
 ## 9. Batasan
 
 - Program *Instrumental Enrichment* (Feuerstein) berhak cipta. Tugas di modul RMT-1..3 adalah **tugas asli** yang mengikuti gagasan yang sama (membandingkan, perintah tersirat, yang tetap dan berubah, bukti logis), bukan salinan halaman IE.

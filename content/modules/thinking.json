@@ -207,6 +207,7 @@
         "instruction": "Persamaan adalah alat. Tanda = berarti ruas kiri dan ruas kanan bernilai sama.",
         "blocks": [
           { "type": "quote", "text": "Harga 2 buku dan 3 pensil Rp19.000." },
+          { "type": "concrete", "equations": ["2*x + 3*y = 19000"], "x": "harga 1 buku", "y": "harga 1 pensil", "label": "rupiah" },
           { "type": "arrow", "label": "disandikan" },
           { "type": "math", "text": "2x + 3y = 19.000" }
         ]

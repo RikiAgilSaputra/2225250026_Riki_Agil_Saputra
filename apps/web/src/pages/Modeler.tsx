@@ -1,6 +1,7 @@
 import { useRef, useState, type ChangeEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { CognitiveChip } from '../components/CognitiveChip'
+import { ConcretePanel, EquationPicture, ObjectLegend } from '../components/ConcreteVisual'
 import { Icon } from '../components/Icon'
 import { MathText, prettyEquation } from '../components/MathText'
 import { api, ApiError } from '../lib/api'
@@ -148,6 +149,10 @@ export function Modeler() {
   }
 
   const m = res?.model
+  // The model lists variables by symbol; the pictures need them as x and y
+  const mvars = m
+    ? { x: m.variables.find((v) => v.symbol === 'x') ?? m.variables[0], y: m.variables.find((v) => v.symbol === 'y') ?? m.variables[1] }
+    : undefined
   const stage = !scan ? 0 : scan.kind === 'equations' || m ? 2 : 1
   return (
     <div style={{ maxWidth: 880 }}>
@@ -239,6 +244,7 @@ export function Modeler() {
               {scan.equations.map((e, i) => (
                 <MathText key={i} as="div" text={`${prettyEquation(e)}   (${i + 1})`} />
               ))}
+              <ConcretePanel equations={scan.equations} stage="equations" open={false} />
               {scan.solvable && (
                 <>
                   <MethodSelect value={method} onChange={setMethod} />
@@ -277,6 +283,10 @@ export function Modeler() {
         <section className="card" style={{ marginTop: 18, display: 'grid', gap: 12 }}>
           <h2 style={{ fontSize: '1.2rem' }}>Coba dulu sebelum melihat model</h2>
           <CognitiveChip id="labeling" />
+          <div>
+            <small className="muted">Benda dalam cerita:</small>
+            <ObjectLegend vars={mvars!} tagged={false} />
+          </div>
           <div className="field">
             <label htmlFor="guess">Menurutmu, x dan y mewakili apa? (boleh dilewati)</label>
             <textarea id="guess" maxLength={200} value={guess} onChange={(e) => setGuess(e.target.value)} placeholder="x = harga 1 buku, y = …" style={{ minHeight: 70 }} />
@@ -306,19 +316,14 @@ export function Modeler() {
               <b>Tebakanmu:</b> {guess.trim()}. Bandingkan dengan model di bawah: apa yang sama, apa yang berbeda?
             </p>
           )}
-          <div className="var-chips">
-            {m.variables.map((v) => (
-              <span key={v.symbol} className={`var-chip ${v.symbol}`}>
-                <b>{v.symbol}</b> = {v.meaning} ({v.unit})
-              </span>
-            ))}
-          </div>
+          <ObjectLegend vars={mvars!} tagged />
           {m.equations.map((e, i) => (
             <div key={i} className="step-done" style={{ display: 'grid', gap: 4 }}>
               <span className="quote" style={{ fontSize: '0.95rem' }}>
                 “{e.source_text}”
               </span>
               <MathText as="div" text={`→ ${prettyEquation(e.equation)}   (${i + 1})`} />
+              <EquationPicture eq={e.equation} vars={mvars!} />
             </div>
           ))}
           <p>

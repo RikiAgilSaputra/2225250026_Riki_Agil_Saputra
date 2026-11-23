@@ -1,4 +1,6 @@
 import type { Block } from '../lib/types'
+import { objectIcon } from '../lib/concrete'
+import { EquationPicture } from './ConcreteVisual'
 import { Graph } from './Graph'
 import { MathRender } from './MathRender'
 import { MathText } from './MathText'
@@ -68,13 +70,27 @@ export function BlockView({ block }: { block: Block }) {
       return (
         <div className="var-chips">
           <span className="var-chip x">
+            {objectIcon(block.x) && <span aria-hidden="true">{objectIcon(block.x)} </span>}
             <b>x</b> = {block.x}
           </span>
           <span className="var-chip y">
+            {objectIcon(block.y) && <span aria-hidden="true">{objectIcon(block.y)} </span>}
             <b>y</b> = {block.y}
           </span>
         </div>
       )
+    case 'concrete': {
+      // Equations drawn as concrete objects; x/y meanings pick the pictures, `label` is the unit (e.g. rupiah)
+      const unit = block.label ?? ''
+      const vars = block.x && block.y ? { x: { meaning: block.x, unit }, y: { meaning: block.y, unit } } : undefined
+      return (
+        <div className="concrete">
+          {(block.equations ?? []).map((e, i) => (
+            <EquationPicture key={i} eq={e} vars={vars} n={(block.equations ?? []).length > 1 ? i + 1 : undefined} />
+          ))}
+        </div>
+      )
+    }
     case 'system':
       return (
         <div className="system">

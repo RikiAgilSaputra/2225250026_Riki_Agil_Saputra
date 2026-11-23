@@ -2,8 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Graph } from '../components/Graph'
 import { Icon } from '../components/Icon'
-import { MathText, VarChips } from '../components/MathText'
+import { MathText } from '../components/MathText'
 import { CognitiveChip } from '../components/CognitiveChip'
+import { ConcretePanel } from '../components/ConcreteVisual'
 import { Bar } from '../components/ProgressRing'
 import { api, ApiError } from '../lib/api'
 import { COGNITIVE, reflectSteps, type Growth } from '../lib/cognitive'
@@ -269,7 +270,12 @@ export function Solver() {
                   )}
                 </>
               )}
-              {varsKnown && <VarChips vars={problem.story.variables} />}
+              {/* Objects first; x/y tags only after the student chose them, pictures only after translating */}
+              <ConcretePanel
+                vars={problem.story.variables}
+                equations={problem.system}
+                stage={!varsKnown ? 'objects' : systemKnown ? 'equations' : 'variables'}
+              />
             </section>
           )}
 
@@ -280,6 +286,7 @@ export function Solver() {
               ))}
             </div>
           )}
+          {!problem.story && problem.system && <ConcretePanel equations={problem.system} stage="equations" open={false} />}
 
           <section className="steps" aria-label="Langkah penyelesaian">
             {steps.filter(isDone).map((s) => (

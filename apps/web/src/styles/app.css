@@ -2040,3 +2040,101 @@ table.data th {
   background: var(--hint-soft);
   color: var(--hint);
 }
+
+/* Concrete-object pictures (components/ConcreteVisual.tsx) */
+.concrete {
+  display: grid;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.08));
+}
+.concrete summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.concrete[open] summary {
+  margin-bottom: 4px;
+}
+.cpic {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--bg, transparent);
+}
+.cterm {
+  display: inline-grid;
+  justify-items: center;
+  gap: 2px;
+}
+.cobjs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  max-width: 220px;
+}
+.obj {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.ctile {
+  display: inline-grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 6px;
+  font-weight: 800;
+  font-style: italic;
+  color: #fff;
+}
+.ctile.x {
+  background: var(--var-x);
+}
+.ctile.y {
+  background: var(--var-y);
+}
+.ctag {
+  font-weight: 800;
+  font-style: italic;
+  font-size: 0.75rem;
+}
+.ctag.x {
+  color: var(--var-x);
+}
+.ctag.y {
+  color: var(--var-y);
+}
+.cmul {
+  font-size: 1.05rem;
+}
+.cop {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.crhs {
+  font-weight: 800;
+  font-size: 1.1rem;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: var(--primary-soft, var(--hint-soft));
+}
+.cno {
+  margin-right: 4px;
+}
+.obj-sm {
+  font-size: 1.35rem;
+  line-height: 1;
+  vertical-align: middle;
+}
+.ceq {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
