@@ -148,6 +148,20 @@ Gambar benda menjembatani konsep sehari-hari ke konsep ilmiah (Vygotsky) dan men
   - **Pemodel AI:** daftar benda di kartu "Coba dulu", dan gambar di bawah setiap persamaan model. Persamaan hasil pindai memakai ubin.
   - **Materi:** blok `concrete` di layar SPL-1 *kalimat-ke-pldv*, RMT-3 *alat-persamaan*, dan MAT-4 *contoh-model*. Blok `vars` kini juga menampilkan ikon benda.
 
+### Grafik dan gambar benda berdampingan
+
+Komponen `components/ConcreteGraph.tsx` menaruh grafik berdampingan dengan benda yang dibicarakan soal. Di layar sempit, grafik dan benda tersusun bertumpuk.
+
+- **Sumbu berikon:** setiap sumbu diberi ikon bendanya, misalnya x → 🍲 bakso dan y ↑ 🍹 es jeruk.
+- **Garis berpasangan dengan gambar:** setiap garis berwarna dipasangkan dengan gambar benda dari persamaannya.
+- **Arti titik potong:** keterangan di bawahnya menjelaskan bahwa titik potong adalah benda x dan y yang cocok untuk kedua kalimat sekaligus. Ini hubungan struktur–fungsi tanpa membocorkan jawaban.
+- **Skala grafik soal cerita:** grafik hanya menampilkan kuadran I, karena harga dan banyak benda tidak negatif. Setiap sumbu punya skala sendiri dengan langkah 1/2/5 × 10ⁿ dan label singkat seperti "5 rb" (`lib/axis.ts`).
+- **Grafik soal tanpa cerita** tetap memakai skala bersama −n…n seperti sebelumnya.
+- **Tempat:**
+  - **Solver:** kartu "Grafik dan gambar benda", di kolom utama untuk soal cerita.
+  - **Pemodel AI:** tombol "📈 Lihat grafik dan gambar benda" pada model, dan "📈 Lihat grafik" pada persamaan hasil pindai.
+  - **Materi:** blok `concrete` dengan `"graph": true` (MAT-4 *contoh-model*).
+
 ## 9. Batasan
 
 - Program *Instrumental Enrichment* (Feuerstein) berhak cipta. Tugas di modul RMT-1..3 adalah **tugas asli** yang mengikuti gagasan yang sama (membandingkan, perintah tersirat, yang tetap dan berubah, bukti logis), bukan salinan halaman IE.

@@ -2138,3 +2138,30 @@ table.data th {
   gap: 8px;
   white-space: nowrap;
 }
+
+/* Graph with the story objects beside it (components/ConcreteGraph.tsx) */
+.cgraph {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+.cgraph-side {
+  display: grid;
+  gap: 10px;
+}
+.cgraph-axes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+}
+.cgraph-line {
+  display: grid;
+  gap: 4px;
+  padding-left: 10px;
+  border-left: 4px solid;
+}
+.cgraph-line .cpic {
+  padding: 4px 6px;
+}

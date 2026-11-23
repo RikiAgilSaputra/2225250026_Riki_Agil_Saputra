@@ -134,7 +134,7 @@ content/
 | `screens[].cognitive_function` | enum | Wajib. Salah satu dari 10 fungsi berpikir ([15 §4](15-RIGOROUS-MATHEMATICAL-THINKING.md#4-fungsi-berpikir-fungsi-kognitif)) (R16) |
 | `screens[].instruction` | string | ≤ 25 kata, ≤ 2 kalimat (R1) |
 | `screens[].blocks[].type` | enum | `text`, `math`, `graph`, `table`, `arrow`, `image`, `callout` |
-| `concrete` (blok) | objek | Gambar benda konkret dari persamaan: `equations` (mis. `"2*x + 3*y = 19000"`), `x`/`y` (arti variabel; dipakai memilih ikon), `label` (satuan, mis. `rupiah`). Contoh: 2x + 3y = 19.000 tampil sebagai 📘📘 + ✏️✏️✏️ = Rp19.000 |
+| `concrete` (blok) | objek | Gambar benda konkret dari persamaan: `equations` (mis. `"2*x + 3*y = 19000"`), `x`/`y` (arti variabel; dipakai memilih ikon), `label` (satuan, mis. `rupiah`), dan `graph: true` (opsional) untuk menampilkan grafik di samping gambar benda. Contoh: 2x + 3y = 19.000 tampil sebagai 📘📘 + ✏️✏️✏️ = Rp19.000 |
 
 ---
 

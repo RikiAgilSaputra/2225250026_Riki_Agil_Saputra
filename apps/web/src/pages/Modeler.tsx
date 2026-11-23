@@ -1,6 +1,7 @@
 import { useRef, useState, type ChangeEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { CognitiveChip } from '../components/CognitiveChip'
+import { ConcreteGraph } from '../components/ConcreteGraph'
 import { ConcretePanel, EquationPicture, ObjectLegend } from '../components/ConcreteVisual'
 import { Icon } from '../components/Icon'
 import { MathText, prettyEquation } from '../components/MathText'
@@ -59,6 +60,7 @@ export function Modeler() {
   const [rated, setRated] = useState<number | null>(null)
   const [guess, setGuess] = useState('')
   const [revealed, setRevealed] = useState(false)
+  const [showGraph, setShowGraph] = useState(false)
   const cameraInput = useRef<HTMLInputElement>(null)
   const galleryInput = useRef<HTMLInputElement>(null)
   const navigate = useNavigate()
@@ -83,6 +85,7 @@ export function Modeler() {
     setScan(null)
     setRes(null)
     setRevealed(false)
+    setShowGraph(false)
   }
 
   const scanText = () =>
@@ -245,6 +248,14 @@ export function Modeler() {
                 <MathText key={i} as="div" text={`${prettyEquation(e)}   (${i + 1})`} />
               ))}
               <ConcretePanel equations={scan.equations} stage="equations" open={false} />
+              {scan.solvable &&
+                (showGraph ? (
+                  <ConcreteGraph equations={scan.equations} />
+                ) : (
+                  <button className="btn ghost" style={{ justifySelf: 'start' }} onClick={() => setShowGraph(true)}>
+                    📈 Lihat grafik
+                  </button>
+                ))}
               {scan.solvable && (
                 <>
                   <MethodSelect value={method} onChange={setMethod} />
@@ -329,6 +340,13 @@ export function Modeler() {
           <p>
             <b>Ditanya:</b> {m.target_label}
           </p>
+          {showGraph ? (
+            <ConcreteGraph equations={m.equations.map((e) => e.equation)} vars={mvars} />
+          ) : (
+            <button className="btn ghost" style={{ justifySelf: 'start' }} onClick={() => setShowGraph(true)}>
+              📈 Lihat grafik dan gambar benda
+            </button>
+          )}
           {res?.status === 'verified_special' ? (
             <p className="info-box">{res.message}</p>
           ) : (

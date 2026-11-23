@@ -69,6 +69,8 @@ export interface Block {
   focus?: 'variabel' | 'koefisien' | 'konstanta'
   /** steps: ordered list */
   items?: string[]
+  /** concrete: also draw the graph beside the object pictures */
+  graph?: boolean
   // `lines` (above) is reused by `eq` blocks: worked lines shown one under another
 }
 

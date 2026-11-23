@@ -1,5 +1,6 @@
 import type { Block } from '../lib/types'
 import { objectIcon } from '../lib/concrete'
+import { ConcreteGraph } from './ConcreteGraph'
 import { EquationPicture } from './ConcreteVisual'
 import { Graph } from './Graph'
 import { MathRender } from './MathRender'
@@ -83,6 +84,7 @@ export function BlockView({ block }: { block: Block }) {
       // Equations drawn as concrete objects; x/y meanings pick the pictures, `label` is the unit (e.g. rupiah)
       const unit = block.label ?? ''
       const vars = block.x && block.y ? { x: { meaning: block.x, unit }, y: { meaning: block.y, unit } } : undefined
+      if (block.graph) return <ConcreteGraph equations={block.equations ?? []} vars={vars} />
       return (
         <div className="concrete">
           {(block.equations ?? []).map((e, i) => (

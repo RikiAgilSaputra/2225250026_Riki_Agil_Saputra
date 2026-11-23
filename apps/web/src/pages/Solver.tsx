@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { Graph } from '../components/Graph'
 import { Icon } from '../components/Icon'
 import { MathText } from '../components/MathText'
 import { CognitiveChip } from '../components/CognitiveChip'
+import { ConcreteGraph } from '../components/ConcreteGraph'
 import { ConcretePanel } from '../components/ConcreteVisual'
 import { Bar } from '../components/ProgressRing'
 import { api, ApiError } from '../lib/api'
@@ -184,6 +184,30 @@ export function Solver() {
   const canSwitchMethod =
     problem.mode === 'independent' && problem.source === 'content' && problem.system && problem.method && graded.every((s) => !isDone(s) || s.modeling_stage !== 4)
 
+  const graphCard = graphVisible && (problem.graph || (problem.system && systemKnown)) && (
+  <section className="card">
+    <b style={{ display: 'block', marginBottom: 8 }}>{problem.story ? 'Grafik dan gambar benda' : 'Grafik'}</b>
+    <ConcreteGraph
+      equations={problem.graph?.lines ?? problem.system ?? []}
+      vars={problem.story?.variables}
+      labels={problem.graph ? undefined : problem.system_display ?? undefined}
+      points={problem.graph?.points}
+      showIntersection={Boolean(result)}
+      pick={
+        current?.check === 'point'
+          ? {
+              value: picked,
+              onPick: (x, y) => {
+                setPicked({ x, y })
+                setAnswer(`(${x}, ${y})`)
+              },
+            }
+          : undefined
+      }
+    />
+  </section>
+)
+
   return (
     <div>
       <div className="solver-head">
@@ -274,7 +298,8 @@ export function Solver() {
               <ConcretePanel
                 vars={problem.story.variables}
                 equations={problem.system}
-                stage={!varsKnown ? 'objects' : systemKnown ? 'equations' : 'variables'}
+                // When the graph card is open it shows the pictures beside the graph (avoid showing them twice)
+                stage={!varsKnown ? 'objects' : systemKnown && !graphVisible ? 'equations' : 'variables'}
               />
             </section>
           )}
@@ -286,7 +311,7 @@ export function Solver() {
               ))}
             </div>
           )}
-          {!problem.story && problem.system && <ConcretePanel equations={problem.system} stage="equations" open={false} />}
+          {!problem.story && problem.system && !graphVisible && <ConcretePanel equations={problem.system} stage="equations" open={false} />}
 
           <section className="steps" aria-label="Langkah penyelesaian">
             {steps.filter(isDone).map((s) => (
@@ -457,6 +482,7 @@ export function Solver() {
               </div>
             )}
           </section>
+          {hasStory && graphCard}
         </div>
 
         <aside className="stack" style={{ gap: 14 }}>
@@ -470,28 +496,7 @@ export function Solver() {
               📈 Grafik bantu
             </button>
           )}
-          {graphVisible && (problem.graph || (problem.system && systemKnown)) && (
-            <section className="card">
-              <b style={{ display: 'block', marginBottom: 8 }}>Grafik</b>
-              <Graph
-                lines={problem.graph?.lines ?? problem.system ?? []}
-                labels={problem.graph ? undefined : problem.system_display ?? undefined}
-                points={problem.graph?.points}
-                showIntersection={Boolean(result)}
-                pick={
-                  current?.check === 'point'
-                    ? {
-                        value: picked,
-                        onPick: (x, y) => {
-                          setPicked({ x, y })
-                          setAnswer(`(${x}, ${y})`)
-                        },
-                      }
-                    : undefined
-                }
-              />
-            </section>
-          )}
+          {!hasStory && graphCard}
           {hasStory && (
             <section className="card soft">
               <b>Siklus pemodelan</b>

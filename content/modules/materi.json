@@ -408,7 +408,7 @@
         "instruction": "Dari cerita Yanita dan Reza, didapat model matematika berikut.",
         "blocks": [
           { "type": "eq", "text": "2x + 2y = 14000\nx + 3y = 17000" },
-          { "type": "concrete", "equations": ["2*x + 2*y = 14000", "x + 3*y = 17000"], "x": "harga 1 pensil", "y": "harga 1 buku", "label": "rupiah" },
+          { "type": "concrete", "equations": ["2*x + 2*y = 14000", "x + 3*y = 17000"], "x": "harga 1 pensil", "y": "harga 1 buku", "label": "rupiah", "graph": true },
           { "type": "callout", "text": "Dua kalimat informasi menjadi dua persamaan. Itulah SPLDV-nya." }
         ]
       },
